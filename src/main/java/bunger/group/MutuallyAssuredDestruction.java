@@ -8,7 +8,7 @@ import bunger.group.alex.Bunger1;
 import bunger.group.bryan.Bunger2;
 import bunger.group.csmit863.Bunger3;
 import bunger.group.ethan.Bunger4;
-import bunger.group.tyler.Bunger5;
+import bunger.group.tyler.BungerBiomeEntrypoint;
 
 public class MutuallyAssuredDestruction implements ModInitializer {
 	public static final String MOD_ID = "mutually-assured-destruction";
@@ -25,5 +25,6 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		// Proceed with mild caution.
 
 		LOGGER.info("Hello Fabric world!");
+        BungerBiomeEntrypoint.init();
 	}
 }
