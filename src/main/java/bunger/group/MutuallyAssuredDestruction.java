@@ -10,6 +10,14 @@ import bunger.group.csmit863.Bunger3;
 import bunger.group.ethan.Bunger4;
 import bunger.group.tyler.Bunger5;
 
+import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.Identifier;
+
+import bunger.group.ethan.ProphetEntity;
+import bunger.group.ethan.ModEntityTypes;
+// import net.minecraft.resources.ResourceLocation;
+
 public class MutuallyAssuredDestruction implements ModInitializer {
 	public static final String MOD_ID = "mutually-assured-destruction";
 
@@ -25,5 +33,10 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		// Proceed with mild caution.
 
 		LOGGER.info("Hello Fabric world!");
+		// Registry.register(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(MOD_ID, "custom_item"), Bunger4.CUSTOM_ITEM);
+		Bunger4.initialize();
+		ProphetEntity.initialize();
+		ModEntityTypes.registerModEntityTypes();
+		ModEntityTypes.registerAttributes();
 	}
 }
