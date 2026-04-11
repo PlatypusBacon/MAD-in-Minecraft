@@ -1,58 +1,147 @@
+//package bunger.group.client.ethan;
+
+// import net.minecraft.client.model.EntityModel;
+// import net.minecraft.client.model.geom.ModelPart;
+// import net.minecraft.client.model.geom.PartNames;
+// import net.minecraft.client.model.geom.PartPose;
+// import net.minecraft.client.model.geom.builders.CubeListBuilder;
+// import net.minecraft.client.model.geom.builders.LayerDefinition;
+// import net.minecraft.client.model.geom.builders.MeshDefinition;
+// import net.minecraft.client.model.geom.builders.PartDefinition;
+
+
 package bunger.group.client.ethan;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+
+import bunger.group.MutuallyAssuredDestruction;
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartNames;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.Entity;
+
+// Made with Blockbench 5.1.3
+// Exported for Minecraft version 1.17 or later with Mojang mappings
+// Paste this class into your mod and generate all required imports
+
 
 public class ProphetEntityModel extends EntityModel<ProphetEntityRenderState> {
-    private final ModelPart head;
-	private final ModelPart leftLeg;
-	private final ModelPart rightLeg;
+	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, "prophet"), "main");
+	private final ModelPart head;
+	private final ModelPart neck;
+	private final ModelPart body;
+	private final ModelPart arms;
+	private final ModelPart legs;
 
-	//:::dancing_animation
 	public ProphetEntityModel(ModelPart root) {
-		//:::dancing_animation
-		super(root);
-		head = root.getChild(PartNames.HEAD);
-		leftLeg = root.getChild(PartNames.LEFT_LEG);
-		rightLeg = root.getChild(PartNames.RIGHT_LEG);
+		super(root); //?????????????
+		this.head = root.getChild("head");
+		this.neck = root.getChild("neck");
+		this.body = root.getChild("body");
+		this.arms = root.getChild("arms");
+		this.legs = root.getChild("legs");
 	}
 
-    public static LayerDefinition getTexturedModelData() {
-	MeshDefinition modelData = new MeshDefinition();
-	PartDefinition root = modelData.getRoot();
-	root.addOrReplaceChild(
-			PartNames.BODY,
-			CubeListBuilder.create().addBox(
-					/* x */ -6,
-					/* y */ -6,
-					/* z */ -6,
-					/* width */ 12,
-					/* height */ 12,
-					/* depth */ 12
-			),
-			PartPose.offset(0, 8, 0)
-	);
-	root.addOrReplaceChild(
-			PartNames.HEAD,
-			CubeListBuilder.create().texOffs(36, 0).addBox(-3, -6, -3, 6, 6, 6),
-			PartPose.offset(0, 2, 0)
-	);
-	root.addOrReplaceChild(
-			PartNames.LEFT_LEG,
-			CubeListBuilder.create().texOffs(48, 12).addBox(-2, 0, -2, 4, 10, 4),
-			PartPose.offset(-2.5f, 14, 0)
-	);
-	root.addOrReplaceChild(
-			PartNames.RIGHT_LEG,
-			CubeListBuilder.create().texOffs(48, 12).addBox(-2, 0, -2, 4, 10, 4),
-			PartPose.offset(2.5f, 14, 0)
-	);
-	return LayerDefinition.create(modelData, 64, 32);
+	public static LayerDefinition getTexturedModelData() {
+		MeshDefinition meshdefinition = new MeshDefinition();
+		PartDefinition partdefinition = meshdefinition.getRoot();
+
+		PartDefinition head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -29.0F, -5.0F, 8.0F, 7.0F, 8.0F, new CubeDeformation(0.0F))
+		.texOffs(0, 16).addBox(-3.0F, -32.0F, -4.0F, 6.0F, 3.0F, 6.0F, new CubeDeformation(0.0F))
+		.texOffs(24, 16).addBox(-3.0F, -22.0F, -4.0F, 6.0F, 3.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 16.0F, 0.0F));
+
+		PartDefinition neck = partdefinition.addOrReplaceChild("neck", CubeListBuilder.create().texOffs(32, 9).addBox(1.0F, -19.0F, -2.0F, 1.0F, 6.0F, 1.0F, new CubeDeformation(0.0F))
+		.texOffs(12, 35).addBox(-2.0F, -19.0F, -2.0F, 1.0F, 6.0F, 1.0F, new CubeDeformation(0.0F))
+		.texOffs(16, 35).addBox(0.0F, -19.0F, 0.0F, 1.0F, 6.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 16.0F, 0.0F));
+
+		PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 26).addBox(-7.0F, -3.0F, 0.0F, 6.0F, 3.0F, 6.0F, new CubeDeformation(0.0F))
+		.texOffs(24, 26).addBox(-9.0F, -4.0F, -1.0F, 1.0F, 1.0F, 8.0F, new CubeDeformation(0.0F))
+		.texOffs(32, 0).addBox(-8.0F, -3.0F, 0.0F, 1.0F, 1.0F, 6.0F, new CubeDeformation(0.0F))
+		.texOffs(24, 26).addBox(0.0F, -4.0F, -1.0F, 1.0F, 1.0F, 8.0F, new CubeDeformation(0.0F))
+		.texOffs(32, 0).addBox(-1.0F, -3.0F, 0.0F, 1.0F, 1.0F, 6.0F, new CubeDeformation(0.0F))
+		.texOffs(32, 7).addBox(-8.0F, -4.0F, 7.0F, 8.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+		.texOffs(32, 7).addBox(-8.0F, -3.0F, 6.0F, 8.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+		.texOffs(32, 7).addBox(-8.0F, -4.0F, -2.0F, 8.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+		.texOffs(32, 7).addBox(-8.0F, -3.0F, -1.0F, 8.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(4.0F, 6.0F, -4.0F));
+
+		PartDefinition arms = partdefinition.addOrReplaceChild("arms", CubeListBuilder.create().texOffs(6, 35).addBox(4.0F, -13.0F, -2.0F, 1.0F, 18.0F, 2.0F, new CubeDeformation(0.0F))
+		.texOffs(6, 35).addBox(-5.0F, -13.0F, -2.0F, 1.0F, 18.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 16.0F, 0.0F));
+
+		PartDefinition legs = partdefinition.addOrReplaceChild("legs", CubeListBuilder.create().texOffs(6, 35).addBox(1.0F, -10.0F, -2.0F, 1.0F, 18.0F, 2.0F, new CubeDeformation(0.0F))
+		.texOffs(0, 35).addBox(-2.0F, -11.0F, -2.0F, 1.0F, 19.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 16.0F, 0.0F));
+
+		return LayerDefinition.create(meshdefinition, 64, 64);
+	}
+
+	//@Override
+	public void setupAnim(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+
+	}
+
+	//@Override
+	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+		head.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+		neck.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+		body.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+		arms.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+		legs.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+	}
 }
-}
+
+// public class ProphetEntityModel extends EntityModel<ProphetEntityRenderState> {
+//     private final ModelPart head;
+// 	private final ModelPart leftLeg;
+// 	private final ModelPart rightLeg;
+
+// 	//:::dancing_animation
+// 	public ProphetEntityModel(ModelPart root) {
+// 		//:::dancing_animation
+// 		super(root);
+// 		head = root.getChild(PartNames.HEAD);
+// 		leftLeg = root.getChild(PartNames.LEFT_LEG);
+// 		rightLeg = root.getChild(PartNames.RIGHT_LEG);
+// 	}
+
+//     public static LayerDefinition getTexturedModelData() {
+// 	MeshDefinition modelData = new MeshDefinition();
+// 	PartDefinition root = modelData.getRoot();
+// 	root.addOrReplaceChild(
+// 			PartNames.BODY,
+// 			CubeListBuilder.create().addBox(
+// 					/* x */ -6,
+// 					/* y */ -6,
+// 					/* z */ -6,
+// 					/* width */ 12,
+// 					/* height */ 12,
+// 					/* depth */ 12
+// 			),
+// 			PartPose.offset(0, 8, 0)
+// 	);
+// 	root.addOrReplaceChild(
+// 			PartNames.HEAD,
+// 			CubeListBuilder.create().texOffs(36, 0).addBox(-3, -6, -3, 6, 6, 6),
+// 			PartPose.offset(0, 2, 0)
+// 	);
+// 	root.addOrReplaceChild(
+// 			PartNames.LEFT_LEG,
+// 			CubeListBuilder.create().texOffs(48, 12).addBox(-2, 0, -2, 4, 10, 4),
+// 			PartPose.offset(-2.5f, 14, 0)
+// 	);
+// 	root.addOrReplaceChild(
+// 			PartNames.RIGHT_LEG,
+// 			CubeListBuilder.create().texOffs(48, 12).addBox(-2, 0, -2, 4, 10, 4),
+// 			PartPose.offset(2.5f, 14, 0)
+// 	);
+// 	return LayerDefinition.create(modelData, 64, 32);
+// }
+// }
