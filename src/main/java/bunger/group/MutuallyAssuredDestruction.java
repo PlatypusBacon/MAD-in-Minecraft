@@ -1,6 +1,7 @@
 package bunger.group;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +14,13 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.Identifier;
-
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.phys.Vec3;
 import bunger.group.ethan.ProphetEntity;
 import bunger.group.ethan.ModEntityTypes;
 import bunger.group.ethan.RedDarknessEffect;
@@ -50,6 +57,25 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		Registry.register(BuiltInRegistries.MOB_EFFECT,
 			Identifier.fromNamespaceAndPath("mutually-assured-destruction", "red_darkness"),
 			RedDarknessEffect.RED_DARKNESS);
+
+			ServerTickEvents.END_SERVER_TICK.register(server -> {
+				for (ServerLevel level : server.getAllLevels()) {
+					for (ServerPlayer player : level.players()) {
+						if (player.hasEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(RedDarknessEffect.RED_DARKNESS))) {
+							if (player.tickCount % 60 == 0) {
+								LightningBolt lightning = EntityType.LIGHTNING_BOLT.create(level, EntitySpawnReason.TRIGGERED);
+								if (lightning != null) {
+									lightning.move(MoverType.PLAYER, new Vec3(player.getX(), player.getY(), player.getZ()));
+									lightning.setVisualOnly(false);
+									lightning.setSilent(false);
+									//lightning.set
+									level.addFreshEntity(lightning);
+								}
+							}
+						}
+					}
+				}
+			});
 		// ------------------------------------------
 	}
 }

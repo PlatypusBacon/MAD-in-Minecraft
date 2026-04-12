@@ -126,7 +126,7 @@ public class ProphetEntity extends PathfinderMob {
             player.addEffect(new MobEffectInstance(
                 BuiltInRegistries.MOB_EFFECT.wrapAsHolder(RedDarknessEffect.RED_DARKNESS),
                 //MobEffects.DARKNESS,
-                200,
+                1000,
                 0
             ));
         }
