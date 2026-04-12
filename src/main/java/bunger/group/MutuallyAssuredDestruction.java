@@ -1,8 +1,11 @@
 package bunger.group;
 
+import bunger.group.entity.ModEntities;
+import bunger.group.entity.SquirrelEntity;
 import bunger.group.item.ModItems;
 import net.fabricmc.api.ModInitializer;
 
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import bunger.group.block.ModBlocks;
@@ -24,5 +27,9 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		LOGGER.info("Hello Fabric world!");
 		ModItems.registerModItems();
 		ModBlocks.registerModBlocks();
+		FabricDefaultAttributeRegistry.register(
+				ModEntities.SQUIRREL,
+				SquirrelEntity.createAttributes()
+		);
 	}
 }

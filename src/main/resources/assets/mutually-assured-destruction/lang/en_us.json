@@ -1,3 +1,8 @@
 {
-  "item.mutually-assured-destruction.squirrel_gun": "Squirrel Gun"
+  "item.mutually-assured-destruction.squirrel_gun": "Squirrel Gun",
+  "item.mutually-assured-destruction.sqeather_feet": "Foot Squeather",
+  "item.mutually-assured-destruction.sqeather_legs": "Leg Squeather",
+  "item.mutually-assured-destruction.sqeather_head": "Head Squeather",
+  "item.mutually-assured-destruction.sqeather_chest": "Chest Squeather",
+  "entity.mutually-assured-destruction.squirrel": "Squirrel"
 }
