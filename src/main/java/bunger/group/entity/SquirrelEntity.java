@@ -1,4 +1,9 @@
-package bunger.group.entity;import net.minecraft.world.entity.AgeableMob;
+package bunger.group.entity;
+
+import bunger.group.sound.ModSounds;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -35,7 +40,18 @@ public class SquirrelEntity extends Animal {
         this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
     }
-
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return ModSounds.SQUIRREL_AMBIENT;
+    }
+    @Override
+    public int getAmbientSoundInterval() {
+        return 120;
+    }
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSounds.SQUIRREL_AMBIENT; // reuse or add a separate hurt sound
+    }
     @Override
     public @Nullable AgeableMob getBreedOffspring(ServerLevel world, AgeableMob entity) {
         return null;

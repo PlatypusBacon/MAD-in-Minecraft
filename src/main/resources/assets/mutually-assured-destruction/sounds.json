@@ -1,0 +1,30 @@
+{
+  "squirrel_ambient": {
+    "sounds": [
+      { "name": "mutually-assured-destruction:squirrel_ambient", "volume": 0.6 }
+    ]
+  },
+  "gun_fire": {
+    "sounds": [
+      { "name": "mutually-assured-destruction:gun_fire", "volume": 1.0 }
+    ]
+  },
+  "event_buildup": {
+    "sounds": [
+      {
+        "name": "mutually-assured-destruction:god_is_coming",
+        "volume": 1.0,
+        "stream": true
+      }
+    ]
+  },
+  "event_main": {
+    "sounds": [
+      {
+        "name": "mutually-assured-destruction:god_is_here",
+        "volume": 1.0,
+        "stream": true
+      }
+    ]
+  }
+}

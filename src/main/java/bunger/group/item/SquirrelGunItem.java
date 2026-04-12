@@ -1,6 +1,8 @@
 package bunger.group.item;
 
 import bunger.group.entity.SquirrelEntity;
+import bunger.group.sound.ModSounds;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -58,6 +60,14 @@ public class SquirrelGunItem extends Item {
 
     private void shoot(Level world, Player player) {
         // cast a ray from the player's eye position in the direction they're looking
+        world.playSound(
+                null,                          // null = play for all nearby players
+                player.blockPosition(),
+                ModSounds.GUN_FIRE,
+                SoundSource.PLAYERS,
+                1.0f,                          // volume
+                0.9f + world.random.nextFloat() * 0.2f  // slight random pitch variation
+        );
         var start = player.getEyePosition();
         var look  = player.getLookAngle();
         var end   = start.add(look.scale(RANGE));
