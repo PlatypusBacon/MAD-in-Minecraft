@@ -3,7 +3,9 @@
 	"package": "bunger.group.client.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"client": [
-		"ExampleClientMixin"
+		"ExampleClientMixin",
+		"FogRendererMixin",
+		"FogRendererAccessor"
 	],
 	"injectors": {
 		"defaultRequire": 1

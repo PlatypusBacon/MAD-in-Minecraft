@@ -8,14 +8,19 @@ import net.minecraft.world.entity.player.Player;
 
 import java.util.Optional;
 
+import bunger.group.MutuallyAssuredDestruction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.protocol.game.ClientboundSoundPacket;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.effect.MobEffects;
 
 
 public class ProphetEntity extends PathfinderMob {
@@ -26,7 +31,7 @@ public class ProphetEntity extends PathfinderMob {
 
     public static AttributeSupplier.Builder createCubeAttributes() {
         return PathfinderMob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 5)
+                .add(Attributes.MAX_HEALTH, 1)
                 .add(Attributes.TEMPT_RANGE, 10)
                 .add(Attributes.MOVEMENT_SPEED, 0.3);
     }
@@ -43,7 +48,6 @@ public class ProphetEntity extends PathfinderMob {
         Identifier.fromNamespaceAndPath("mutually-assured-destruction", "dripping"),
         Optional.of(25.0F)
     );
-
 
 
 
@@ -112,6 +116,19 @@ public class ProphetEntity extends PathfinderMob {
                 }
             }
             drippingTimer = 259;
+        }
+    }
+
+    @Override
+    public void die(DamageSource source) {
+        super.die(source);
+        if (source.getEntity() instanceof Player player) {
+            player.addEffect(new MobEffectInstance(
+                BuiltInRegistries.MOB_EFFECT.wrapAsHolder(RedDarknessEffect.RED_DARKNESS),
+                //MobEffects.DARKNESS,
+                200,
+                0
+            ));
         }
     }
 

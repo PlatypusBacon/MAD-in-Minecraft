@@ -16,6 +16,7 @@ import net.minecraft.resources.Identifier;
 
 import bunger.group.ethan.ProphetEntity;
 import bunger.group.ethan.ModEntityTypes;
+import bunger.group.ethan.RedDarknessEffect;
 // import net.minecraft.resources.ResourceLocation;
 
 public class MutuallyAssuredDestruction implements ModInitializer {
@@ -33,8 +34,10 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		// Proceed with mild caution.
 
 		LOGGER.info("Hello Fabric world!");
-		// Registry.register(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(MOD_ID, "custom_item"), Bunger4.CUSTOM_ITEM);
-		Bunger4.initialize();
+
+
+
+		// ----------Ethans registrations----------
 		ProphetEntity.initialize();
 		ModEntityTypes.registerModEntityTypes();
 		ModEntityTypes.registerAttributes();
@@ -44,5 +47,9 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		Registry.register(BuiltInRegistries.SOUND_EVENT, 
 			Identifier.fromNamespaceAndPath("mutually-assured-destruction", "dripping"), 
 			ProphetEntity.DRIPPING);
+		Registry.register(BuiltInRegistries.MOB_EFFECT,
+			Identifier.fromNamespaceAndPath("mutually-assured-destruction", "red_darkness"),
+			RedDarknessEffect.RED_DARKNESS);
+		// ------------------------------------------
 	}
 }
