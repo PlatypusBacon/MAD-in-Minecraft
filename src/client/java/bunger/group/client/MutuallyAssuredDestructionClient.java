@@ -10,6 +10,7 @@ public class MutuallyAssuredDestructionClient implements ClientModInitializer {
 		ModModelLayers.register();
 		SleepScreenOverlay.register();
 		EntityRendererRegistry.register(ModEntities.SQUIRREL, SquirrelRenderer::new);
+
 		// This entrypoint is suitable for setting up client-specific logic, such as rendering.
 	}
 }

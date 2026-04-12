@@ -37,7 +37,10 @@ public class ModBlocks {
                     .sound(SoundType.WOOL)
                     .noCollission()
                     .noOcclusion()));
-
+    public static final Block SQUIRREL_WIFE = registerBlock("squirrel_wife",
+            new SquirrelWife(FabricBlockSettings.of(Material.STONE)
+                    .strength(3.0f)
+                    .requiresCorrectToolForDrops()));
 
     private static Block registerBlock(String name, Block block) {
         return Registry.register(
@@ -45,10 +48,6 @@ public class ModBlocks {
                 new ResourceLocation(MutuallyAssuredDestruction.MOD_ID, name),
                 block);
     }
-    public static final Block SQUIRREL_WIFE_BASE = registerBlock("squeather_stand_base",
-            new SquirrelWife(FabricBlockSettings.of(Material.STONE)
-                    .strength(3.0f)
-                    .requiresCorrectToolForDrops()));
 
     public static void registerModBlocks() {
         MutuallyAssuredDestruction.LOGGER.debug("Registering blocks for "

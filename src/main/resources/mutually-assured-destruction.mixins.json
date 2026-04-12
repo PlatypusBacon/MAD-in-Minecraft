@@ -5,6 +5,9 @@
 	"injectors": {
 		"defaultRequire": 1
 	},
+	"mixins": [
+		"BedSpawnMixin"
+	],
 	"overwrites": {
 		"requireAnnotations": true
 	}

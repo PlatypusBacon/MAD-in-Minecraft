@@ -1,5 +1,6 @@
 package bunger.group.entity;
 
+import bunger.group.MutuallyAssuredDestruction;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -15,6 +16,12 @@ public class ModEntities {
                     .dimensions(EntityDimensions.fixed(2.0f, 2.5f))
                     .build()
     );
-
+    public static final EntityType<GodEntity> GOD = Registry.register(
+            Registry.ENTITY_TYPE,
+            new ResourceLocation(MutuallyAssuredDestruction.MOD_ID, "god"),
+            FabricEntityTypeBuilder.create(MobCategory.MONSTER, GodEntity::new)
+                    .dimensions(EntityDimensions.fixed(3.0f, 3.5f)) // large
+                    .build()
+    );
     public static void register() {}
 }

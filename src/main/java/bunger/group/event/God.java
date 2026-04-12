@@ -7,6 +7,7 @@ import net.minecraft.network.protocol.game.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import bunger.group.data.StructureEventData;
 
 public class God {
 
@@ -24,7 +25,7 @@ public class God {
                 SoundSource.RECORDS, 2.0f, 1.0f);
 
         // broadcast opening message
-        broadcastMessage(level, origin, "§4§lTHE OFFERING HAS BEEN MADE", 64);
+        broadcastMessage(level, origin, "§4§lGOD IS COMING", 64);
 
         // schedule each countdown second
         for (int i = 0; i <= COUNTDOWN_SECONDS; i++) {
@@ -41,6 +42,12 @@ public class God {
         scheduleFutureTick(level, mainTrackTick, () -> {
             level.playSound(null, origin, ModSounds.GOD_IS_HERE,
                     SoundSource.RECORDS, 2.0f, 1.0f);
+
+            // spawn GOD 10 seconds after track starts
+            scheduleFutureTick(level,
+                    level.getGameTime() + 200L, // 10 seconds
+                    () -> spawnGod(level, origin));
+
             active = false;
         });
     }
@@ -73,25 +80,16 @@ public class God {
                         sp.connection.send(
                                 new ClientboundSetTitleTextPacket(
                                         Component.literal("§4§l" + secondsLeft)));
-                        sp.connection.send(
-                                new ClientboundSetSubtitleTextPacket(
-                                        getSubtitleForTime(secondsLeft)));
                     });
         } else {
             broadcastTitle(level, origin,
-                    "§4§lIT IS HERE",
-                    Component.literal("§7§oThere is no escape."),
+                    "§4§lGOD IS HERE",
+                    Component.literal("§7§o!!!!!!!!!!!!"),
                     64);
             active = false;
         }
     }
 
-    private static Component getSubtitleForTime(int secondsLeft) {
-        if (secondsLeft > 20) return Component.literal("§7§oIt watches. It waits.");
-        if (secondsLeft > 10) return Component.literal("§7§oYou should not have done this.");
-        if (secondsLeft > 5)  return Component.literal("§7§oRun.");
-        return Component.literal("§4§oToo late.");
-    }
 
     private static void broadcastMessage(ServerLevel level, BlockPos origin,
                                          String message, double range) {
@@ -116,6 +114,28 @@ public class God {
                                     Component.literal(title)));
                     sp.connection.send(
                             new ClientboundSetSubtitleTextPacket(subtitle));
+                });
+    }
+    private static void spawnGod(ServerLevel level, BlockPos origin) {
+        StructureEventData data = StructureEventData.get(level);
+        if (data.isGodSpawned()) return;
+        data.setGodSpawned();
+
+        // find nearest player to structure
+        level.players().stream()
+                .filter(p -> p.distanceToSqr(
+                        origin.getX(), origin.getY(), origin.getZ()) < 4096)
+                .findFirst()
+                .ifPresent(player -> {
+                    // spawn 5 blocks behind the player
+                    var look = player.getLookAngle().scale(-5);
+                    var spawnPos = player.position().add(look);
+
+                    var god = bunger.group.entity.ModEntities.GOD.create(level);
+                    if (god == null) return;
+
+                    god.moveTo(spawnPos.x, spawnPos.y, spawnPos.z, 0f, 0f);
+                    level.addFreshEntity(god);
                 });
     }
 }
