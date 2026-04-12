@@ -1,0 +1,18 @@
+{
+    "heartbeat": {
+        "sounds": [
+            {
+                "name": "mutually-assured-destruction:heartbeat",
+                "stream": true
+            }
+        ]
+    },
+    "dripping": {
+        "sounds": [
+            {
+                "name": "mutually-assured-destruction:dripping",
+                "stream": true
+            }
+        ]
+    }
+}

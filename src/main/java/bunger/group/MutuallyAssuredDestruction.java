@@ -9,7 +9,7 @@ import bunger.group.bryan.Bunger2;
 import bunger.group.csmit863.Bunger3;
 import bunger.group.ethan.Bunger4;
 import bunger.group.tyler.Bunger5;
-
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.Identifier;
@@ -38,5 +38,11 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		ProphetEntity.initialize();
 		ModEntityTypes.registerModEntityTypes();
 		ModEntityTypes.registerAttributes();
+		Registry.register(BuiltInRegistries.SOUND_EVENT, 
+			Identifier.fromNamespaceAndPath("mutually-assured-destruction", "heartbeat"), 
+			ProphetEntity.HEARTBEAT);
+		Registry.register(BuiltInRegistries.SOUND_EVENT, 
+			Identifier.fromNamespaceAndPath("mutually-assured-destruction", "dripping"), 
+			ProphetEntity.DRIPPING);
 	}
 }
