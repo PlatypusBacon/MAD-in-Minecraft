@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class BloodTextWall extends HorizontalDirectionalBlock{
+public class GodComing3Block extends HorizontalDirectionalBlock{
 
     // 1px thick slab against the wall
     protected static final VoxelShape SHAPE_NORTH = Block.box(0, 0, 15, 16, 16, 16);
@@ -19,7 +19,7 @@ public class BloodTextWall extends HorizontalDirectionalBlock{
     protected static final VoxelShape SHAPE_EAST  = Block.box(0, 0, 0, 1, 16, 16);
     protected static final VoxelShape SHAPE_WEST  = Block.box(15, 0, 0, 16, 16, 16);
 
-    public BloodTextWall(Properties properties) {
+    public GodComing3Block(Properties properties) {
         super(properties);
         this.registerDefaultState(
                 this.stateDefinition.any()

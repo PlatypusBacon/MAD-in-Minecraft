@@ -37,17 +37,18 @@ public class ModBlocks {
                     .sound(SoundType.WOOL)
                     .noCollission()
                     .noOcclusion()));
-    public static final Block BLOOD_TEXT = registerBlock("blood_text",
-            new BloodTextWall(FabricBlockSettings.of(Material.DECORATION)
-                    .strength(0.1f)
-                    .noCollission()
-                    .noOcclusion()));
+
+
     private static Block registerBlock(String name, Block block) {
         return Registry.register(
                 Registry.BLOCK,
                 new ResourceLocation(MutuallyAssuredDestruction.MOD_ID, name),
                 block);
     }
+    public static final Block SQUIRREL_WIFE_BASE = registerBlock("squeather_stand_base",
+            new SquirrelWife(FabricBlockSettings.of(Material.STONE)
+                    .strength(3.0f)
+                    .requiresCorrectToolForDrops()));
 
     public static void registerModBlocks() {
         MutuallyAssuredDestruction.LOGGER.debug("Registering blocks for "

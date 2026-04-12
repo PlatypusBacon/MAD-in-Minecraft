@@ -30,9 +30,12 @@
 		}
 	],
 	"depends": {
-		"fabricloader": ">=0.18.6",
+		"fabricloader": ">=0.14.9",
 		"minecraft": "~1.19.2",
 		"java": ">=17",
 		"fabric-api": "*"
+	},
+	"custom": {
+		"fabric-resource-loader-v0:server_data_pack_source": true
 	}
 }
