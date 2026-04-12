@@ -129,6 +129,7 @@ public class ProphetEntity extends PathfinderMob {
                 1000,
                 0
             ));
+            MutuallyAssuredDestruction.RED_RAIN_PLAYERS.put(player.getUUID(), player.level().getGameTime() + 1200);
         }
     }
 

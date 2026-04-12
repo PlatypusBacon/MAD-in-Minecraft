@@ -23,7 +23,7 @@ public class RedDarknessFogEnvironment extends MobEffectFogEnvironment {
 
     @Override
     public void setupFog(FogData fog, Camera camera, ClientLevel level, float renderDistance, DeltaTracker deltaTracker) {
-        System.out.println("USERTEST: RedDarkness setupFog called");
+        //System.out.println("USERTEST: RedDarkness setupFog called");
         if (camera.entity() instanceof LivingEntity livingEntity) {
             MobEffectInstance effect = livingEntity.getEffect(this.getMobEffect());
             if (effect != null) {

@@ -18,7 +18,7 @@ import bunger.group.client.ethan.RedDarknessFogEnvironment;
 public class FogRendererMixin {
     @Inject(method = "<clinit>", at = @At("TAIL"))
     private static void addRedDarkness(CallbackInfo ci) {
-        System.out.println("USERTEST: FogRendererMixin injecting RedDarknessFogEnvironment");
+        //System.out.println("USERTEST: FogRendererMixin injecting RedDarknessFogEnvironment");
         FogRendererAccessor.getFogEnvironments().add(0,new RedDarknessFogEnvironment());
     }
 

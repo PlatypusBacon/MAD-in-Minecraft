@@ -3,6 +3,10 @@ package bunger.group;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import bunger.group.alex.Bunger1;
@@ -13,7 +17,9 @@ import bunger.group.tyler.Bunger5;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.core.Registry;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.TickTask;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntitySpawnReason;
@@ -25,6 +31,7 @@ import bunger.group.ethan.ProphetEntity;
 import bunger.group.ethan.ModEntityTypes;
 import bunger.group.ethan.RedDarknessEffect;
 // import net.minecraft.resources.ResourceLocation;
+import bunger.group.ethan.RedRainHandler;
 
 public class MutuallyAssuredDestruction implements ModInitializer {
 	public static final String MOD_ID = "mutually-assured-destruction";
@@ -33,6 +40,8 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 	// It is considered best practice to use your mod id as the logger's name.
 	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+
+	public static final Map<UUID, Long> RED_RAIN_PLAYERS = new HashMap<>();
 
 	@Override
 	public void onInitialize() {
@@ -57,25 +66,9 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		Registry.register(BuiltInRegistries.MOB_EFFECT,
 			Identifier.fromNamespaceAndPath("mutually-assured-destruction", "red_darkness"),
 			RedDarknessEffect.RED_DARKNESS);
+		RedRainHandler.register();
 
-			ServerTickEvents.END_SERVER_TICK.register(server -> {
-				for (ServerLevel level : server.getAllLevels()) {
-					for (ServerPlayer player : level.players()) {
-						if (player.hasEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(RedDarknessEffect.RED_DARKNESS))) {
-							if (player.tickCount % 60 == 0) {
-								LightningBolt lightning = EntityType.LIGHTNING_BOLT.create(level, EntitySpawnReason.TRIGGERED);
-								if (lightning != null) {
-									lightning.move(MoverType.PLAYER, new Vec3(player.getX(), player.getY(), player.getZ()));
-									lightning.setVisualOnly(false);
-									lightning.setSilent(false);
-									//lightning.set
-									level.addFreshEntity(lightning);
-								}
-							}
-						}
-					}
-				}
-			});
+
 		// ------------------------------------------
 	}
 }
