@@ -1,8 +1,13 @@
 {
   "item.mutually-assured-destruction.squirrel_gun": "Squirrel Gun",
-  "item.mutually-assured-destruction.sqeather_feet": "Foot Squeather",
-  "item.mutually-assured-destruction.sqeather_legs": "Leg Squeather",
-  "item.mutually-assured-destruction.sqeather_head": "Head Squeather",
-  "item.mutually-assured-destruction.sqeather_chest": "Chest Squeather",
-  "entity.mutually-assured-destruction.squirrel": "Squirrel"
+  "item.mutually-assured-destruction.squeather_feet": "Foot Squeather",
+  "item.mutually-assured-destruction.squeather_legs": "Leg Squeather",
+  "item.mutually-assured-destruction.squeather_head": "Head Squeather",
+  "item.mutually-assured-destruction.squeather_chest": "Chest Squeather",
+  "entity.mutually-assured-destruction.squirrel": "Squirrel",
+  "block.mutually-assured-destruction.summoning_circle_nw": "Summoning Circle NW",
+  "block.mutually-assured-destruction.summoning_circle_ne": "Summoning Circle NE",
+  "block.mutually-assured-destruction.summoning_circle_sw": "Summoning Circle SW",
+  "block.mutually-assured-destruction.summoning_circle_se": "Summoning Circle SE",
+  "block.mutually-assured-destruction.blood_text": "Blood Text"
 }

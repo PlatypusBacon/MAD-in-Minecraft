@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "mutually-assured-destruction:block/blood_text" },
+    "facing=south": { "model": "mutually-assured-destruction:block/blood_text", "y": 180 },
+    "facing=east":  { "model": "mutually-assured-destruction:block/blood_text", "y": 90 },
+    "facing=west":  { "model": "mutually-assured-destruction:block/blood_text", "y": 270 }
+  }
+}

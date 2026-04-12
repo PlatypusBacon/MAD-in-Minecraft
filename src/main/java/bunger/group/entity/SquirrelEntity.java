@@ -22,7 +22,7 @@ public class SquirrelEntity extends Animal {
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 100.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.35)  // slightly faster base
+                .add(Attributes.MOVEMENT_SPEED, 0.8)  // slightly faster base
                 .add(Attributes.FOLLOW_RANGE, 32.0);   // extends detection/AI range
     }
 
