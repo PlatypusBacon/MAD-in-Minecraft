@@ -10,6 +10,9 @@ import bunger.group.csmit863.Bunger3;
 import bunger.group.ethan.Bunger4;
 import bunger.group.tyler.Bunger5;
 
+//Alex
+import bunger.group.alex.wizardry.items.BasicScrolls;
+
 public class MutuallyAssuredDestruction implements ModInitializer {
 	public static final String MOD_ID = "mutually-assured-destruction";
 
@@ -20,6 +23,7 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		BasicScrolls.register();
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
