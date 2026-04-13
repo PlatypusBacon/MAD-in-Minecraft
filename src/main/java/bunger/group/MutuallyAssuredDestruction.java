@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import bunger.group.alex.wizardry.items.spells.SpellRegistry;
 import bunger.group.alex.wizardry.ParticleHelpers;
 import bunger.group.alex.wizardry.SpellHelpers;
+import bunger.group.alex.wizardry.ModItemGroups;
 
 public class MutuallyAssuredDestruction implements ModInitializer {
 	public static final String MOD_ID = "mutually-assured-destruction";
@@ -23,6 +24,8 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 	public void onInitialize() {
 
 		// ------- Alex --------
+		// Creative tab
+		ModItemGroups.register();
 		// Items
 		SpellRegistry.register();
 
@@ -31,6 +34,7 @@ public class MutuallyAssuredDestruction implements ModInitializer {
             ParticleHelpers.tick();
 			SpellHelpers.tick();
         });
+
 
 		LOGGER.info("Hello Fabric world!");
 	}

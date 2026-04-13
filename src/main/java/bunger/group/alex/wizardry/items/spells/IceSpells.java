@@ -77,7 +77,7 @@ public class IceSpells {
                         final BlockPos finalPos = pos;
                         final Level finalLevel = level;
 
-                        SpellHelpers.runAfterTicks(100, () -> {
+                        SpellHelpers.runAfterTicks(60, () -> {
                             if (finalLevel.getBlockState(finalPos).is(Blocks.ICE) || finalLevel.getBlockState(finalPos).is(Blocks.WATER)) {
                                     finalLevel.setBlock(finalPos, Blocks.AIR.defaultBlockState(), 3);
                             }
