@@ -273,7 +273,7 @@ public class LightningSpells {
                         SpellHelpers.runForTicks(200, new Runnable() {
                             @Override
                             public void run() {
-                                for (int i = 0; i < 4; i++) {
+                                for (int i = 0; i < 5; i++) {
                                     double angle = Math.random() * Math.PI * 2;
                                     double dist = Math.sqrt(Math.random()) * radius;
 
