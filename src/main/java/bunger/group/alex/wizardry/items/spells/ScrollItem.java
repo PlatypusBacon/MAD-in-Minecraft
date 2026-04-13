@@ -12,7 +12,7 @@ public class ScrollItem extends Item {
         super(properties);
     }
 
-    protected void cast(Level level, Player player, ItemStack stack) throws InterruptedException {
+    protected void cast(Level level, Player player, ItemStack stack) {
         // default: does nothing
     }
 
@@ -22,11 +22,7 @@ public class ScrollItem extends Item {
         ItemStack stack = player.getItemInHand(hand);
 
         if (!level.isClientSide) {
-            try {
-                cast(level, player, stack);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+            cast(level, player, stack);
         }
 
         return InteractionResultHolder.success(stack);

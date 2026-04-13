@@ -21,11 +21,12 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		SpellRegistry.register();
-		// This code runs as soon as Minecraft is in a mod-load-ready state.
-		// However, some things (like resources) may still be uninitialized.
-		// Proceed with mild caution.
 
+		// ------- Alex --------
+		// Items
+		SpellRegistry.register();
+
+		// tick events
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
             ParticleHelpers.tick();
 			SpellHelpers.tick();

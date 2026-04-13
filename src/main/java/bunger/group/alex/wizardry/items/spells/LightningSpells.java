@@ -3,7 +3,6 @@ package bunger.group.alex.wizardry.items.spells;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -16,7 +15,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.*;
 
 import bunger.group.alex.wizardry.ParticleHelpers;
@@ -270,29 +268,26 @@ public class LightningSpells {
                     if (centre != null) {
                         double radius = 20.0;
                         Vec3 finalCentre1 = centre;
-                        SpellHelpers.runForTicks(200, new Runnable() {
-                            @Override
-                            public void run() {
-                                for (int i = 0; i < 5; i++) {
-                                    double angle = Math.random() * Math.PI * 2;
-                                    double dist = Math.sqrt(Math.random()) * radius;
+                        SpellHelpers.runForTicks(200, () -> {
+                            for (int i = 0; i < 5; i++) {
+                                double angle = Math.random() * Math.PI * 2;
+                                double dist = Math.sqrt(Math.random()) * radius;
 
-                                    double offsetX = Math.cos(angle) * dist;
-                                    double offsetZ = Math.sin(angle) * dist;
+                                double offsetX = Math.cos(angle) * dist;
+                                double offsetZ = Math.sin(angle) * dist;
 
-                                    LightningBolt lightning = EntityType.LIGHTNING_BOLT.create(level);
+                                LightningBolt lightning = EntityType.LIGHTNING_BOLT.create(level);
 
-                                    if (lightning != null) {
-                                        lightning.moveTo(
-                                                finalCentre1.x + offsetX,
-                                                finalCentre1.y,
-                                                finalCentre1.z + offsetZ
-                                        );
-                                        level.addFreshEntity(lightning);
-                                    }
+                                if (lightning != null) {
+                                    lightning.moveTo(
+                                            finalCentre1.x + offsetX,
+                                            finalCentre1.y,
+                                            finalCentre1.z + offsetZ
+                                    );
+                                    level.addFreshEntity(lightning);
                                 }
-
                             }
+
                         });
                     }
 

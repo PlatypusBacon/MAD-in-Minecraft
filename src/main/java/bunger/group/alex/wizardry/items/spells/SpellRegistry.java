@@ -9,5 +9,6 @@ public class SpellRegistry {
         FireSpells.register();
         LightningSpells.register();
         WaterSpells.register();
+        IceSpells.register();
     }
 }

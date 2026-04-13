@@ -20,62 +20,66 @@ import bunger.group.alex.wizardry.ParticleHelpers;
 
 public class FireSpells {
 
-    public static final Item FIRE_BASIC_SCROLL= Registry.register(
-            Registry.ITEM,
-            new ResourceLocation("mutually-assured-destruction", "fire_basic_scroll"),
-            new ScrollItem(new Item.Properties()) {
+    public static final ScrollItem FIRE_IGNITION = new ScrollItem(new Item.Properties()) {
+        @Override
+        protected void cast(Level level, Player player, ItemStack stack) {
+            // Set fire to block or player aimed at within 25 blocks
 
-                @Override
-                protected void cast(Level level, Player player, ItemStack stack) {
-                    // Set fire to block or player aimed at withing 25 blocks
+            double range = 25.0;
+            Vec3 start = player.getEyePosition();
+            Vec3 look = player.getLookAngle();
+            Vec3 end = start.add(look.scale(range));
 
-                    double range = 25.0;
-                    Vec3 start = player.getEyePosition();
-                    Vec3 look = player.getLookAngle();
-                    Vec3 end = start.add(look.scale(range));
+            BlockHitResult blockHit = level.clip(new ClipContext(
+                    start,
+                    end,
+                    ClipContext.Block.OUTLINE,
+                    ClipContext.Fluid.NONE,
+                    player
+            ));
 
-                    BlockHitResult blockHit = level.clip(new ClipContext(
-                            start,
-                            end,
-                            ClipContext.Block.OUTLINE,
-                            ClipContext.Fluid.NONE,
-                            player
-                    ));
+            if (blockHit.getType() != HitResult.Type.MISS) {
+                end = blockHit.getLocation();
+                BlockPos pos = blockHit.getBlockPos();
 
-                    if (blockHit.getType() != HitResult.Type.MISS) {
-                        end = blockHit.getLocation();
-                        BlockPos pos = blockHit.getBlockPos();
-
-                        // set block on fire
-                        BlockPos firePos = pos.relative(blockHit.getDirection());
-                        if (level.isEmptyBlock(firePos)) {
-                            level.setBlock(firePos, Blocks.FIRE.defaultBlockState(), 3);
-                        }
-                    }
-
-                    // Entity hit detection
-                    AABB box = new AABB(start, end).inflate(1.0);
-
-                    EntityHitResult entityHit = ProjectileUtil.getEntityHitResult(
-                            level,
-                            player,
-                            start,
-                            end,
-                            box,
-                            entity -> entity instanceof LivingEntity && entity != player
-                    );
-
-                    if (entityHit != null) {
-                        Entity entity = entityHit.getEntity();
-
-                        entity.setSecondsOnFire(6);
-                        end = entityHit.getLocation();
-                    }
-
-                    ParticleHelpers.spawnBeamParticles(level, start, end, ParticleTypes.FLAME);
+                // set block on fire
+                BlockPos firePos = pos.relative(blockHit.getDirection());
+                if (level.isEmptyBlock(firePos)) {
+                    level.setBlock(firePos, Blocks.FIRE.defaultBlockState(), 3);
                 }
             }
-    );
 
-    public static void register() {}
+            // Entity hit detection
+            AABB box = new AABB(start, end).inflate(1.0);
+
+            EntityHitResult entityHit = ProjectileUtil.getEntityHitResult(
+                    level,
+                    player,
+                    start,
+                    end,
+                    box,
+                    entity -> entity instanceof LivingEntity && entity != player
+            );
+
+            if (entityHit != null) {
+                Entity entity = entityHit.getEntity();
+
+                entity.setSecondsOnFire(6);
+                end = entityHit.getLocation();
+            }
+
+            ParticleHelpers.spawnBeamParticles(level, start, end, ParticleTypes.FLAME);
+        }
+    };
+
+    public static void create_item(String name, ScrollItem spell) {
+        Registry.register(
+            Registry.ITEM,
+            new ResourceLocation("mutually-assured-destruction", name),
+            spell);
+    }
+
+    public static void register() {
+        create_item("fire_ignition", FIRE_IGNITION);
+    }
 }
