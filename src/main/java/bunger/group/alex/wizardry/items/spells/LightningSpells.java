@@ -214,7 +214,7 @@ public class LightningSpells {
 
     public static final Item AGARTHAN_THUNDER = Registry.register(
             Registry.ITEM,
-            new ResourceLocation("mutually-assured-destruction", "lightning_agathan_thunder"),
+            new ResourceLocation("mutually-assured-destruction", "lightning_agarthan_thunder"),
             new ScrollItem(new Item.Properties()) {
 
                 @Override
