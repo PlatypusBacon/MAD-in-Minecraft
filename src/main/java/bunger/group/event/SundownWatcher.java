@@ -7,7 +7,7 @@ import net.minecraft.server.level.ServerLevel;
 public class SundownWatcher {
 
     // sunset tick within a day
-    private static final long SUNSET_TIME   = 11500;
+    private static final long SUNSET_TIME   = 10000;
     // for testing — set to 200 ticks (10 seconds) per "day"
     // change back to 24000 for production
     private static final long DAY_LENGTH    = 24000;

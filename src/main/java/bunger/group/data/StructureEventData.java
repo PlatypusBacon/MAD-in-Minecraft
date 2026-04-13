@@ -23,6 +23,8 @@ public class StructureEventData extends SavedData {
     }
     private BlockPos trueOrigin = BlockPos.ZERO;
     private Rotation structureRotation = Rotation.NONE;
+    private net.minecraft.world.level.block.state.BlockState doorBottomState = null;
+    private net.minecraft.world.level.block.state.BlockState doorTopState = null;
 
     // positions
     private BlockPos structureOrigin = BlockPos.ZERO;
@@ -117,6 +119,10 @@ public class StructureEventData extends SavedData {
     public void setGodSpawned()         { godSpawned = true; setDirty(); }
     public void setSpawnpointLocked()   { spawnpointLocked = true; setDirty(); }
     public void advanceDay(long day)    { eventDay++; lastDayProcessed = day; setDirty(); }
+    public net.minecraft.world.level.block.state.BlockState getDoorBottomState() { return doorBottomState; }
+    public net.minecraft.world.level.block.state.BlockState getDoorTopState()    { return doorTopState; }
+    public void setDoorBottomState(net.minecraft.world.level.block.state.BlockState state) { doorBottomState = state; }
+    public void setDoorTopState(net.minecraft.world.level.block.state.BlockState state)    { doorTopState = state; }
 
     public void setStructureBounds(BlockPos origin, BlockPos end) {
         this.structureOrigin = origin;

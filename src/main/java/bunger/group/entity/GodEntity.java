@@ -71,10 +71,13 @@ public class GodEntity extends Mob {
         Player nearest = level.getNearestPlayer(this, 32);
         if (nearest == null) return;
 
-        // once seen, start 1-second countdown regardless of continued gaze
+        // once seen, mark godSpawned so the respawn loop in God.java stops,
+        // then start 1-second countdown to launch
         if (!hasBeenSeen && isPlayerLookingAtMe(nearest)) {
             hasBeenSeen = true;
             launchCountdown = 20;
+            // signal the respawn loop to stop
+            StructureEventData.get((ServerLevel) level).setGodSpawned();
         }
 
         if (hasBeenSeen && launchCountdown > 0) {

@@ -94,11 +94,13 @@ public class StructurePlacer {
     public static BlockPos getDoorPos(ServerLevel level) {
         StructureEventData data = StructureEventData.get(level);
         BlockPos o = data.getTrueOrigin();
+        // +1 on the axis pointing away from structure interior so barriers
+        // don't destroy the door blocks themselves
         return switch (data.getStructureRotation()) {
-            case NONE                -> o.offset(  9, 1,  22);
-            case CLOCKWISE_90        -> o.offset(-22, 1,   9);
-            case CLOCKWISE_180       -> o.offset( -9, 1, -22);
-            case COUNTERCLOCKWISE_90 -> o.offset( 22, 1,  -9);
+            case NONE                -> o.offset(  9, 1,  23);  // was 22, +1Z
+            case CLOCKWISE_90        -> o.offset(-23, 1,   9);  // was -22, -1X
+            case CLOCKWISE_180       -> o.offset( -9, 1, -23);  // was -22, -1Z
+            case COUNTERCLOCKWISE_90 -> o.offset( 23, 1,  -9);  // was 22, +1X
         };
     }
 
@@ -111,10 +113,10 @@ public class StructurePlacer {
             BlockPos o = data.getTrueOrigin();
 
             BlockPos wallBlock = switch (rotation) {
-                case NONE                -> o.offset(  6, 1,  24);
-                case CLOCKWISE_90        -> o.offset(-24, 1,   6);
-                case CLOCKWISE_180       -> o.offset( -6, 1, -24);
-                case COUNTERCLOCKWISE_90 -> o.offset( 24, 1,  -6);
+                case NONE                -> o.offset( 7,  2,  22);
+                case CLOCKWISE_90        -> o.offset(-22, 2,   7);
+                case CLOCKWISE_180       -> o.offset(-7,  2, -22);
+                case COUNTERCLOCKWISE_90 -> o.offset(22,  2,  -7); // was (-4, 1, 9)
             };
 
             Direction facing = switch (rotation) {
@@ -124,14 +126,17 @@ public class StructurePlacer {
                 case COUNTERCLOCKWISE_90 -> Direction.EAST;
             };
 
-            // discard existing, place fresh
+
+            // discard any existing painting in the area
             var existing = level.getEntitiesOfClass(
                     net.minecraft.world.entity.decoration.Painting.class,
                     new net.minecraft.world.phys.AABB(
-                            data.getStructureOrigin(), data.getStructureEnd()).inflate(4.0)
+                            data.getStructureOrigin(),
+                            data.getStructureEnd()).inflate(4.0)
             );
             existing.forEach(net.minecraft.world.entity.Entity::discard);
 
+            // get variant
             var registry = level.registryAccess()
                     .registryOrThrow(Registry.PAINTING_VARIANT_REGISTRY);
             var variantHolder = registry.getHolder(ResourceKey.create(
@@ -139,18 +144,39 @@ public class StructurePlacer {
                     new ResourceLocation("mutually-assured-destruction", "god_coming_4")));
 
             if (variantHolder.isEmpty()) {
-                System.err.println("god_coming_4 variant not found");
+                System.err.println("[PAINTING] god_coming_4 variant not found");
                 return;
             }
 
-            var painting = new net.minecraft.world.entity.decoration.Painting(
-                    level, wallBlock, facing, variantHolder.get());
-            level.addFreshEntity(painting);
 
-            BlockPos facePos = wallBlock.relative(facing);
-            data.setPaintingPos(facePos);
-            System.out.println("Painting placed: wall=" + wallBlock
-                    + " facing=" + facing + " stored=" + facePos);
+            var finalPainting = new net.minecraft.world.entity.decoration.Painting(
+                    level, wallBlock, facing, variantHolder.get());
+
+            System.out.println("[PAINTING] survives=" + finalPainting.survives()
+                    + " wall=" + wallBlock + " facing=" + facing);
+
+// log all 4 bottom wall blocks to verify they're solid
+            for (int i = 0; i < 4; i++) {
+                BlockPos check = wallBlock.relative(facing.getCounterClockWise(), i);
+                System.out.println("[PAINTING] wall[" + i + "]=" + check
+                        + " block=" + level.getBlockState(check).getBlock());
+            }
+// log the 4x3 air blocks in front
+            for (int y = 0; y < 3; y++) {
+                for (int i = 0; i < 4; i++) {
+                    BlockPos check = wallBlock.relative(facing, 1)
+                            .relative(facing.getCounterClockWise(), i)
+                            .above(y);
+                    System.out.println("[PAINTING] front[" + y + "][" + i + "]=" + check
+                            + " block=" + level.getBlockState(check).getBlock());
+                }
+            }
+
+            level.addFreshEntity(finalPainting);
+            BlockPos stored = wallBlock.relative(facing);
+            data.setPaintingPos(stored);
+            System.out.println("[PAINTING] Placed at wall=" + wallBlock
+                    + " facing=" + facing + " stored=" + stored);
         });
     }
 
@@ -230,11 +256,9 @@ public class StructurePlacer {
                     rotation, STRUCTURE_WIDTH, STRUCTURE_DEPTH)));
         }
 
-        // always schedule painting placement — handles both surviving and
-        // missing painting entities reliably regardless of rotation
         schedulePaintingPlacement(level, origin, rotation, data.getBedPos());
 
-        // --- DEBUG: verify bounds, door, and painting positions ---
+        // --- DEBUG ---
         BlockPos expectedDoor = getDoorPos(level);
         System.out.println("[DEBUG] Rotation: " + rotation);
         System.out.println("[DEBUG] TrueOrigin: " + origin);
@@ -245,8 +269,7 @@ public class StructurePlacer {
                 + " = " + level.getBlockState(expectedDoor).getBlock());
         System.out.println("[DEBUG] Expected door top: " + expectedDoor.above()
                 + " = " + level.getBlockState(expectedDoor.above()).getBlock());
-        // Painting pos is set async in schedulePaintingPlacement, logged there
-        // ------------------------------------------------------------------
+        // -------------
 
         System.out.println("Bounds: " + minPos + " -> " + maxPos);
         System.out.println("Bed: " + data.getBedPos());
@@ -259,35 +282,27 @@ public class StructurePlacer {
 
     private static Direction rotateFacing(Direction base, Rotation rotation) {
         return switch (rotation) {
-            case NONE              -> base;
-            case CLOCKWISE_90      -> base.getClockWise();
-            case CLOCKWISE_180     -> base.getOpposite();
+            case NONE                -> base;
+            case CLOCKWISE_90        -> base.getClockWise();
+            case CLOCKWISE_180       -> base.getOpposite();
             case COUNTERCLOCKWISE_90 -> base.getCounterClockWise();
         };
     }
 
     private static BlockPos getTrueOriginFromBoundingBox(BoundingBox box, Rotation rotation) {
         return switch (rotation) {
-            // NONE: origin is at minX/minZ corner
             case NONE                -> new BlockPos(box.minX(), box.minY(), box.minZ());
-            // CW90: structure extends -X/+Z from origin → origin is at maxX/minZ
             case CLOCKWISE_90        -> new BlockPos(box.maxX(), box.minY(), box.minZ());
-            // CW180: structure extends -X/-Z from origin → origin is at maxX/maxZ
             case CLOCKWISE_180       -> new BlockPos(box.maxX(), box.minY(), box.maxZ());
-            // CCW90: structure extends +X/-Z from origin → origin is at minX/maxZ
             case COUNTERCLOCKWISE_90 -> new BlockPos(box.minX(), box.minY(), box.maxZ());
         };
     }
 
     private static BlockPos getRotatedEnd(BlockPos origin, Rotation rotation) {
         return switch (rotation) {
-            // NONE: extends +X, +Z
             case NONE                -> origin.offset( STRUCTURE_WIDTH,  STRUCTURE_HEIGHT,  STRUCTURE_DEPTH);
-            // CW90: origin at maxX/minZ → extends -X, +Z
             case CLOCKWISE_90        -> origin.offset(-STRUCTURE_DEPTH,  STRUCTURE_HEIGHT,  STRUCTURE_WIDTH);
-            // CW180: origin at maxX/maxZ → extends -X, -Z
             case CLOCKWISE_180       -> origin.offset(-STRUCTURE_WIDTH,  STRUCTURE_HEIGHT, -STRUCTURE_DEPTH);
-            // CCW90: origin at minX/maxZ → extends +X, -Z
             case COUNTERCLOCKWISE_90 -> origin.offset( STRUCTURE_DEPTH,  STRUCTURE_HEIGHT, -STRUCTURE_WIDTH);
         };
     }

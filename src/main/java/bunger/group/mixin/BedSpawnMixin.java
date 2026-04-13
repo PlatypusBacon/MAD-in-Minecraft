@@ -17,13 +17,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(BedBlock.class)
+@Mixin(value = BedBlock.class, remap = false)
 public class BedSpawnMixin {
 
     @Inject(
             method = "use",
             at = @At("HEAD"),
-            cancellable = true
+            cancellable = true,
+            remap = false
     )
     private void onBedUse(BlockState state, Level level, BlockPos pos,
                           Player player, InteractionHand hand,

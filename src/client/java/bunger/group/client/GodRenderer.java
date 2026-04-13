@@ -31,7 +31,7 @@ public class GodRenderer extends MobRenderer<GodEntity, GodRenderer.GodModel<God
 
     @Override
     protected void scale(GodEntity entity, PoseStack poseStack, float partialTick) {
-        poseStack.scale(10.0f, 10.0f, 10.0f);
+        poseStack.scale(6.0f, 6.0f, 6.0f);
     }
 
     @Override
