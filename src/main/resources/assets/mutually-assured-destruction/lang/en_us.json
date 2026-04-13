@@ -1,9 +1,10 @@
 {
   "item.mutually-assured-destruction.basic_scroll": "Basic Scroll",
-  "item.mutually-assured-destruction.fire_ignition": "Ignition",
-  "item.mutually-assured-destruction.water_basic_scroll": "Splash",
-  "item.mutually-assured-destruction.lightning_basic_scroll": "Zap",
-  "item.mutually-assured-destruction.lightning_better_scroll": "Lightning",
-  "item.mutually-assured-destruction.lightning_advanced_scroll": "Channel Storm",
-  "item.mutually-assured-destruction.lightning_agarthan_thunder": "Agarthan Thunder"
+  "item.mutually-assured-destruction.spell_fire_ignition": "Ignition",
+  "item.mutually-assured-destruction.spell_ice_ice_shield": "Ignition",
+  "item.mutually-assured-destruction.spell_water_splash": "Splash",
+  "item.mutually-assured-destruction.spell_lightning_zap": "Zap",
+  "item.mutually-assured-destruction.spell_lightning_lightning": "Lightning",
+  "item.mutually-assured-destruction.spell_lightning_channel_storm": "Channel Storm",
+  "item.mutually-assured-destruction.spell_lightning_agarthan_thunder": "Agarthan Thunder"
 }

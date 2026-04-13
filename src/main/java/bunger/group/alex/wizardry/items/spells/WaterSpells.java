@@ -19,42 +19,47 @@ import bunger.group.alex.wizardry.ParticleHelpers;
 
 public class WaterSpells {
 
-    public static final Item BASIC_SCROLL_WATER = Registry.register(
-            Registry.ITEM,
-            new ResourceLocation("mutually-assured-destruction", "water_basic_scroll"),
-            new ScrollItem(new Item.Properties()) {
+    public static final ScrollItem WATER_SPLASH = new ScrollItem(new Item.Properties()) {
 
-                @Override
-                protected void cast(Level level, Player player, ItemStack stack) {
-                    // place water at block
+            @Override
+            protected void cast(Level level, Player player, ItemStack stack) {
+                // place water at block
 
-                    double range = 25.0;
-                    Vec3 start = player.getEyePosition();
-                    Vec3 look = player.getLookAngle();
-                    Vec3 end = start.add(look.scale(range));
+                double range = 25.0;
+                Vec3 start = player.getEyePosition();
+                Vec3 look = player.getLookAngle();
+                Vec3 end = start.add(look.scale(range));
 
-                    BlockHitResult blockHit = level.clip(new ClipContext(
-                            start,
-                            end,
-                            ClipContext.Block.OUTLINE,
-                            ClipContext.Fluid.NONE,
-                            player
-                    ));
+                BlockHitResult blockHit = level.clip(new ClipContext(
+                        start,
+                        end,
+                        ClipContext.Block.OUTLINE,
+                        ClipContext.Fluid.NONE,
+                        player
+                ));
 
-                    if (blockHit.getType() != HitResult.Type.MISS) {
-                        end = blockHit.getLocation();
-                        BlockPos pos = blockHit.getBlockPos();
+                if (blockHit.getType() != HitResult.Type.MISS) {
+                    end = blockHit.getLocation();
+                    BlockPos pos = blockHit.getBlockPos();
 
-                        // set block on fire
-                        BlockPos firePos = pos.relative(blockHit.getDirection());
-                        if (level.isEmptyBlock(firePos)) {
-                            level.setBlock(firePos, Blocks.WATER.defaultBlockState(), 3);
-                        }
+                    // set block on fire
+                    BlockPos firePos = pos.relative(blockHit.getDirection());
+                    if (level.isEmptyBlock(firePos)) {
+                        level.setBlock(firePos, Blocks.WATER.defaultBlockState(), 3);
                     }
-                    ParticleHelpers.spawnBeamParticles(level, start, end, ParticleTypes.SPLASH);
                 }
+                ParticleHelpers.spawnBeamParticles(level, start, end, ParticleTypes.SPLASH);
             }
-    );
+        };
 
-    public static void register() {}
+    public static void create_item(String name, ScrollItem spell) {
+        Registry.register(
+            Registry.ITEM,
+            new ResourceLocation("mutually-assured-destruction", name),
+            spell);
+    }
+
+    public static void register() {
+        create_item("spell_water_splash", WATER_SPLASH);
+    }
 }

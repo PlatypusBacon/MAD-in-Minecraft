@@ -80,6 +80,6 @@ public class FireSpells {
     }
 
     public static void register() {
-        create_item("fire_ignition", FIRE_IGNITION);
+        create_item("spell_fire_ignition", FIRE_IGNITION);
     }
 }

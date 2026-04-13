@@ -29,7 +29,6 @@ public class IceSpells {
             Vec3 center = player.position().add(0, 1.0, 0);
             double radius = 4.0;
 
-
             Vec3 start = player.getEyePosition();
             Vec3 dir = player.getLookAngle().normalize().reverse();
             Vec3 oc = start.subtract(center);
@@ -97,7 +96,7 @@ public class IceSpells {
     }
 
     public static void register() {
-        create_item("ice_shield", ICE_SHIELD);
+        create_item("spell_ice_ice_shield", ICE_SHIELD);
     }
 
 }
