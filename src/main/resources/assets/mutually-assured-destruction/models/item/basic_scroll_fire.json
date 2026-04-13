@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "mutually-assured-destruction:item/basic_scroll_fire"
-  }
-}

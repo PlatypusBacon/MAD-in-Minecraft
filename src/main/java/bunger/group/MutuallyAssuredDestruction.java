@@ -1,17 +1,15 @@
 package bunger.group;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import bunger.group.alex.Bunger1;
-import bunger.group.bryan.Bunger2;
-import bunger.group.csmit863.Bunger3;
-import bunger.group.ethan.Bunger4;
-import bunger.group.tyler.Bunger5;
 
 //Alex
-import bunger.group.alex.wizardry.items.BasicScrolls;
+import bunger.group.alex.wizardry.items.spells.SpellRegistry;
+import bunger.group.alex.wizardry.ParticleHelpers;
+import bunger.group.alex.wizardry.SpellHelpers;
 
 public class MutuallyAssuredDestruction implements ModInitializer {
 	public static final String MOD_ID = "mutually-assured-destruction";
@@ -23,10 +21,15 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		BasicScrolls.register();
+		SpellRegistry.register();
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
+
+		ServerTickEvents.END_SERVER_TICK.register(server -> {
+            ParticleHelpers.tick();
+			SpellHelpers.tick();
+        });
 
 		LOGGER.info("Hello Fabric world!");
 	}

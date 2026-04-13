@@ -1,4 +1,8 @@
 {
   "item.mutually-assured-destruction.basic_scroll": "Basic Scroll",
-  "item.mutually-assured-destruction.basic_scroll_fire": "Ignition"
+  "item.mutually-assured-destruction.fire_basic_scroll": "Ignition",
+  "item.mutually-assured-destruction.water_basic_scroll": "Splash",
+  "item.mutually-assured-destruction.lightning_basic_scroll": "Zap",
+  "item.mutually-assured-destruction.lightning_better_scroll": "Lightning",
+  "item.mutually-assured-destruction.lightning_advanced_scroll": "Channel Storm"
 }
