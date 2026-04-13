@@ -22,6 +22,9 @@ public class ParticleHelpers {
         }
     }
 
+    /*
+    Gets called each game tick, does everything in ACTIVE_EFFECTS and reduces ticks remaining by 1
+     */
     public static void tick() {
         Iterator<TimedEffect> it = ACTIVE_EFFECTS.iterator();
 
@@ -37,10 +40,17 @@ public class ParticleHelpers {
         }
     }
 
+    /*
+    Given a particle function, add it to the ACTIVE_EFFECTS stack with however many ticks
+     */
     public static void runForTicks(int ticks, Runnable action) {
         ACTIVE_EFFECTS.add(new TimedEffect(ticks, action));
     }
 
+
+    /*
+    Spawn particles along vector from start to end
+     */
     public static void spawnBeamParticles(Level level, Vec3 start, Vec3 end, SimpleParticleType particle) {
         Vec3 direction = end.subtract(start);
         double distance = direction.length();
@@ -56,9 +66,12 @@ public class ParticleHelpers {
         }
     }
 
+    /*
+    Spawns ring around point, adding offset if you need it spinning by custom run in tick
+     */
     public static void spawnRingParticles(Level level, Vec3 centre, double radius, double offset, SimpleParticleType particle) {
         for (int i = 0; i < 10; i++) {
-            double angle = 2 * Math.PI * offset * i / 10;
+            double angle = 2 * Math.PI * (offset + i) / 10;
 
             double x = centre.x + radius * Math.cos(angle);
             double z = centre.z + radius * Math.sin(angle);
