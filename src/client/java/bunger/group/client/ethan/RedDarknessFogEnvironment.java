@@ -36,7 +36,7 @@ public class RedDarknessFogEnvironment extends MobEffectFogEnvironment {
                 fog.environmentalEnd = distance;
                 fog.skyEnd = distance;
                 fog.cloudEnd = distance;
-                fog.color.set(0.3F, 0.0F, 0.0F, 1.0F);
+                fog.color.set(0.15F, 0.0F, 0.0F, 1.0F);
             }
         }
     }

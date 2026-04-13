@@ -3,6 +3,7 @@ package bunger.group;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 
+import java.sql.Blob;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import bunger.group.alex.Bunger1;
 import bunger.group.bryan.Bunger2;
 import bunger.group.csmit863.Bunger3;
+import bunger.group.ethan.AltarFragmentBlock;
 import bunger.group.ethan.Bunger4;
 import bunger.group.tyler.Bunger5;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -26,6 +28,10 @@ import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
 import bunger.group.ethan.ProphetEntity;
 import bunger.group.ethan.ModEntityTypes;
@@ -43,6 +49,12 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 
 	public static final Map<UUID, Long> RED_RAIN_PLAYERS = new HashMap<>();
 
+	public static final Block ALTAR_FRAGMENT = AltarFragmentBlock.registerBlock("altar_fragment",
+        AltarFragmentBlock::new,
+        BlockBehaviour.Properties.of().strength(15.0F).requiresCorrectToolForDrops(),
+        true
+    );
+
 	@Override
 	public void onInitialize() {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
@@ -54,19 +66,27 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 
 
 		// ----------Ethans registrations----------
+
 		ProphetEntity.initialize();
 		ModEntityTypes.registerModEntityTypes();
 		ModEntityTypes.registerAttributes();
+
 		Registry.register(BuiltInRegistries.SOUND_EVENT, 
 			Identifier.fromNamespaceAndPath("mutually-assured-destruction", "heartbeat"), 
 			ProphetEntity.HEARTBEAT);
+
 		Registry.register(BuiltInRegistries.SOUND_EVENT, 
 			Identifier.fromNamespaceAndPath("mutually-assured-destruction", "dripping"), 
 			ProphetEntity.DRIPPING);
+
 		Registry.register(BuiltInRegistries.MOB_EFFECT,
 			Identifier.fromNamespaceAndPath("mutually-assured-destruction", "red_darkness"),
 			RedDarknessEffect.RED_DARKNESS);
+
 		RedRainHandler.register();
+
+
+
 
 
 		// ------------------------------------------
