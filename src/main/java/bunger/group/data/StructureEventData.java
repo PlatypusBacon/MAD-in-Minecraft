@@ -3,6 +3,7 @@ package bunger.group.data;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.saveddata.SavedData;
 
 public class StructureEventData extends SavedData {
@@ -16,6 +17,12 @@ public class StructureEventData extends SavedData {
     private boolean eventComplete = false;
     private boolean godSpawned = false;
     private boolean spawnpointLocked = false;
+    private boolean doorLocked = false;
+    public boolean hasPaintingPos() {
+        return !paintingPos.equals(BlockPos.ZERO);
+    }
+    private BlockPos trueOrigin = BlockPos.ZERO;
+    private Rotation structureRotation = Rotation.NONE;
 
     // positions
     private BlockPos structureOrigin = BlockPos.ZERO;
@@ -39,6 +46,13 @@ public class StructureEventData extends SavedData {
         data.eventComplete     = tag.getBoolean("eventComplete");
         data.godSpawned        = tag.getBoolean("godSpawned");
         data.spawnpointLocked  = tag.getBoolean("spawnpointLocked");
+        data.doorLocked = tag.getBoolean("doorLocked");
+        data.trueOrigin = new BlockPos(
+                tag.getInt("trueOriginX"), tag.getInt("trueOriginY"), tag.getInt("trueOriginZ"));
+        data.structureRotation = Rotation.valueOf(
+                tag.getString("structureRotation").isEmpty()
+                        ? "NONE" : tag.getString("structureRotation"));
+
         data.structureOrigin   = new BlockPos(
                 tag.getInt("originX"), tag.getInt("originY"), tag.getInt("originZ"));
         data.structureEnd      = new BlockPos(
@@ -70,6 +84,11 @@ public class StructureEventData extends SavedData {
         tag.putInt("paintingX", paintingPos.getX());
         tag.putInt("paintingY", paintingPos.getY());
         tag.putInt("paintingZ", paintingPos.getZ());
+        tag.putBoolean("doorLocked", doorLocked);
+        tag.putString("structureRotation", structureRotation.name());
+        tag.putInt("trueOriginX", trueOrigin.getX());
+        tag.putInt("trueOriginY", trueOrigin.getY());
+        tag.putInt("trueOriginZ", trueOrigin.getZ());
         return tag;
     }
 
@@ -84,6 +103,13 @@ public class StructureEventData extends SavedData {
     public BlockPos getStructureEnd()   { return structureEnd; }
     public BlockPos getBedPos()         { return bedPos; }
     public BlockPos getPaintingPos()    { return paintingPos; }
+    public boolean isDoorLocked() { return doorLocked; }
+    public void setDoorLocked()   { doorLocked = true; setDirty(); }
+    public void clearDoorLocked() { doorLocked = false; setDirty(); }
+    public Rotation getStructureRotation() { return structureRotation; }
+    public void setStructureRotation(Rotation r) { structureRotation = r; setDirty(); }
+    public BlockPos getTrueOrigin()          { return trueOrigin; }
+    public void setTrueOrigin(BlockPos pos)  { trueOrigin = pos; setDirty(); }
 
     // setters
     public void setEntered()            { everEntered = true; setDirty(); }

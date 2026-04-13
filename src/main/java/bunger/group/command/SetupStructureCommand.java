@@ -12,6 +12,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.network.chat.Component;
 import bunger.group.structure.StructurePlacer;
 
+import java.util.Comparator;
+
 public class SetupStructureCommand {
 
     public static void register() {
@@ -79,7 +81,8 @@ public class SetupStructureCommand {
                                                 "§ePainting: "  + data.getPaintingPos()     + "\n" +
                                                 "§eEvent day: " + data.getEventDay()        + "\n" +
                                                 "§eEntered: "   + data.hasBeenEntered()     + "\n" +
-                                                "§eSpawn locked: " + data.isSpawnpointLocked()
+                                                "§eSpawn locked: " + data.isSpawnpointLocked() + "\n" +
+                                                "§eTrueOrigin: " + data.getTrueOrigin()
                                 ), false);
                                 return 1;
                             }))
@@ -182,6 +185,72 @@ public class SetupStructureCommand {
                                 StructurePlacer.place(level, pos, "squirrel_house");
                                 ctx.getSource().sendSuccess(
                                         Component.literal("§aSquirrel house spawned at " + pos), true);
+                                return 1;
+                            }))
+                    .then(Commands.literal("findbed")
+                            .executes(ctx -> {
+                                ServerLevel level = ctx.getSource().getLevel();
+                                StructureEventData data = StructureEventData.get(level);
+                                BlockPos min = data.getStructureOrigin();
+                                BlockPos max = data.getStructureEnd();
+
+                                // scan for bed
+                                for (BlockPos pos : BlockPos.betweenClosed(min, max)) {
+                                    var state = level.getBlockState(pos);
+                                    if (state.getBlock() instanceof
+                                            net.minecraft.world.level.block.BedBlock) {
+                                        if (state.getValue(net.minecraft.world.level.block.BedBlock.PART)
+                                                == net.minecraft.world.level.block.state.properties
+                                                .BedPart.HEAD) {
+                                            ctx.getSource().sendSuccess(
+                                                    Component.literal("§aBed head found at: " + pos), false);
+                                            return 1;
+                                        }
+                                    }
+                                }
+                                ctx.getSource().sendSuccess(
+                                        Component.literal("§cNo bed found in bounds"), false);
+                                return 1;
+                            }))
+                    .then(Commands.literal("spawngod")
+                            .executes(ctx -> {
+                                ServerLevel level = ctx.getSource().getLevel();
+                                StructureEventData data = StructureEventData.get(level);
+                                // reset godSpawned flag so it can fire again in testing
+                                data.reset();
+                                data.setStructureBounds(data.getStructureOrigin(), data.getStructureEnd());
+                                data.setBedPos(data.getBedPos());
+                                data.setPaintingPos(data.getPaintingPos());
+                                // directly invoke spawn
+                                BlockPos origin = data.getStructureOrigin();
+                                var target = level.players().stream()
+                                        .min(Comparator.comparingDouble(p ->
+                                                p.distanceToSqr(origin.getX(), origin.getY(), origin.getZ())));
+                                target.ifPresent(player -> {
+                                    var look = player.getLookAngle().scale(-5);
+                                    var spawnPos = player.position().add(look);
+                                    var god = bunger.group.entity.ModEntities.GOD.create(level);
+                                    if (god == null) return;
+                                    god.moveTo(spawnPos.x, spawnPos.y, spawnPos.z, 0f, 0f);
+                                    level.addFreshEntity(god);
+                                });
+                                ctx.getSource().sendSuccess(Component.literal("§aGod spawned!"), true);
+                                return 1;
+                            }))
+                    .then(Commands.literal("doordebug")
+                            .executes(ctx -> {
+                                ServerLevel level = ctx.getSource().getLevel();
+                                StructureEventData data = StructureEventData.get(level);
+                                BlockPos doorBottom = StructurePlacer.getDoorPos(level);
+                                BlockPos doorTop = doorBottom.above();
+                                var stateBottom = level.getBlockState(doorBottom);
+                                var stateTop    = level.getBlockState(doorTop);
+                                ctx.getSource().sendSuccess(Component.literal(
+                                        "§eTrueOrigin: " + data.getTrueOrigin() + "\n" +
+                                                "§eRotation: " + data.getStructureRotation() + "\n" +
+                                                "§eDoor bottom: " + doorBottom + " = " + stateBottom.getBlock() + "\n" +
+                                                "§eDoor top:    " + doorTop    + " = " + stateTop.getBlock()
+                                ), false);
                                 return 1;
                             }))
             );

@@ -7,7 +7,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.TemplateStructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
@@ -39,22 +42,23 @@ public class SquirrelHousePiece extends TemplateStructurePiece {
         // not needed
     }
     @Override
-    public void postProcess(net.minecraft.world.level.WorldGenLevel level,
+    public void postProcess(WorldGenLevel level,
                             net.minecraft.world.level.StructureManager structureManager,
-                            net.minecraft.world.level.chunk.ChunkGenerator generator,
+                            ChunkGenerator generator,
                             RandomSource random,
                             BoundingBox box,
-                            net.minecraft.world.level.ChunkPos chunkPos,
+                            ChunkPos chunkPos,
                             BlockPos pos) {
+
         super.postProcess(level, structureManager, generator,
                 random, box, chunkPos, pos);
 
         if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
-            // use bounding box min as origin — more reliable than templatePosition
-            BlockPos origin = new BlockPos(
-                    box.minX(), box.minY(), box.minZ());
-            System.out.println("Structure generated naturally at: " + origin);
-            StructurePlacer.savePositions(serverLevel, origin);
+            BlockPos origin = pos;
+
+            System.out.println("Structure generated (jigsaw origin): " + origin);
+
+            StructurePlacer.checkAndSaveNaturalGeneration(serverLevel);
         }
     }
 }

@@ -17,6 +17,7 @@ public class StructureManager {
         registerUnbreakableBlocks();
         registerUnplaceableBlocks();
         registerUnbreakableEntities();
+        registerFirePrevention();
     }
 
     // --- Entry detection ---
@@ -109,16 +110,37 @@ public class StructureManager {
                     if (!data.hasBeenEntered() || data.isEventComplete())
                         return net.minecraft.world.InteractionResult.PASS;
 
-                    AABB bounds = getStructureBounds(data);
-                    if (!bounds.contains(entity.getX(), entity.getY(), entity.getZ()))
-                        return net.minecraft.world.InteractionResult.PASS;
+                    AABB bounds = getStructureBounds(data).inflate(2.0);
+                    if (bounds.contains(entity.getX(), entity.getY(), entity.getZ())) {
+                        ((ServerPlayer) player).sendSystemMessage(
+                                Component.literal("§7§oGod does not approve"));
+                        return net.minecraft.world.InteractionResult.FAIL;
+                    }
 
-                    // allow interacting with armor stand (right click)
-                    // only block attacking (left click)
-                    ((ServerPlayer) player).sendSystemMessage(
-                            Component.literal("§7§oGod does not approve"));
-                    return net.minecraft.world.InteractionResult.FAIL;
+                    return net.minecraft.world.InteractionResult.PASS;
                 });
+    }
+    private static void registerFirePrevention() {
+        ServerTickEvents.END_SERVER_TICK.register(server -> {
+            ServerLevel level = server.overworld();
+            StructureEventData data = StructureEventData.get(level);
+
+            if (!data.hasBeenEntered() || data.isEventComplete()) return;
+            if (level.getGameTime() % 10 != 0) return; // check every 10 ticks
+
+            AABB bounds = getStructureBounds(data);
+            BlockPos origin = data.getStructureOrigin();
+            BlockPos end    = data.getStructureEnd();
+
+            // scan all blocks in structure for fire
+            for (BlockPos pos : BlockPos.betweenClosed(origin, end)) {
+                var state = level.getBlockState(pos);
+                if (state.is(net.minecraft.world.level.block.Blocks.FIRE)
+                        || state.is(net.minecraft.world.level.block.Blocks.SOUL_FIRE)) {
+                    level.removeBlock(pos, false);
+                }
+            }
+        });
     }
     private static void registerUnplaceableBlocks() {
         // block placement only
@@ -158,11 +180,17 @@ public class StructureManager {
     }
 
     private static AABB getStructureBounds(StructureEventData data) {
-        BlockPos origin = data.getStructureOrigin();
-        BlockPos end    = data.getStructureEnd();
-        return new AABB(
-                origin.getX(), origin.getY(), origin.getZ(),
-                end.getX(),    end.getY(),    end.getZ()
-        );
+        BlockPos a = data.getStructureOrigin();
+        BlockPos b = data.getStructureEnd();
+
+        double minX = Math.min(a.getX(), b.getX());
+        double minY = Math.min(a.getY(), b.getY());
+        double minZ = Math.min(a.getZ(), b.getZ());
+
+        double maxX = Math.max(a.getX(), b.getX()) + 1;
+        double maxY = Math.max(a.getY(), b.getY()) + 1;
+        double maxZ = Math.max(a.getZ(), b.getZ()) + 1;
+
+        return new AABB(minX, minY, minZ, maxX, maxY, maxZ);
     }
 }

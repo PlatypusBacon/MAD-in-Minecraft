@@ -1,6 +1,7 @@
 package bunger.group.entity;
 
 import bunger.group.data.StructureEventData;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -13,14 +14,18 @@ import net.minecraft.server.level.ServerLevel;
 public class GodEntity extends Mob {
 
     private boolean hasLaunched = false;
-    private int lookTicks = 0;
+    private boolean hasBeenSeen = false;
+    private int launchCountdown = -1;
     private int despawnTicks = -1;
+    private static final double HOVER_HEIGHT = 1.0;
+    private static final double RISE_SPEED = 0.05;
 
     public GodEntity(EntityType<? extends Mob> type, Level level) {
         super(type, level);
         this.setInvulnerable(true);
         this.setSilent(true);
         this.noPhysics = true;
+        this.setNoGravity(true);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -34,7 +39,7 @@ public class GodEntity extends Mob {
         super.tick();
         if (level.isClientSide()) return;
 
-        // handle despawn countdown after launch
+        // handle despawn
         if (despawnTicks >= 0) {
             despawnTicks--;
             if (despawnTicks <= 0) {
@@ -46,18 +51,37 @@ public class GodEntity extends Mob {
 
         if (hasLaunched) return;
 
+        // hover: find ground beneath and float HOVER_HEIGHT above it
+        BlockPos below = this.blockPosition();
+        int groundY = below.getY();
+        for (int i = 0; i < 10; i++) {
+            BlockPos check = new BlockPos(below.getX(), groundY - i, below.getZ());
+            if (!level.getBlockState(check).isAir()) {
+                groundY = check.getY() + 1;
+                break;
+            }
+        }
+        double targetY = groundY + HOVER_HEIGHT;
+        double currentY = this.getY();
+        double newY = currentY + Math.signum(targetY - currentY) * RISE_SPEED;
+        if (Math.abs(targetY - currentY) < RISE_SPEED) newY = targetY;
+        this.setPos(this.getX(), newY, this.getZ());
+
         // find nearest player
         Player nearest = level.getNearestPlayer(this, 32);
         if (nearest == null) return;
 
-        // check if player is looking at GOD
-        if (isPlayerLookingAtMe(nearest)) {
-            lookTicks++;
-            if (lookTicks >= 10) { // looked for 0.5 seconds
+        // once seen, start 1-second countdown regardless of continued gaze
+        if (!hasBeenSeen && isPlayerLookingAtMe(nearest)) {
+            hasBeenSeen = true;
+            launchCountdown = 20;
+        }
+
+        if (hasBeenSeen && launchCountdown > 0) {
+            launchCountdown--;
+            if (launchCountdown == 0) {
                 launchPlayer(nearest);
             }
-        } else {
-            lookTicks = 0;
         }
     }
 
@@ -65,28 +89,17 @@ public class GodEntity extends Mob {
         Vec3 toGod = this.position()
                 .subtract(player.getEyePosition()).normalize();
         Vec3 lookVec = player.getLookAngle();
-        // dot product > 0.97 means within ~14 degrees
         return lookVec.dot(toGod) > 0.97;
     }
 
     private void launchPlayer(Player player) {
         hasLaunched = true;
-
-        // extreme upward + forward launch
         Vec3 look = player.getLookAngle();
-        player.setDeltaMovement(
-                look.x * 3.0,
-                4.5,           // extreme upward force
-                look.z * 3.0
-        );
+        player.setDeltaMovement(look.x * 3.0, 4.5, look.z * 3.0);
         player.hurtMarked = true;
-
-        // start despawn countdown (3 seconds)
         despawnTicks = 60;
     }
 
     @Override
-    protected void registerGoals() {
-        // no AI — GOD just stands there
-    }
+    protected void registerGoals() {}
 }

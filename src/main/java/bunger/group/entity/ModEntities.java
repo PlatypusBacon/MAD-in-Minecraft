@@ -11,7 +11,7 @@ import net.minecraft.world.entity.MobCategory;
 public class ModEntities {
     public static final EntityType<SquirrelEntity> SQUIRREL = Registry.register(
             Registry.ENTITY_TYPE,
-            new ResourceLocation("mutully-assured-destruction", "squirrel"),
+            new ResourceLocation("mutually-assured-destruction", "squirrel"),
             FabricEntityTypeBuilder.create(MobCategory.CREATURE, SquirrelEntity::new)
                     .dimensions(EntityDimensions.fixed(2.0f, 2.5f))
                     .build()
@@ -20,7 +20,7 @@ public class ModEntities {
             Registry.ENTITY_TYPE,
             new ResourceLocation(MutuallyAssuredDestruction.MOD_ID, "god"),
             FabricEntityTypeBuilder.create(MobCategory.MONSTER, GodEntity::new)
-                    .dimensions(EntityDimensions.fixed(3.0f, 3.5f)) // large
+                    .dimensions(EntityDimensions.fixed(3.0f, 6.0f)) // wider and taller
                     .build()
     );
     public static void register() {}

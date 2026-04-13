@@ -9,7 +9,7 @@
       { "name": "mutually-assured-destruction:gun_fire", "volume": 1.0 }
     ]
   },
-  "event_buildup": {
+  "god_is_coming": {
     "sounds": [
       {
         "name": "mutually-assured-destruction:god_is_coming",
@@ -18,7 +18,7 @@
       }
     ]
   },
-  "event_main": {
+  "god_is_here": {
     "sounds": [
       {
         "name": "mutually-assured-destruction:god_is_here",

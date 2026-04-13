@@ -6,6 +6,7 @@ import bunger.group.entity.ModEntities;
 import bunger.group.entity.SquirrelEntity;
 import bunger.group.event.StructureManager;
 import bunger.group.event.SundownWatcher;
+import bunger.group.event.TickScheduler;
 import bunger.group.item.ModItems;
 import bunger.group.sound.ModSounds;
 import bunger.group.structure.ModStructures;
@@ -51,6 +52,7 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		ModItems.registerModItems();
 		ModBlocks.registerModBlocks();
 		ModSounds.register();
+		TickScheduler.register();
 		FabricDefaultAttributeRegistry.register(
 				ModEntities.SQUIRREL,
 				SquirrelEntity.createAttributes()
