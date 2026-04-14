@@ -2,12 +2,12 @@
 	"required": true,
 	"package": "bunger.group.mixin",
 	"compatibilityLevel": "JAVA_17",
-	"mixins": [
-		"ExampleMixin"
-	],
 	"injectors": {
 		"defaultRequire": 1
 	},
+	"mixins": [
+		"BedSpawnMixin"
+	],
 	"overwrites": {
 		"requireAnnotations": true
 	}

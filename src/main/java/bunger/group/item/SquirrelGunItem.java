@@ -1,6 +1,9 @@
 package bunger.group.item;
 
+import bunger.group.entity.SquirrelBearEntity;
 import bunger.group.entity.SquirrelEntity;
+import bunger.group.sound.ModSounds;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,9 +17,9 @@ import java.util.List;
 
 public class SquirrelGunItem extends Item {
 
-    private static final int RELOAD_TICKS = 40;        // 2 seconds
-    private static final float SQUIRREL_DAMAGE = 1000F; // one hit kill
-    private static final float OTHER_DAMAGE = 0.5F;     // half a heart
+    private static final int RELOAD_TICKS = 60;        // 2 seconds
+    private static final float SQUIRREL_DAMAGE = 50F; // one hit kill
+    private static final float OTHER_DAMAGE = 4F;     // half a heart
     private static final double RANGE = 32.0;           // block range
 
     // NBT key to track loaded state
@@ -58,6 +61,14 @@ public class SquirrelGunItem extends Item {
 
     private void shoot(Level world, Player player) {
         // cast a ray from the player's eye position in the direction they're looking
+        world.playSound(
+                null,                          // null = play for all nearby players
+                player.blockPosition(),
+                ModSounds.GUN_FIRE,
+                SoundSource.PLAYERS,
+                1.0f,                          // volume
+                0.9f + world.random.nextFloat() * 0.2f  // slight random pitch variation
+        );
         var start = player.getEyePosition();
         var look  = player.getLookAngle();
         var end   = start.add(look.scale(RANGE));
@@ -84,9 +95,11 @@ public class SquirrelGunItem extends Item {
                 }
             }
         }
-
+        float damage = OTHER_DAMAGE;
         if (target != null) {
-            float damage = target instanceof SquirrelEntity ? SQUIRREL_DAMAGE : OTHER_DAMAGE;
+            if ((target instanceof SquirrelEntity) || (target instanceof SquirrelBearEntity)) {
+                damage = SQUIRREL_DAMAGE;
+            }
             target.hurt(net.minecraft.world.damagesource.DamageSource.playerAttack(player), damage);
         }
     }

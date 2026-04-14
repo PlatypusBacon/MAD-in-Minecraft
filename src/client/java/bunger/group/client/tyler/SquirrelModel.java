@@ -1,4 +1,4 @@
-package bunger.group.client;
+package bunger.group.client.tyler;
 
 import bunger.group.entity.SquirrelEntity;
 import com.mojang.blaze3d.vertex.PoseStack;

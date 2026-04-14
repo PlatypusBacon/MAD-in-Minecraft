@@ -62,3 +62,13 @@ where the values are the paths to the used ```.java``` files.
 ### Playing the Game
 
 To test the mod and play the game, click next to run at the top and run either minecraft server or minecraft client, should run with your mods easy
+
+### Changing the Version (bc Tyler was stupid)
+
+First check master branch (or main both should work i think, accidentally made master when doing new version)
+<br>
+However if its easier to keep your code just take ```build.gradle```, ```gradle.properties```, and ```gradle/wrapper/gradle-wrapper.properties```
+<br>
+These will downgrade the versions, then change java version in project structure to Java version 17. Check your systeem path as well if this version is the highest.
+<br><br>
+Now ```./gradlew build clean```, and then try to run again. Some bits of the api may be different from existing code unfortunately, I know a few of them if you want to ask.

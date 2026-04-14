@@ -37,11 +37,11 @@ public class ModBlocks {
                     .sound(SoundType.WOOL)
                     .noCollission()
                     .noOcclusion()));
-    public static final Block BLOOD_TEXT = registerBlock("blood_text",
-            new BloodTextWall(FabricBlockSettings.of(Material.DECORATION)
-                    .strength(0.1f)
-                    .noCollission()
-                    .noOcclusion()));
+    public static final Block SQUIRREL_WIFE = registerBlock("squirrel_wife",
+            new SquirrelWife(FabricBlockSettings.of(Material.STONE)
+                    .strength(3.0f)
+                    .requiresCorrectToolForDrops()));
+
     private static Block registerBlock(String name, Block block) {
         return Registry.register(
                 Registry.BLOCK,
