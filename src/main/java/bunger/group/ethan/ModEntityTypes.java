@@ -18,6 +18,11 @@ public class ModEntityTypes {
 			EntityType.Builder.<ProphetEntity>of(ProphetEntity::new, MobCategory.MONSTER)
 					.sized(0.75f, 1.75f)
 	);
+	public static final EntityType<VoremothEntity> VOREMOTH = register(
+			"voremoth",
+			EntityType.Builder.<VoremothEntity>of(VoremothEntity::new, MobCategory.MONSTER)
+					.sized(20F, 20f)
+	);
 
 	private static <T extends Entity> EntityType<T> register(String name, EntityType.Builder<T> builder) {
 		ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, name));
@@ -28,9 +33,11 @@ public class ModEntityTypes {
 		MutuallyAssuredDestruction.LOGGER.info("Registering EntityTypes for " + MutuallyAssuredDestruction.MOD_ID);
 		// Ensure the entity types are loaded
 		var prophet = PROPHET;
+		var voremoth = VOREMOTH;
 	}
 
 	public static void registerAttributes() {
 		FabricDefaultAttributeRegistry.register(PROPHET, ProphetEntity.createCubeAttributes());
+		FabricDefaultAttributeRegistry.register(VOREMOTH, VoremothEntity.createCubeAttributes());
 	}
 }

@@ -8,6 +8,7 @@ import bunger.group.client.csmit863.Bunger3;
 import bunger.group.client.ethan.Bunger4;
 import bunger.group.client.ethan.ModEntityModelLayers;
 import bunger.group.client.ethan.ProphetEntityRenderer;
+import bunger.group.client.ethan.VoremothEntityRenderer;
 import bunger.group.client.tyler.Bunger5;
 import bunger.group.ethan.ModEntityTypes;
 
@@ -17,5 +18,6 @@ public class MutuallyAssuredDestructionClient implements ClientModInitializer {
 		// This entrypoint is suitable for setting up client-specific logic, such as rendering.
 		ModEntityModelLayers.registerModelLayers();
 		EntityRenderers.register(ModEntityTypes.PROPHET, ProphetEntityRenderer::new);
+		EntityRenderers.register(ModEntityTypes.VOREMOTH, VoremothEntityRenderer::new);
 	}
 }

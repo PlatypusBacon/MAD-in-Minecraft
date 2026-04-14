@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import java.sql.Blob;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -37,6 +38,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
 import bunger.group.ethan.ProphetEntity;
+import bunger.group.ethan.VoremothEntity;
 import bunger.group.ethan.ModEntityTypes;
 import bunger.group.ethan.RedDarknessEffect;
 // import net.minecraft.resources.ResourceLocation;
@@ -68,6 +70,21 @@ public class MutuallyAssuredDestruction implements ModInitializer {
     	Identifier.fromNamespaceAndPath(MOD_ID, "altar_form")
 	);
 
+	public static final SoundEvent VOREMOTH1 = SoundEvent.createFixedRangeEvent(
+    	Identifier.fromNamespaceAndPath(MOD_ID, "voremoth1"), 100.0F);
+	public static final SoundEvent VOREMOTH2 = SoundEvent.createFixedRangeEvent(
+		Identifier.fromNamespaceAndPath(MOD_ID, "voremoth2"), 100.0F);
+	public static final SoundEvent VOREMOTH3 = SoundEvent.createFixedRangeEvent(
+		Identifier.fromNamespaceAndPath(MOD_ID, "voremoth3"), 100.0F);
+	public static final SoundEvent VOREMOTH4 = SoundEvent.createFixedRangeEvent(
+		Identifier.fromNamespaceAndPath(MOD_ID, "voremoth4"), 100.0F);
+	public static final SoundEvent VOREMOTH5 = SoundEvent.createFixedRangeEvent(
+		Identifier.fromNamespaceAndPath(MOD_ID, "voremoth5"), 100.0F);
+	public static final SoundEvent VOREMOTH_AMBIENT = SoundEvent.createVariableRangeEvent(
+		Identifier.fromNamespaceAndPath(MOD_ID, "voremoth_ambient"));
+
+
+
 	@Override
 	public void onInitialize() {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
@@ -81,6 +98,7 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		// ----------Ethans registrations----------
 
 		ProphetEntity.initialize();
+		VoremothEntity.initialize();
 		ModEntityTypes.registerModEntityTypes();
 		ModEntityTypes.registerAttributes();
 
@@ -101,6 +119,25 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		Registry.register(BuiltInRegistries.SOUND_EVENT,
     		Identifier.fromNamespaceAndPath(MOD_ID, "altar_form"),
     		ALTAR_FORM);
+		Registry.register(BuiltInRegistries.SOUND_EVENT,
+			Identifier.fromNamespaceAndPath(MOD_ID, "voremoth1"),
+			VOREMOTH1);
+		Registry.register(BuiltInRegistries.SOUND_EVENT,
+			Identifier.fromNamespaceAndPath(MOD_ID, "voremoth2"),
+			VOREMOTH2);
+		Registry.register(BuiltInRegistries.SOUND_EVENT,
+			Identifier.fromNamespaceAndPath(MOD_ID, "voremoth3"),
+			VOREMOTH3);
+		Registry.register(BuiltInRegistries.SOUND_EVENT,
+			Identifier.fromNamespaceAndPath(MOD_ID, "voremoth4"),
+			VOREMOTH4);
+		Registry.register(BuiltInRegistries.SOUND_EVENT,
+			Identifier.fromNamespaceAndPath(MOD_ID, "voremoth5"),
+			VOREMOTH5);
+		Registry.register(BuiltInRegistries.SOUND_EVENT,
+			Identifier.fromNamespaceAndPath(MOD_ID, "voremoth_ambient"),
+			VOREMOTH_AMBIENT);
+
 
 
 

@@ -21,5 +21,53 @@
                 "name": "mutually-assured-destruction:altar_form"
             }
         ]
+    },
+    "voremoth1": {
+        "sounds": [
+            {
+                "name": "mutually-assured-destruction:voremoth1",
+                "stream": true
+            }
+        ]
+    },
+    "voremoth2": {
+        "sounds": [
+            {
+                "name": "mutually-assured-destruction:voremoth2",
+                "stream": true
+            }
+        ]
+    },
+    "voremoth3": {
+        "sounds": [
+            {
+                "name": "mutually-assured-destruction:voremoth3",
+                "stream": true
+            }
+        ]
+    },
+    "voremoth4": {
+        "sounds": [
+            {
+                "name": "mutually-assured-destruction:voremoth4",
+                "stream": true
+            }
+        ]
+    },
+    "voremoth5": {
+        "sounds": [
+            {
+                "name": "mutually-assured-destruction:voremoth5",
+                "stream": true
+            }
+        ]
+    },
+    "voremoth_ambient": {
+        "sounds": [
+            {
+                "name": "mutually-assured-destruction:voremoth_ambient",
+                "stream": true  
+            }
+        ]
     }
 }

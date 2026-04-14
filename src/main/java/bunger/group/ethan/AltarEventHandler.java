@@ -28,17 +28,16 @@ public class AltarEventHandler {
     // TODO: Add Voremoth, Excommunicado Imortalis
     private static void spawnBoss(ServerLevel level, BlockPos altarPos) {
         double spawnX = altarPos.getX() + 0.5;
-        double spawnY = altarPos.getY() + 2;
+        double spawnY = altarPos.getY() + 20;
         double spawnZ = altarPos.getZ() + 0.5;
 
-        ProphetEntity boss = ModEntityTypes.PROPHET.create(
+        VoremothEntity boss = ModEntityTypes.VOREMOTH.create(
             level, 
             EntitySpawnReason.TRIGGERED
         );
 
         if (boss != null) {
-            // find a clear spot
-            for (int i = 2; i < 10; i++) {
+            for (int i = 20; i < 40; i++) {
                 BlockPos check = altarPos.above(i);
                 if (level.getBlockState(check).isAir() && 
                     level.getBlockState(check.above()).isAir()) {
