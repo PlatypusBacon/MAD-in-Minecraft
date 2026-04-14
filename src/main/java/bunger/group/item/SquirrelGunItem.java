@@ -1,5 +1,6 @@
 package bunger.group.item;
 
+import bunger.group.entity.SquirrelBearEntity;
 import bunger.group.entity.SquirrelEntity;
 import bunger.group.sound.ModSounds;
 import net.minecraft.sounds.SoundSource;
@@ -17,7 +18,7 @@ import java.util.List;
 public class SquirrelGunItem extends Item {
 
     private static final int RELOAD_TICKS = 60;        // 2 seconds
-    private static final float SQUIRREL_DAMAGE = 1000F; // one hit kill
+    private static final float SQUIRREL_DAMAGE = 50F; // one hit kill
     private static final float OTHER_DAMAGE = 4F;     // half a heart
     private static final double RANGE = 32.0;           // block range
 
@@ -94,9 +95,11 @@ public class SquirrelGunItem extends Item {
                 }
             }
         }
-
+        float damage = OTHER_DAMAGE;
         if (target != null) {
-            float damage = target instanceof SquirrelEntity ? SQUIRREL_DAMAGE : OTHER_DAMAGE;
+            if ((target instanceof SquirrelEntity) || (target instanceof SquirrelBearEntity)) {
+                damage = SQUIRREL_DAMAGE;
+            }
             target.hurt(net.minecraft.world.damagesource.DamageSource.playerAttack(player), damage);
         }
     }

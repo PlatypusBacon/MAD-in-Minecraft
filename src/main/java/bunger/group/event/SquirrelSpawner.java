@@ -12,7 +12,7 @@ public class SquirrelSpawner {
 
     private static final Random RANDOM = new Random();
     private static final int SQUIRRELS_PER_DAY = 8;
-    private static final int SPAWN_RADIUS = 64;
+    private static final int SPAWN_RADIUS = 256;
 
     public static void spawnNearStructure(ServerLevel level, StructureEventData data) {
         BlockPos origin = data.getStructureOrigin();

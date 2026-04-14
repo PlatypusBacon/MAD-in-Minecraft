@@ -3,6 +3,7 @@ package bunger.group;
 import bunger.group.command.SetupStructureCommand;
 import bunger.group.entity.GodEntity;
 import bunger.group.entity.ModEntities;
+import bunger.group.entity.SquirrelBearEntity;
 import bunger.group.entity.SquirrelEntity;
 import bunger.group.event.StructureManager;
 import bunger.group.event.SundownWatcher;
@@ -59,6 +60,8 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		);
 		FabricDefaultAttributeRegistry.register(
 				ModEntities.GOD, GodEntity.createAttributes());
+		FabricDefaultAttributeRegistry.register(
+				ModEntities.SQUIRREL_BEAR, SquirrelBearEntity.createAttributes());
 		StructureManager.register();
 		SundownWatcher.register();
 		SetupStructureCommand.register();

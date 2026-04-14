@@ -216,25 +216,14 @@ public class SetupStructureCommand {
                             .executes(ctx -> {
                                 ServerLevel level = ctx.getSource().getLevel();
                                 StructureEventData data = StructureEventData.get(level);
-                                // reset godSpawned flag so it can fire again in testing
-                                data.reset();
-                                data.setStructureBounds(data.getStructureOrigin(), data.getStructureEnd());
-                                data.setBedPos(data.getBedPos());
-                                data.setPaintingPos(data.getPaintingPos());
-                                // directly invoke spawn
                                 BlockPos origin = data.getStructureOrigin();
-                                var target = level.players().stream()
-                                        .min(Comparator.comparingDouble(p ->
-                                                p.distanceToSqr(origin.getX(), origin.getY(), origin.getZ())));
-                                target.ifPresent(player -> {
-                                    var look = player.getLookAngle().scale(-5);
-                                    var spawnPos = player.position().add(look);
-                                    var god = bunger.group.entity.ModEntities.GOD.create(level);
-                                    if (god == null) return;
-                                    god.moveTo(spawnPos.x, spawnPos.y, spawnPos.z, 0f, 0f);
-                                    level.addFreshEntity(god);
-                                });
-                                ctx.getSource().sendSuccess(Component.literal("§aGod spawned!"), true);
+
+                                // reset so God.start() won't bail on the active check
+                                data.setGodSpawned();
+
+                                God.scheduleGodRespawnLoop(level, origin);
+
+                                ctx.getSource().sendSuccess(Component.literal("§aGod event started!"), true);
                                 return 1;
                             }))
                     .then(Commands.literal("doordebug")

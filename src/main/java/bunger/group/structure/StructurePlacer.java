@@ -121,9 +121,9 @@ public class StructurePlacer {
 
             Direction facing = switch (rotation) {
                 case NONE                -> Direction.NORTH;
-                case CLOCKWISE_90        -> Direction.WEST;
+                case CLOCKWISE_90        -> Direction.EAST;
                 case CLOCKWISE_180       -> Direction.SOUTH;
-                case COUNTERCLOCKWISE_90 -> Direction.EAST;
+                case COUNTERCLOCKWISE_90 -> Direction.WEST;
             };
 
 

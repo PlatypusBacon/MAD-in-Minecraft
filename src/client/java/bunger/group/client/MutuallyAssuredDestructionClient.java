@@ -1,5 +1,9 @@
 package bunger.group.client;
 
+import bunger.group.client.tyler.GodRenderer;
+import bunger.group.client.tyler.SleepScreenOverlay;
+import bunger.group.client.tyler.SquirrelBearRenderer;
+import bunger.group.client.tyler.SquirrelRenderer;
 import bunger.group.entity.ModEntities;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
@@ -11,6 +15,7 @@ public class MutuallyAssuredDestructionClient implements ClientModInitializer {
 		ModModelLayers.register();
 		SleepScreenOverlay.register();
 		EntityRendererRegistry.register(ModEntities.SQUIRREL, SquirrelRenderer::new);
+		EntityRendererRegistry.register(ModEntities.SQUIRREL_BEAR, SquirrelBearRenderer::new);
 		EntityModelLayerRegistry.registerModelLayer(
 				GodRenderer.GOD_LAYER,
 				GodRenderer.GodModel::createBodyLayer

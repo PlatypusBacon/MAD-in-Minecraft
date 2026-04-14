@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:entity",
+  "pools": [{
+    "rolls": 1,
+    "entries": [
+      { "type": "minecraft:item", "name": "mutually-assured-destruction:squeather_head",  "weight": 1 },
+      { "type": "minecraft:item", "name": "mutually-assured-destruction:squeather_chest", "weight": 1 },
+      { "type": "minecraft:item", "name": "mutually-assured-destruction:squeather_legs",  "weight": 1 },
+      { "type": "minecraft:item", "name": "mutually-assured-destruction:squeather_feet",  "weight": 1 }
+    ]
+  }]
+}

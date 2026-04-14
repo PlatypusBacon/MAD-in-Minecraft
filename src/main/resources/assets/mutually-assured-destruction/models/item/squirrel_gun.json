@@ -63,5 +63,9 @@
 			}
 		}
 	],
-	"display": {}
+	"display": {
+		"fixed": {
+			"rotation": [88, 35, -101]
+		}
+	}
 }

@@ -70,7 +70,7 @@ public class God {
      * If the player still hasn't looked at god, discards the current one
      * and spawns a new one behind them. Stops once GodEntity sets hasBeenSeen.
      */
-    private static void scheduleGodRespawnLoop(ServerLevel level, BlockPos origin) {
+    public static void scheduleGodRespawnLoop(ServerLevel level, BlockPos origin) {
         StructureEventData data = StructureEventData.get(level);
         if (data.isGodSpawned()) return; // GodEntity already triggered launch
 

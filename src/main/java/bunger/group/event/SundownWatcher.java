@@ -57,7 +57,9 @@ public class SundownWatcher {
         int paintingIndex = Math.max(0, 5 - day);
         PaintingUpdater.updatePaintingToIndex(level, data, paintingIndex);
         SquirrelSpawner.spawnNearStructure(level, data);
-
+        if (day == 4) {
+            SquirrelBearSpawner.spawnNearStructure(level, data);
+        }
         System.out.println("Day advanced to " + day
                 + " | painting index: " + paintingIndex);
     }

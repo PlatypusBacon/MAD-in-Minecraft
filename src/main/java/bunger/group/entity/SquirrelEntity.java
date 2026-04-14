@@ -24,21 +24,23 @@ public class SquirrelEntity extends Animal {
         super(type, world);
     }
 
-    public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 100.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.8)  // slightly faster base
-                .add(Attributes.FOLLOW_RANGE, 32.0);   // extends detection/AI range
-    }
-
     @Override
     protected void registerGoals() {
-        // flee from players within 16 blocks, very fast
-        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Player.class, 16f, 1.8, 2.4));
-        // also flee from any mob that last hurt them
-        this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, LivingEntity.class, 8f, 1.8, 2.4));
-        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0));
-        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+        // Panic sprint if player is within 10 blocks
+        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Player.class, 10f, 2.8, 3.5));
+        // General avoidance from further away
+        this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, Player.class, 24f, 1.8, 2.6));
+        // Flee from anything that hurt them
+        this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, LivingEntity.class, 10f, 2.2, 3.0));
+        this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0));
+        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
+    }
+
+    public static AttributeSupplier.Builder createAttributes() {
+        return Mob.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 50.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.45)  // base speed (multiplied at runtime)
+                .add(Attributes.FOLLOW_RANGE, 36.0);
     }
     @Override
     protected SoundEvent getAmbientSound() {
