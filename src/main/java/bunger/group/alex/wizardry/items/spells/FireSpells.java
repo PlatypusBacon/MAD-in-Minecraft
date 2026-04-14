@@ -22,7 +22,7 @@ public class FireSpells {
 
     public static final ScrollItem FIRE_IGNITION = new ScrollItem(new Item.Properties()) {
         @Override
-        protected void cast(Level level, Player player, ItemStack stack) {
+        public void cast(Level level, LivingEntity player, ItemStack stack) {
             // Set fire to block or player aimed at within 25 blocks
 
             double range = 25.0;

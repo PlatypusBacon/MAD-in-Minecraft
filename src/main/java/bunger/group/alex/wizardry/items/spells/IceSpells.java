@@ -25,7 +25,7 @@ public class IceSpells {
 
     static final ScrollItem ICE_SHIELD = new ScrollItem(new Item.Properties()) {
         @Override
-        protected void cast(Level level, Player player, ItemStack stack) {
+        public void cast(Level level, LivingEntity player, ItemStack stack) {
             Vec3 center = player.position().add(0, 1.0, 0);
             double radius = 4.0;
 

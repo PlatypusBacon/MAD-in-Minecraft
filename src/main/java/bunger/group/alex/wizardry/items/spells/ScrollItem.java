@@ -2,6 +2,7 @@ package bunger.group.alex.wizardry.items.spells;
 
 import bunger.group.alex.wizardry.ModItemGroups;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -13,7 +14,7 @@ public class ScrollItem extends Item {
         super(properties.tab(ModItemGroups.WIZARDRY_TAB));
     }
 
-    protected void cast(Level level, Player player, ItemStack stack) {
+    public void cast(Level level, LivingEntity caster, ItemStack stack) {
         // default: does nothing
     }
 

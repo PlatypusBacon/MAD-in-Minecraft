@@ -1,8 +1,11 @@
 package bunger.group;
 
+import bunger.group.alex.wizardry.mobs.ModEntities;
+import bunger.group.alex.wizardry.mobs.Wizard;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +31,8 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		ModItemGroups.register();
 		// Items
 		SpellRegistry.register();
+		// mobs
+		ModEntities.register();
 
 		// tick events
 		ServerTickEvents.END_SERVER_TICK.register(server -> {

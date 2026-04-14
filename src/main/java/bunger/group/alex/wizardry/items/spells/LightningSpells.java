@@ -24,7 +24,7 @@ public class LightningSpells {
 
     public static final ScrollItem ZAP = new ScrollItem(new Item.Properties()) {
         @Override
-        protected void cast(Level level, Player player, ItemStack stack) {
+        public void cast(Level level, LivingEntity player, ItemStack stack) {
             // place water at block
 
             double range = 25.0;
@@ -58,7 +58,7 @@ public class LightningSpells {
     public static final ScrollItem LIGHTNING = new ScrollItem(new Item.Properties()) {
 
         @Override
-        protected void cast(Level level, Player player, ItemStack stack) {
+        public void cast(Level level, LivingEntity player, ItemStack stack) {
             // place water at block
 
             double range = 25.0;
@@ -108,7 +108,7 @@ public class LightningSpells {
     public static final ScrollItem CHANNEL_STORM = new ScrollItem(new Item.Properties()) {
 
         @Override
-        protected void cast(Level level, Player player, ItemStack stack) {
+        public void cast(Level level, LivingEntity player, ItemStack stack) {
 
             double range = 40.0;
             Vec3 start = player.getEyePosition();
@@ -197,7 +197,7 @@ public class LightningSpells {
     public static final ScrollItem AGARTHAN_THUNDER = new ScrollItem(new Item.Properties()) {
 
         @Override
-        protected void cast(Level level, Player player, ItemStack stack) {
+        public void cast(Level level, LivingEntity player, ItemStack stack) {
 
             double range = 40.0;
             Vec3 start = player.getEyePosition();

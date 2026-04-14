@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -22,7 +23,7 @@ public class WaterSpells {
     public static final ScrollItem WATER_SPLASH = new ScrollItem(new Item.Properties()) {
 
             @Override
-            protected void cast(Level level, Player player, ItemStack stack) {
+            public void cast(Level level, LivingEntity player, ItemStack stack) {
                 // place water at block
 
                 double range = 25.0;
