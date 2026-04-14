@@ -14,6 +14,8 @@ import bunger.group.alex.Bunger1;
 import bunger.group.bryan.Bunger2;
 import bunger.group.csmit863.Bunger3;
 import bunger.group.ethan.AltarFragmentBlock;
+import bunger.group.ethan.AltarBlock;
+import bunger.group.ethan.AltarEventHandler;
 import bunger.group.ethan.Bunger4;
 import bunger.group.tyler.Bunger5;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -24,6 +26,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.TickTask;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
@@ -55,6 +58,16 @@ public class MutuallyAssuredDestruction implements ModInitializer {
         true
     );
 
+	public static final Block ALTAR = AltarBlock.registerBlock("altar",
+        AltarBlock::new,
+        BlockBehaviour.Properties.of().strength(15.0F).requiresCorrectToolForDrops(),
+        true
+    );
+
+	public static final SoundEvent ALTAR_FORM = SoundEvent.createVariableRangeEvent(
+    	Identifier.fromNamespaceAndPath(MOD_ID, "altar_form")
+	);
+
 	@Override
 	public void onInitialize() {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
@@ -84,6 +97,10 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 			RedDarknessEffect.RED_DARKNESS);
 
 		RedRainHandler.register();
+		AltarEventHandler.register();
+		Registry.register(BuiltInRegistries.SOUND_EVENT,
+    		Identifier.fromNamespaceAndPath(MOD_ID, "altar_form"),
+    		ALTAR_FORM);
 
 
 

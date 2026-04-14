@@ -14,5 +14,12 @@
                 "stream": true
             }
         ]
+    },
+    "altar_form": {
+        "sounds": [
+            {
+                "name": "mutually-assured-destruction:altar_form"
+            }
+        ]
     }
 }
