@@ -1,7 +1,11 @@
 package bunger.group;
 
+import bunger.group.alex.ParticleHelpers;
+import bunger.group.alex.SpellHelpers;
+import bunger.group.alex.item.ModItems;
 import net.fabricmc.api.ModInitializer;
 
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,6 +22,17 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
+
+		//-----Alex-----
+		// Items
+		ModItems.registerAll();
+
+		// Tick Events
+		ServerTickEvents.END_SERVER_TICK.register(server -> {
+			SpellHelpers.tick();
+			ParticleHelpers.tick();
+		});
+
 
 	}
 }
