@@ -2,7 +2,6 @@ package bunger.group.client.tyler.squirrel;
 
 import bunger.group.MutuallyAssuredDestruction;
 import bunger.group.client.tyler.ModEntityModelLayers;
-import bunger.group.entity.SquirrelEntity;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.Identifier;

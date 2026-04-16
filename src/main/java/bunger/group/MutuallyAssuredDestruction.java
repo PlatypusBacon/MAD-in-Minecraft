@@ -1,13 +1,7 @@
 package bunger.group;
 
-import bunger.group.entity.ModEntities;
-import bunger.group.entity.SquirrelEntity;
 import net.fabricmc.api.ModInitializer;
 
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +18,6 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
-		ModEntities.registerModEntityTypes();
-		ModEntities.registerAttributes();
+
 	}
 }

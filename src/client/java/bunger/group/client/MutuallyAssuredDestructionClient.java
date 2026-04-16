@@ -1,7 +1,6 @@
 package bunger.group.client;
 
 import bunger.group.client.tyler.ModEntityModelLayers;
-import bunger.group.entity.ModEntities;
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import bunger.group.client.tyler.squirrel.SquirrelEntityRenderer;
