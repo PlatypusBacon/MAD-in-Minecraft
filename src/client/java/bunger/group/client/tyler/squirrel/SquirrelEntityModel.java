@@ -1,5 +1,6 @@
 package bunger.group.client.tyler.squirrel;
 
+
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -61,10 +62,6 @@ public class SquirrelEntityModel extends EntityModel<SquirrelEntityRenderState> 
                 PartPose.offsetAndRotation(-1.0216F, -3.3842F, 4.5F, 0.0F, 0.0F, 0.3491F));
 
         return LayerDefinition.create(meshData, 64, 64);
-    }
-
-    @Override
-    public void setupAnim(SquirrelEntityRenderState renderState) {
     }
 
 }

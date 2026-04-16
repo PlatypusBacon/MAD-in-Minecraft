@@ -1,8 +1,5 @@
-package bunger.group.entity;
+package bunger.group.tyler.entity;
 
-import bunger.group.sound.ModSounds;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
