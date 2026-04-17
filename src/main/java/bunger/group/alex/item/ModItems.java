@@ -1,12 +1,16 @@
 package bunger.group.alex.item;
 
 import bunger.group.MutuallyAssuredDestruction;
+import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.function.Function;
 
@@ -41,5 +45,22 @@ public class ModItems {
         return item;
     }
 
-    public static void registerAll() {}
+    public static final ResourceKey<CreativeModeTab> CUSTOM_CREATIVE_TAB_KEY = ResourceKey.create(
+            BuiltInRegistries.CREATIVE_MODE_TAB.key(),
+            Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, "wizardry_tab")
+    );
+
+    public static final CreativeModeTab CUSTOM_CREATIVE_TAB = FabricCreativeModeTab.builder()
+            .icon(() -> new ItemStack(ModItems.AGARTHAN_THUNDER))
+            .title(Component.translatable("creativeTab.wizardry-tab"))
+            .displayItems((params, output) -> {
+                output.accept(ModItems.ICE_SHIELD);
+                output.accept(ModItems.AGARTHAN_THUNDER);
+            })
+            .build();
+
+    public static void registerAll() {
+        //Add creative tab
+        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, CUSTOM_CREATIVE_TAB_KEY, CUSTOM_CREATIVE_TAB);
+    }
 }
