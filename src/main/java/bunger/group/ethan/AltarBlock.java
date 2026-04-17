@@ -64,6 +64,31 @@ public class AltarBlock extends Block {
                 0, 0.02, 0
             );
         }
+        // double x = pos.getX() + random.nextDouble();
+        // double y = pos.getY() + random.nextDouble();
+        // double z = pos.getZ() + random.nextDouble();
+        // for (int i = 0; i < 50; i++) {
+        //     level.addParticle(ParticleTypes.END_ROD,
+        //         x, y + i, z,
+        //         0, 0, 0);
+        // }
+        // double x2 = pos.getX() + random.nextDouble();
+        // double y2 = pos.getY() + random.nextDouble();
+        // double z2 = pos.getZ() + random.nextDouble();
+        // for (int i = 0; i < 50; i++) {
+        //     level.addParticle(ParticleTypes.GLOW,
+        //         x2 + 10, y2 + i, z2,
+        //         0, 5, 0);
+        // }
+        // double x3 = pos.getX() + random.nextDouble();
+        // double y3 = pos.getY() + random.nextDouble();
+        // double z3 = pos.getZ() + random.nextDouble();
+        // for (int i = 0; i < 50; i++) {
+        //     level.addParticle(ParticleTypes.FALLING_LAVA,
+        //         x3 + 20, y3 + i, z3,
+        //         0, -10, 0);
+        // }
+
     }
     
 }

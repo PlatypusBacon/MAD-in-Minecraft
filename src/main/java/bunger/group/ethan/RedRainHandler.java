@@ -41,7 +41,7 @@ public class RedRainHandler {
 												double offsetX = (Math.random() - 0.5) * 20;
 												double offsetZ = (Math.random() - 0.5) * 20;
 												level.sendParticles(
-													ParticleTypes.FALLING_DRIPSTONE_LAVA,
+													ParticleTypes.FALLING_LAVA,
 													player.getX() + offsetX,
 													player.getY() + 20,
 													player.getZ() + offsetZ,

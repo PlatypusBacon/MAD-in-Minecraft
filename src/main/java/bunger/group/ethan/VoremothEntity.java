@@ -40,20 +40,21 @@ public class VoremothEntity extends PathfinderMob {
 
     public VoremothEntity(EntityType<? extends VoremothEntity> entityType, Level world) {
         super(entityType, world);
+        this.noPhysics = true;
     }
 
     public static AttributeSupplier.Builder createCubeAttributes() {
         return PathfinderMob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 1)
+                .add(Attributes.MAX_HEALTH, 500.0F)
                 .add(Attributes.TEMPT_RANGE, 10)
                 .add(Attributes.MOVEMENT_SPEED, 0.3)
                 .add(Attributes.FLYING_SPEED, 1.0)
-                .add(Attributes.SCALE, 5.0);
+                .add(Attributes.SCALE, 1.0);
     }
 
     protected void registerGoals() {
         //this.goalSelector.addGoal(0, new LookAtPlayerGoal(this, Player.class, 50.0F, 1.0F));
-        this.moveControl = new FlyingMoveControl(this, 2, true);
+        this.moveControl = new FlyingMoveControl(this, 0, true);
         this.setNoGravity(true);
         // this.goalSelector.addGoal(1, new LookRandomlyGoal(this));
         // this.goalSelector.addGoal(5, new GhastMoveControl(this));
@@ -75,7 +76,7 @@ public class VoremothEntity extends PathfinderMob {
     };
 
 
-    private final ServerBossEvent bossBar = new ServerBossEvent(
+    public final ServerBossEvent bossBar = new ServerBossEvent(
         Mth.createInsecureUUID(level().getRandom()),
         Component.literal("Voremoth, Excommunicado Imortalis"),
         BossEvent.BossBarColor.RED,
@@ -113,7 +114,7 @@ public class VoremothEntity extends PathfinderMob {
     public void playAmbientSound() {
         SoundEvent sound = AMBIENT_SOUNDS[this.random.nextInt(AMBIENT_SOUNDS.length)];
         float pitch = 0.5F;
-        float volume = 0.7F;
+        float volume = 0.5F;
 
         this.level().playSound(
             null,
@@ -127,7 +128,7 @@ public class VoremothEntity extends PathfinderMob {
 
     @Override
     public int getAmbientSoundInterval() {
-        return 160 + this.random.nextInt(160); 
+        return 320 + this.random.nextInt(160); 
     }
 
 
@@ -151,129 +152,57 @@ public class VoremothEntity extends PathfinderMob {
         );
             ambientTimer = 2880;
         }
-        if (this.level().isClientSide()) {
-            // spawn particles around the entity every tick
-            for (int i = 0; i < 150; i++) {
-                double offsetX = (this.random.nextDouble() - 0.5) * 60;
-                double offsetY = (this.random.nextDouble() - 0.5) * 60;
-                double offsetZ = (this.random.nextDouble() - 0.5) * 60;
-                this.level().addParticle(
-                    ParticleTypes.CRIMSON_SPORE,
-                    this.getX() + offsetX,
-                    this.getY() + offsetY,
-                    this.getZ() + offsetZ,
-                    0, 0, 0
-                );
+        // if (this.level().isClientSide()) {
+        //     // spawn particles around the entity every tick
+        //     for (int i = 0; i < 150; i++) {
+        //         double offsetX = (this.random.nextDouble() - 0.5) * 60;
+        //         double offsetY = (this.random.nextDouble() - 0.5) * 60;
+        //         double offsetZ = (this.random.nextDouble() - 0.5) * 60;
+        //         this.level().addParticle(
+        //             ParticleTypes.CRIMSON_SPORE,
+        //             this.getX() + offsetX,
+        //             this.getY() + offsetY,
+        //             this.getZ() + offsetZ,
+        //             0, 0, 0
+        //         );
 
-            }
-        }
+        //     }
+        // }
     }
 
+    @Override
+    public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
+        // only allow damage from your custom source
+        if (source.is(ModDamageTypes.BEACON_DAMAGE)) {
+            return super.hurtServer(level, level.damageSources().source(ModDamageTypes.BEACON_DAMAGE), amount);
+           
+        }
+        System.out.println("VOREMOTHDAMAGE: Blocked damage from source " + source + " with amount " + amount);
+        return false; // block everything else
+    }
+
+    @Override
+    public void setInvulnerable(boolean invulnerable) {
+        super.setInvulnerable(false);
+    }
+    
 
 
-    // public static final SoundEvent HEARTBEAT = new SoundEvent(
-    //     Identifier.fromNamespaceAndPath("mutually-assured-destruction", "heartbeat"),
-    //     Optional.of(50.0F)
-    // );
-    // public static final SoundEvent DRIPPING = new SoundEvent(
-    //     Identifier.fromNamespaceAndPath("mutually-assured-destruction", "dripping"),
-    //     Optional.of(25.0F)
-    // );
 
+    
 
-
-    // private int heartbeatTimer = 0;
-    // private int drippingTimer = 0;
-
+    // Event trigger currently in AltarEventHandler, but could also be triggered here in onAddedToLevel or similar
     // @Override
-    // public void baseTick() {
-    //     super.baseTick();
-    //     heartbeatTimer--;
-    //     drippingTimer--;
-    //     if (heartbeatTimer <= 0) {
-    //         if (!this.level().isClientSide()) {
-    //             double maxRange = 50.0;
-    //             for (Player player : this.level().players()) {
-    //                 double distance = this.distanceTo(player);
-    //                 if (distance <= maxRange) {
-    //                     float volume = (float)(1.0 - (distance / maxRange));
-    //                     volume = Math.max(0.0F, Math.min(1.0F, volume));
-    //                     ClientboundSoundPacket packet = new ClientboundSoundPacket(
-    //                         BuiltInRegistries.SOUND_EVENT.wrapAsHolder(VoremothEntity.HEARTBEAT),
-    //                         SoundSource.HOSTILE,
-    //                         this.getX(), this.getY(), this.getZ(),
-    //                         volume,
-    //                         1.0F,
-    //                         this.level().getRandom().nextLong()
-    //                     );
-    //                     ((ServerPlayer) player).connection.send(packet);
-    //                 } else if(distance <= maxRange * 2) {
-    //                     ClientboundSoundPacket packet = new ClientboundSoundPacket(
-    //                         BuiltInRegistries.SOUND_EVENT.wrapAsHolder(VoremothEntity.HEARTBEAT),
-    //                         SoundSource.HOSTILE,
-    //                         this.getX(), this.getY(), this.getZ(),
-    //                         0.1F,
-    //                         1.0F,
-    //                         this.level().getRandom().nextLong()
-    //                     );
-    //                     ((ServerPlayer) player).connection.send(packet);
-
-    //                 }
-                    
-    //             }
-    //         }
-    //         heartbeatTimer = 39;
-    //     }
-
-    //     if (drippingTimer <= 0) {
-    //         if (!this.level().isClientSide()) {
-    //             double maxRange = 40.0;
-    //             for (Player player : this.level().players()) {
-    //                 double distance = this.distanceTo(player);
-    //                 if (distance <= maxRange) {
-    //                     float volume = (float)(1.0 - (distance / maxRange));
-    //                     volume = Math.max(0.5F, Math.min(1.0F, volume));
-    //                     ClientboundSoundPacket packet = new ClientboundSoundPacket(
-    //                         BuiltInRegistries.SOUND_EVENT.wrapAsHolder(VoremothEntity.DRIPPING),
-    //                         SoundSource.HOSTILE,
-    //                         this.getX(), this.getY(), this.getZ(),
-    //                         volume,
-    //                         1.0F,
-    //                         this.level().getRandom().nextLong()
-    //                     );
-    //                     ((ServerPlayer) player).connection.send(packet);
-    //                 }
-                    
-    //             }
-    //         }
-    //         drippingTimer = 259;
+    // public void onAddedToLevel() {
+    //     super.onAddedToLevel();
+    //     if (!this.level().isClientSide()) {
+    //         VoremothBossMechanic.startMechanic(this);
     //     }
     // }
 
-    // @Override
-    // public void die(DamageSource source) {
-    //     super.die(source);
-    //     if (source.getEntity() instanceof Player player) {
-    //         player.addEffect(new MobEffectInstance(
-    //             BuiltInRegistries.MOB_EFFECT.wrapAsHolder(RedDarknessEffect.RED_DARKNESS),
-    //             //MobEffects.DARKNESS,
-    //             1000,
-    //             0
-    //         ));
-    //         MutuallyAssuredDestruction.RED_RAIN_PLAYERS.put(player.getUUID(), player.level().getGameTime() + 1200);
-    //     }
-    // }
 
-    // @Override
-    // protected void dropCustomDeathLoot(ServerLevel level, DamageSource source, boolean recentlyHit) {
-    //     super.dropCustomDeathLoot(level, source, recentlyHit);
-    //     ItemEntity drop = new ItemEntity(
-    //         level,
-    //         this.getX(), this.getY(), this.getZ(),
-    //         new ItemStack(MutuallyAssuredDestruction.ALTAR_FRAGMENT)
-    //     );
-    //     level.addFreshEntity(drop);
-    // }
+
+   
 
     public static void initialize() {
 

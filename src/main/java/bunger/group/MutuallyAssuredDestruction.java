@@ -43,6 +43,7 @@ import bunger.group.ethan.ModEntityTypes;
 import bunger.group.ethan.RedDarknessEffect;
 // import net.minecraft.resources.ResourceLocation;
 import bunger.group.ethan.RedRainHandler;
+import bunger.group.ethan.VoremothBossMechanic;
 
 public class MutuallyAssuredDestruction implements ModInitializer {
 	public static final String MOD_ID = "mutually-assured-destruction";
@@ -99,6 +100,7 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 
 		ProphetEntity.initialize();
 		VoremothEntity.initialize();
+		VoremothBossMechanic.register();
 		ModEntityTypes.registerModEntityTypes();
 		ModEntityTypes.registerAttributes();
 
@@ -137,6 +139,7 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		Registry.register(BuiltInRegistries.SOUND_EVENT,
 			Identifier.fromNamespaceAndPath(MOD_ID, "voremoth_ambient"),
 			VOREMOTH_AMBIENT);
+
 
 
 

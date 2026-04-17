@@ -15,7 +15,7 @@ public class VoremothEntityRenderer extends MobRenderer<VoremothEntity, Voremoth
 	private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, "textures/entity/voremoth.png");
 
 	public VoremothEntityRenderer(EntityRendererProvider.Context context) {
-		super(context, new VoremothEntityModel(context.bakeLayer(ModEntityModelLayers.VOREMOTH)), 30);
+		super(context, new VoremothEntityModel(context.bakeLayer(ModEntityModelLayers.VOREMOTH)), 0.5F);
 		    this.addLayer(new EyesLayer<>(this) {
         	@Override
 				public RenderType renderType() {
