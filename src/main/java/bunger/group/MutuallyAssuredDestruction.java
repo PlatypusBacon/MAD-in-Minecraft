@@ -41,6 +41,7 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		//Creative Tab
 		CreativeTab.register();
 
+		bunger.group.csmit863.item.ModItems.register();
 
 	}
 }
