@@ -8,25 +8,41 @@ import net.minecraft.world.entity.EntitySpawnReason;
 
 public class SquirrelBearSpawner {
 
+    private static final java.util.Random RANDOM = new java.util.Random();
+    private static final int SPAWN_RADIUS = 64;
+
     public static void spawnNearStructure(ServerLevel level, StructureEventData data) {
         BlockPos origin = data.getStructureOrigin();
+        BlockPos end = data.getStructureEnd();
 
-        // spawn 1-2 bears per day from day 3 onward, offset from origin
+        int minX = Math.min(origin.getX(), end.getX());
+        int maxX = Math.max(origin.getX(), end.getX());
+        int minZ = Math.min(origin.getZ(), end.getZ());
+        int maxZ = Math.max(origin.getZ(), end.getZ());
+
         int count = data.getEventDay() >= 4 ? 2 : 1;
 
-        for (int i = 0; i < count; i++) {
+        int spawned = 0;
+        int attempts = 0;
+        while (spawned < count && attempts < 100) {
+            attempts++;
+
+            int x = origin.getX() + RANDOM.nextInt(SPAWN_RADIUS * 2) - SPAWN_RADIUS;
+            int z = origin.getZ() + RANDOM.nextInt(SPAWN_RADIUS * 2) - SPAWN_RADIUS;
+
+            // Reject if inside structure bounds
+            if (x >= minX && x <= maxX && z >= minZ && z <= maxZ) continue;
+
+            int y = level.getHeight(
+                    net.minecraft.world.level.levelgen.Heightmap.Types.WORLD_SURFACE, x, z);
+
             var bear = ModEntities.SQUIRREL_BEAR.create(level, EntitySpawnReason.LOAD);
             if (bear == null) continue;
 
-            // spread them out so they don't stack
-            double offsetX = (i == 0) ? 12 : -12;
-            bear.setPos(
-                    origin.getX() + offsetX,
-                    origin.getY(),
-                    origin.getZ() + 8
-            );
+            bear.setPos(x, y, z);
             bear.setYRot(level.getRandom().nextFloat() * 360f);
             level.addFreshEntity(bear);
+            spawned++;
         }
     }
 }

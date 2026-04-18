@@ -16,26 +16,34 @@ public class SquirrelSpawner {
 
     public static void spawnNearStructure(ServerLevel level, StructureEventData data) {
         BlockPos origin = data.getStructureOrigin();
+        BlockPos end = data.getStructureEnd();
 
-        for (int i = 0; i < SQUIRRELS_PER_DAY; i++) {
+        // Structure bounds to avoid spawning inside
+        int minX = Math.min(origin.getX(), end.getX());
+        int maxX = Math.max(origin.getX(), end.getX());
+        int minZ = Math.min(origin.getZ(), end.getZ());
+        int maxZ = Math.max(origin.getZ(), end.getZ());
+
+        int spawned = 0;
+        int attempts = 0;
+        while (spawned < SQUIRRELS_PER_DAY && attempts < 100) {
+            attempts++;
+
             int x = origin.getX() + RANDOM.nextInt(SPAWN_RADIUS * 2) - SPAWN_RADIUS;
             int z = origin.getZ() + RANDOM.nextInt(SPAWN_RADIUS * 2) - SPAWN_RADIUS;
-            int y = level.getHeight(
-                    net.minecraft.world.level.levelgen.Heightmap.Types.WORLD_SURFACE,
-                    x, z);
 
-            BlockPos spawnPos = new BlockPos(x, y, z);
+            // Reject if inside structure bounds
+            if (x >= minX && x <= maxX && z >= minZ && z <= maxZ) continue;
+
+            int y = level.getHeight(
+                    net.minecraft.world.level.levelgen.Heightmap.Types.WORLD_SURFACE, x, z);
 
             var squirrel = ModEntities.SQUIRREL.create(level, EntitySpawnReason.LOAD);
             if (squirrel == null) continue;
 
-            double offsetX = (i == 0) ? 12 : -12;
-            squirrel.setPos(
-                    origin.getX() + offsetX,
-                    origin.getY(),
-                    origin.getZ() + 8
-            );
+            squirrel.setPos(x, y, z);
             level.addFreshEntityWithPassengers(squirrel);
+            spawned++;
         }
     }
 }
