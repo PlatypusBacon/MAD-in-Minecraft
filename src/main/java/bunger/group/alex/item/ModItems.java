@@ -22,6 +22,12 @@ public class ModItems {
             new IceShield.Properties()
     );
 
+    public static final Item AGARTHAN_ICE_DOME = registerItem(
+            "spell_ice_agarthan_ice_dome",
+            AgarthanIceDome::new, // funky lambda I am not that sure of
+            new AgarthanIceDome.Properties()
+    );
+
     public static final Item AGARTHAN_THUNDER = registerItem(
             "spell_lightning_agarthan_thunder",
             AgarthanThunder::new,

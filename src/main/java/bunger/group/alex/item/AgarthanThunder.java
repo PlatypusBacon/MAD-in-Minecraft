@@ -20,17 +20,17 @@ import net.minecraft.world.phys.*;
 
 import java.util.Optional;
 
-public class AgarthanThunder extends Item {
+public class AgarthanThunder extends SpellTemplate {
 
     public AgarthanThunder(Properties properties) {
-        super(properties);
+        super(properties, 100, 50, SpellTypes.Lighting);
     }
 
     public void cast(Level level, LivingEntity user, ItemStack stack) {
         if (level.isClientSide()) {
             return; // I lowkey dont fuck with client only magic
         }
-        double range = 40.0;
+        double range = (double) this.RANGE;
         Vec3 start = user.getEyePosition();
         Vec3 look = user.getLookAngle();
         Vec3 end = start.add(look.scale(range));
@@ -114,16 +114,4 @@ public class AgarthanThunder extends Item {
         }
     }
 
-
-    @Override
-    public InteractionResult use(Level level, Player user, InteractionHand hand) {
-        if (level.isClientSide()) {
-            return InteractionResult.PASS;
-        }
-
-        ItemStack stack = user.getItemInHand(hand);
-        this.cast(level, user, stack);
-
-        return InteractionResult.SUCCESS;
-    }
 }

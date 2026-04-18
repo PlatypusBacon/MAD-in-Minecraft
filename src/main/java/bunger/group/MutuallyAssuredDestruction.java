@@ -1,13 +1,16 @@
 package bunger.group;
 
 import bunger.group.alex.CreativeTab;
+import bunger.group.alex.Mana;
 import bunger.group.alex.ParticleHelpers;
 import bunger.group.alex.SpellHelpers;
 import bunger.group.alex.block.ModBlocks;
 import bunger.group.alex.item.ModItems;
 import net.fabricmc.api.ModInitializer;
 
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.minecraft.server.level.ServerPlayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,11 +39,31 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
 			SpellHelpers.tick();
 			ParticleHelpers.tick();
+
+			// regens everyone 10 mana a second, i can play around with later
+			if (server.getTickCount() % 2 == 0) {
+				for (ServerPlayer player : server.getPlayerList().getPlayers()) {
+					Mana.ManaData mana = Mana.get(player);
+					if (mana.getCurrentMana() < mana.getMaxMana()) {
+						mana.incrementCurrentMana();
+					}
+				}
+			}
 		});
 
 		//Creative Tab
 		CreativeTab.register();
 
+		// Mana init, set new players to 100 mana
+		ServerEntityEvents.ENTITY_LOAD.register((entity, world) -> {
+			if (entity instanceof ServerPlayer player) {
+				Mana.ManaData mana = Mana.get(player);
+				if (mana.getMaxMana() == 0) {
+					mana.setMaxMana(100);
+					mana.setCurrentMana(100);
+				}
+			}
+		});
 
 	}
 }
