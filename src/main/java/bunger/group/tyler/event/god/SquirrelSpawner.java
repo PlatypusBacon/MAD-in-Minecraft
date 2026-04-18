@@ -4,6 +4,7 @@ import bunger.group.tyler.data.StructureEventData;
 import bunger.group.tyler.entity.ModEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.EntitySpawnReason;
 
 import java.util.Random;
 
@@ -25,10 +26,15 @@ public class SquirrelSpawner {
 
             BlockPos spawnPos = new BlockPos(x, y, z);
 
-            var squirrel = ModEntities.SQUIRREL.create(level);
+            var squirrel = ModEntities.SQUIRREL.create(level, EntitySpawnReason.LOAD);
             if (squirrel == null) continue;
 
-            squirrel.moveTo(spawnPos, 0f, 0f);
+            double offsetX = (i == 0) ? 12 : -12;
+            squirrel.setPos(
+                    origin.getX() + offsetX,
+                    origin.getY(),
+                    origin.getZ() + 8
+            );
             level.addFreshEntityWithPassengers(squirrel);
         }
     }

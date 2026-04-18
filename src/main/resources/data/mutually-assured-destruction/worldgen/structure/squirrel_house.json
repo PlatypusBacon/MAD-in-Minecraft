@@ -19,7 +19,7 @@
   "start_height": {
     "absolute": 0
   },
-
+  "start_rotation": "none",
 
   "project_start_to_heightmap": "WORLD_SURFACE_WG",
 

@@ -18,10 +18,11 @@ public class ModStructures {
                 Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, "squirrel_house"),
                 (ctx, tag) -> new SquirrelHousePiece(ctx.structureTemplateManager(), tag)
         );
+
         SQUIRREL_HOUSE_TYPE = Registry.register(
                 BuiltInRegistries.STRUCTURE_TYPE,
                 Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, "squirrel_house"),
-                () -> SquirrelHouseStructure.CODEC
+                (StructureType<SquirrelHouseStructure>) () -> SquirrelHouseStructure.CODEC
         );
     }
 }

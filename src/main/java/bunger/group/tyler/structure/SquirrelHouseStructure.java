@@ -2,7 +2,7 @@ package bunger.group.tyler.structure;
 
 import bunger.group.MutuallyAssuredDestruction;
 import bunger.group.tyler.data.StructureEventData;
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
@@ -15,8 +15,8 @@ import java.util.Optional;
 
 public class SquirrelHouseStructure extends Structure {
 
-    public static final Codec<SquirrelHouseStructure> CODEC =
-            simpleCodec(SquirrelHouseStructure::new).codec();
+    public static final MapCodec<SquirrelHouseStructure> CODEC =
+            simpleCodec(SquirrelHouseStructure::new);
 
     public SquirrelHouseStructure(StructureSettings settings) {
         super(settings);

@@ -23,9 +23,8 @@ public class SundownWatcher {
             StructureEventData data = StructureEventData.get(level);
 
             if (!data.hasBeenEntered() || data.isEventComplete()) return;
-
-            long dayTime    = level.getDayTime() % DAY_LENGTH;
-            long currentDay = level.getDayTime() / DAY_LENGTH;
+            long dayTime    = level.getOverworldClockTime() % DAY_LENGTH;
+            long currentDay = level.getOverworldClockTime() / DAY_LENGTH;
 
             // detect day change — works whether player slept or time passed
             if (currentDay > data.getLastDayProcessed()) {

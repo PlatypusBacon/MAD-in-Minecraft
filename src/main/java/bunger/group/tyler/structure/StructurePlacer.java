@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.decoration.painting.Painting;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
@@ -41,7 +42,7 @@ public class StructurePlacer {
     public static void place(ServerLevel level, BlockPos pos, String structureName) {
         StructureTemplateManager manager = level.getStructureManager();
         Identifier id = Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, structureName);
-        Optional<StructureTemplate> template = manager.getTemplate(id);
+        Optional<StructureTemplate> template = manager.get(id);
 
         if (template.isEmpty()) {
             System.err.println("Structure not found: " + id);
@@ -49,7 +50,7 @@ public class StructurePlacer {
         }
 
         StructurePlaceSettings settings = new StructurePlaceSettings();
-        template.get().placeInWorld(level, pos, pos, settings, level.random, 2);
+        template.get().placeInWorld(level, pos, pos, settings, level.getRandom(), 2);
 
         StructureEventData data = StructureEventData.get(level);
         data.setStructureRotation(Rotation.NONE);
@@ -67,9 +68,10 @@ public class StructurePlacer {
         BlockPos max = data.getStructureEnd();
 
         var paintings = level.getEntitiesOfClass(
-                net.minecraft.world.entity.decoration.Painting.class,
-                new net.minecraft.world.phys.AABB(min, max).inflate(4.0)
-        );
+                Painting.class,
+                new net.minecraft.world.phys.AABB(
+                        net.minecraft.world.phys.Vec3.atLowerCornerOf(min),
+                        net.minecraft.world.phys.Vec3.atLowerCornerOf(max)).inflate(4.0)        );
 
         if (!paintings.isEmpty()) {
             BlockPos bedPos = data.getBedPos();
@@ -125,17 +127,17 @@ public class StructurePlacer {
 
             // discard any existing painting in the area
             var existing = level.getEntitiesOfClass(
-                    net.minecraft.world.entity.decoration.Painting.class,
+                    Painting.class,
                     new net.minecraft.world.phys.AABB(
-                            data.getStructureOrigin(),
-                            data.getStructureEnd()).inflate(4.0)
+                            net.minecraft.world.phys.Vec3.atLowerCornerOf(data.getStructureOrigin()),
+                            net.minecraft.world.phys.Vec3.atLowerCornerOf(data.getStructureEnd())).inflate(4.0)
             );
             existing.forEach(net.minecraft.world.entity.Entity::discard);
 
             // get variant
             var registry = level.registryAccess()
-                    .registryOrThrow(Registries.PAINTING_VARIANT);
-            var variantHolder = registry.getHolder(ResourceKey.create(
+                    .lookupOrThrow(Registries.PAINTING_VARIANT);
+            var variantHolder = registry.get(ResourceKey.create(
                     Registries.PAINTING_VARIANT,
                     Identifier.fromNamespaceAndPath("mutually-assured-destruction", "god_coming_4")));
 
@@ -144,7 +146,7 @@ public class StructurePlacer {
                 return;
             }
 
-            var finalPainting = new net.minecraft.world.entity.decoration.Painting(
+            var finalPainting = new Painting(
                     level, wallBlock, facing, variantHolder.get());
 
             System.out.println("[PAINTING] survives=" + finalPainting.survives()
@@ -181,12 +183,12 @@ public class StructurePlacer {
             BlockPos playerPos = player.blockPosition();
 
             var registry = level.registryAccess()
-                    .registryOrThrow(Registries.STRUCTURE);
+                    .lookupOrThrow(Registries.STRUCTURE);
             var structureKey = ResourceKey.create(Registries.STRUCTURE, structureId);
             if (!registry.containsKey(structureKey)) continue;
 
             var structureStart = level.structureManager()
-                    .getStructureAt(playerPos, registry.getOrThrow(structureKey));
+                    .getStructureAt(playerPos, registry.getOrThrow(structureKey).value());
             if (!structureStart.isValid()) continue;
 
             var pieces = structureStart.getPieces();

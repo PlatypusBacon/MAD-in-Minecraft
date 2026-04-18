@@ -93,9 +93,11 @@ public class God {
 
         // discard any existing god entities near origin
         var existing = level.getEntitiesOfClass(
-                bunger.group.entity.GodEntity.class,
+                bunger.group.tyler.entity.GodEntity.class,
                 new net.minecraft.world.phys.AABB(
-                        data.getStructureOrigin(), data.getStructureEnd()).inflate(8.0)
+                        net.minecraft.world.phys.Vec3.atLowerCornerOf(data.getStructureOrigin()),
+                        net.minecraft.world.phys.Vec3.atLowerCornerOf(data.getStructureEnd())
+                ).inflate(8.0)
         );
         existing.forEach(net.minecraft.world.entity.Entity::discard);
 
@@ -105,10 +107,10 @@ public class God {
         var spawnPos = player.position()
                 .add(-look.x * 4.0, 0.0, -look.z * 4.0);
 
-        var god = bunger.group.entity.ModEntities.GOD.create(level);
+        var god = bunger.group.tyler.entity.ModEntities.GOD.create(level, net.minecraft.world.entity.EntitySpawnReason.MOB_SUMMONED);
         if (god == null) return;
 
-        god.moveTo(spawnPos.x, spawnPos.y, spawnPos.z, 0f, 0f);
+        god.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
 
         // face the god toward the player
         double dx = player.getX() - spawnPos.x;

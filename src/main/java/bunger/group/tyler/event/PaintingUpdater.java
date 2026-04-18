@@ -8,8 +8,9 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.decoration.Painting;
+import net.minecraft.world.entity.decoration.painting.Painting;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.Comparator;
 import java.util.List;
@@ -23,7 +24,6 @@ public class PaintingUpdater {
             Identifier.fromNamespaceAndPath("mutually-assured-destruction", "god_coming_3"),
             Identifier.fromNamespaceAndPath("mutually-assured-destruction", "god_coming_4"),
     };
-
     public static void updatePaintingToIndex(ServerLevel level,
                                              StructureEventData data,
                                              int index) {
@@ -50,8 +50,7 @@ public class PaintingUpdater {
             BlockPos max = data.getStructureEnd();
             List<Painting> all = level.getEntitiesOfClass(
                     Painting.class,
-                    new AABB(min, max).inflate(4.0)
-            );
+                    new AABB(Vec3.atLowerCornerOf(min), Vec3.atLowerCornerOf(max)).inflate(4.0)            );
             if (!all.isEmpty()) {
                 BlockPos bed = data.getBedPos();
                 painting = all.stream()
@@ -79,8 +78,8 @@ public class PaintingUpdater {
         painting.discard();
 
         var registry = level.registryAccess()
-                .registryOrThrow(Registries.PAINTING_VARIANT);
-        var variantHolder = registry.getHolder(
+                .lookupOrThrow(Registries.PAINTING_VARIANT);
+        var variantHolder = registry.get(
                 ResourceKey.create(Registries.PAINTING_VARIANT, variantId));
 
         if (variantHolder.isEmpty()) {

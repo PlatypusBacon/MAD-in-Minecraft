@@ -22,6 +22,11 @@ public class ModEntities {
             EntityType.Builder.<SquirrelBearEntity>of(SquirrelBearEntity::new, MobCategory.MONSTER)
                     .sized(2.5f, 3.5f)
     );
+    public static final EntityType<GodEntity> GOD = register(
+            "god",
+            EntityType.Builder.<GodEntity>of(GodEntity::new, MobCategory.MONSTER)
+                    .sized(2.5f, 3.5f)
+    );
     private static <T extends Entity> EntityType<T> register(String name, EntityType.Builder<T> builder) {
         ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, name));
         return Registry.register(BuiltInRegistries.ENTITY_TYPE, key, builder.build(key));
@@ -31,10 +36,12 @@ public class ModEntities {
         // Ensure the entity types are loaded
         var squirrel = SQUIRREL;
         var squirrel_bear = SQUIRREL_BEAR;
+        var god = GOD;
     }
 
     public static void registerAttributes() {
         FabricDefaultAttributeRegistry.register(SQUIRREL, SquirrelEntity.createCubeAttributes());
         FabricDefaultAttributeRegistry.register(SQUIRREL_BEAR, SquirrelBearEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(GOD, GodEntity.createAttributes());
     }
 }
