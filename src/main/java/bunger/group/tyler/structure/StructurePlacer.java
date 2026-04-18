@@ -96,10 +96,10 @@ public class StructurePlacer {
         StructureEventData data = StructureEventData.get(level);
         BlockPos o = data.getTrueOrigin();
         return switch (data.getStructureRotation()) {
-            case NONE                -> o.offset(  9, 1,  23);
-            case CLOCKWISE_90        -> o.offset(-23, 1,   9);
-            case CLOCKWISE_180       -> o.offset( -9, 1, -23);
-            case COUNTERCLOCKWISE_90 -> o.offset( 23, 1,  -9);
+            case NONE                -> o.offset(  9, 1,  24);
+            case CLOCKWISE_90        -> o.offset(-24, 1,   9);
+            case CLOCKWISE_180       -> o.offset( -9, 1, -24);
+            case COUNTERCLOCKWISE_90 -> o.offset( 24, 1,  -9);
         };
     }
 
@@ -115,7 +115,7 @@ public class StructurePlacer {
                 case NONE                -> o.offset( 7,  2,  22);
                 case CLOCKWISE_90        -> o.offset(-22, 2,   7);
                 case CLOCKWISE_180       -> o.offset(-7,  2, -22);
-                case COUNTERCLOCKWISE_90 -> o.offset(22,  2,  -7);
+                case COUNTERCLOCKWISE_90 -> o.offset( 22, 2,  -7);
             };
 
             Direction facing = switch (rotation) {

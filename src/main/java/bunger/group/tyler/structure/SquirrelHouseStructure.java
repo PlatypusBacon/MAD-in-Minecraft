@@ -31,16 +31,13 @@ public class SquirrelHouseStructure extends Structure {
                 (builder) -> generatePieces(builder, ctx));
     }
 
-    private void generatePieces(StructurePiecesBuilder builder,
-                                GenerationContext ctx) {
+    private void generatePieces(StructurePiecesBuilder builder, GenerationContext ctx) {
         BlockPos pos = new BlockPos(
                 ctx.chunkPos().getMiddleBlockX(),
-                0, // height is handled by onTopOfChunkCenter
+                0,
                 ctx.chunkPos().getMiddleBlockZ()
         );
-
-        builder.addPiece(new SquirrelHousePiece(
-                ctx.structureTemplateManager(), pos));
+        builder.addPiece(new SquirrelHousePiece(ctx.structureTemplateManager(), pos));
     }
 
     @Override

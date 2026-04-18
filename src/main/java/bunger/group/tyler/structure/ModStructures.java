@@ -19,10 +19,5 @@ public class ModStructures {
                 (ctx, tag) -> new SquirrelHousePiece(ctx.structureTemplateManager(), tag)
         );
 
-        SQUIRREL_HOUSE_TYPE = Registry.register(
-                BuiltInRegistries.STRUCTURE_TYPE,
-                Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, "squirrel_house"),
-                (StructureType<SquirrelHouseStructure>) () -> SquirrelHouseStructure.CODEC
-        );
     }
 }
