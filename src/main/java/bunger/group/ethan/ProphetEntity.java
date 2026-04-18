@@ -24,7 +24,10 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.network.chat.Component;
 
+
+// TODO: add natural spawn rate
 
 public class ProphetEntity extends PathfinderMob {
 
@@ -129,10 +132,11 @@ public class ProphetEntity extends PathfinderMob {
             player.addEffect(new MobEffectInstance(
                 BuiltInRegistries.MOB_EFFECT.wrapAsHolder(RedDarknessEffect.RED_DARKNESS),
                 //MobEffects.DARKNESS,
-                1000,
+                1200,
                 0
             ));
-            MutuallyAssuredDestruction.RED_RAIN_PLAYERS.put(player.getUUID(), player.level().getGameTime() + 1200);
+            //MutuallyAssuredDestruction.RED_RAIN_PLAYERS.put(player.getUUID(), player.level().getGameTime() + 1200);
+            player.sendOverlayMessage(Component.literal("A Prophet of Vormoth is slain!"));
         }
     }
 

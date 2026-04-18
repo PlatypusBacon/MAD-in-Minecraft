@@ -13,7 +13,7 @@ public class AltarEventHandler {
 
     public static void register() {
         ServerLivingEntityEvents.ALLOW_DEATH.register((entity, source, amount) -> {
-            if (entity instanceof ProphetEntity player) {
+            if (entity instanceof ProphetEntity player) { //TODO: this should not be prophet entity
                 BlockPos below = player.blockPosition().below();
                 if (player.level().getBlockState(below).getBlock() 
                         instanceof AltarBlock) {
@@ -25,7 +25,7 @@ public class AltarEventHandler {
     }
 
 
-    // TODO: Add Voremoth, Excommunicado Imortalis
+
     public static void spawnBoss(ServerLevel level, BlockPos altarPos) {
         double spawnX = altarPos.getX() + 0.5;
         double spawnY = altarPos.getY() + 20;
@@ -49,16 +49,7 @@ public class AltarEventHandler {
             // set position before adding to world
             boss.setPos(spawnX, spawnY, spawnZ);
             level.addFreshEntity(boss);
-            VoremothBossMechanic.startMechanic(boss);
-            System.out.println("Boss invulnerable to inwall damage: " + boss.isInvulnerableTo(level, level.damageSources().inWall()));
-            System.out.println("Boss invulnerable to inwall cactus: " + boss.isInvulnerableTo(level, level.damageSources().cactus()));
-            System.out.println("Boss invulnerable to generic damage: " + boss.isInvulnerableTo(level, level.damageSources().generic()));
-            System.out.println("Boss invulnerable to starve damage: " + boss.isInvulnerableTo(level, level.damageSources().starve()));
-            System.out.println("Boss invulnerable to onfire damage: " + boss.isInvulnerableTo(level, level.damageSources().onFire()));
-            System.out.println("Boss invulnerable to lava damage: " + boss.isInvulnerableTo(level, level.damageSources().lava()));
-            System.out.println("Boss invulnerable to lightningBolt damage: " + boss.isInvulnerableTo(level, level.damageSources().lightningBolt()));
-            System.out.println("Boss invulnerable to stalagmite damage: " + boss.isInvulnerableTo(level, level.damageSources().stalagmite()));
-            //boss.hurtServer(level, level.damageSources().cactus(), 31.0F);
+            VoremothBossMechanic.startMechanic(boss, altarPos);
         }
     }
 }

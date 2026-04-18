@@ -26,6 +26,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.network.chat.Component;
 
 
 // TODO: add item texture
@@ -110,6 +111,10 @@ public class AltarFragmentBlock extends Block {
             0.3F,
             1.0F
         );
+        // for (ServerPlayer player : .players()) {
+        //     player.sendOverlayMessage(Component.literal(""));
+        // }
+        
     }
 
     

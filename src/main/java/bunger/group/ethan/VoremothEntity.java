@@ -35,6 +35,9 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.effect.MobEffects;
 
+// TODO: add mob attacks
+// TODO: fix pathfinding
+
 
 public class VoremothEntity extends PathfinderMob {
 
@@ -48,8 +51,10 @@ public class VoremothEntity extends PathfinderMob {
                 .add(Attributes.MAX_HEALTH, 500.0F)
                 .add(Attributes.TEMPT_RANGE, 10)
                 .add(Attributes.MOVEMENT_SPEED, 0.3)
-                .add(Attributes.FLYING_SPEED, 1.0)
-                .add(Attributes.SCALE, 1.0);
+                .add(Attributes.FLYING_SPEED, 3.0)
+                .add(Attributes.SCALE, 3.0)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0F)
+                .add(Attributes.CAMERA_DISTANCE, 1.0F);
     }
 
     protected void registerGoals() {
@@ -113,8 +118,8 @@ public class VoremothEntity extends PathfinderMob {
     @Override
     public void playAmbientSound() {
         SoundEvent sound = AMBIENT_SOUNDS[this.random.nextInt(AMBIENT_SOUNDS.length)];
-        float pitch = 0.5F;
-        float volume = 0.5F;
+        float pitch = 0.4F;
+        float volume = 0.4F;
 
         this.level().playSound(
             null,

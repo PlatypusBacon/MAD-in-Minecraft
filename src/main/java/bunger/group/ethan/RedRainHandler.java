@@ -3,7 +3,9 @@ package bunger.group.ethan;
 import java.util.UUID;
 
 import bunger.group.MutuallyAssuredDestruction;
+import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.TickTask;
@@ -14,6 +16,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.Component;
 
 public class RedRainHandler {
 
@@ -61,7 +64,7 @@ public class RedRainHandler {
             			}
 
 						// Lightning
-						if (hasRedDarkness && player.tickCount % 60 == 0) {
+						if (hasRedDarkness && player.tickCount % 300 == 0) {
 							server.execute(new TickTask(server.getTickCount() + 1, () -> {
 								LightningBolt lightning = EntityType.LIGHTNING_BOLT.create(
 									level, EntitySpawnReason.TRIGGERED
@@ -74,9 +77,25 @@ public class RedRainHandler {
 								}
 							}));
 						}
+
+
+						// Message
+						if (hasRedDarkness && player.tickCount % 300 == 0) {
+							player.sendOverlayMessage(Component.literal("Spill the blood of your allies to satisfy Vormoth's rage"));
+						}
         			}
     			}
 			});
+
+
+
+			ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity, source, amount) -> {
+				if (entity instanceof ServerPlayer player) {
+					MutuallyAssuredDestruction.RED_RAIN_PLAYERS.remove(player.getUUID());
+				}
+				return true;
+			
+            });
     }
     
 }

@@ -20,6 +20,8 @@ import java.util.Map;
 import bunger.group.ethan.RedDarknessEffect;
 import bunger.group.ethan.VoremothEntity;
 
+// TODO: handle player death
+
 public class VoremothBossMechanic {
     
     public enum BeamColor { RED, BLUE, WHITE }
@@ -31,11 +33,11 @@ public class VoremothBossMechanic {
     public static BeamColor REQUIRED_COLOR = BeamColor.RED;
     private static int cycleTimer = 0;
     private static VoremothEntity activeVoremoth = null;
-    private static final int SURFACE_Y_LEVEL = 63; // y level to spawn beams from
+    private static int SURFACE_Y_LEVEL = 63; // y level to spawn beams from
 
     public static void register() {
         ServerTickEvents.END_SERVER_TICK.register(server -> {
-            if (activeVoremoth == null) {
+            if (activeVoremoth == null || activeVoremoth.getHealth() == 0) {
                 //System.out.println("VOREMOTHMECHANICS: No active Voremoth, skipping mechanic logic.");
                 ACTIVE_BEAMS.clear();
                 return;
@@ -67,7 +69,8 @@ public class VoremothBossMechanic {
         });
     }
 
-    public static void startMechanic(VoremothEntity voremoth) {
+    public static void startMechanic(VoremothEntity voremoth, BlockPos altarPos) {
+        SURFACE_Y_LEVEL = altarPos.getY() - 10;
         System.out.println("VOREMOTHMECHANICS: Starting Voremoth mechanic for " + voremoth);
         activeVoremoth = voremoth;
         
@@ -104,7 +107,7 @@ public class VoremothBossMechanic {
                     if (player.distanceTo(activeVoremoth) < 100) {
                         String message = switch (REQUIRED_COLOR) {
                             case RED -> "BLOOD";
-                            case BLUE -> "ENERGY";
+                            case BLUE -> "POWER";
                             case WHITE -> "PURITY";
                         };
                         player.sendOverlayMessage(
@@ -125,6 +128,8 @@ public class VoremothBossMechanic {
             case BLUE -> ParticleTypes.GLOW;
             case WHITE -> ParticleTypes.END_ROD;
         };
+
+
         for (int y = 0; y < 50; y++) {
             level.sendParticles(particle, 
                 pos.getX() + 0.5, SURFACE_Y_LEVEL + y, pos.getZ() + 0.5,
@@ -137,7 +142,6 @@ public class VoremothBossMechanic {
             BlockPos beamPos = entry.getKey();
             BeamColor beamColor = entry.getValue();
 
-            // check if player is within 2 blocks of beam
             double dist = Math.sqrt(
                 Math.pow(player.getX() - beamPos.getX(), 2) +
                 Math.pow(player.getZ() - beamPos.getZ(), 2)
@@ -152,8 +156,9 @@ public class VoremothBossMechanic {
                 } else {
                     player.addEffect(new MobEffectInstance(
                         BuiltInRegistries.MOB_EFFECT.wrapAsHolder(RedDarknessEffect.RED_DARKNESS),
-                        200, 0
+                        1200, 0
                     ));
+                    player.sendOverlayMessage(Component.literal("Voremoth demands the blood of your allies")); // TODO add messaage
                 }
             }
         }
