@@ -19,13 +19,13 @@ public class ModItems {
     public static final Item ICE_SHIELD = registerItem(
             "spell_ice_ice_shield",
             IceShield::new, // funky lambda I am not that sure of
-            new Item.Properties()
+            new IceShield.Properties()
     );
 
     public static final Item AGARTHAN_THUNDER = registerItem(
             "spell_lightning_agarthan_thunder",
             AgarthanThunder::new,
-            new Item.Properties()
+            new AgarthanThunder.Properties()
     );
 
     public static <T extends Item> T registerItem(
@@ -45,22 +45,6 @@ public class ModItems {
         return item;
     }
 
-    public static final ResourceKey<CreativeModeTab> CUSTOM_CREATIVE_TAB_KEY = ResourceKey.create(
-            BuiltInRegistries.CREATIVE_MODE_TAB.key(),
-            Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, "wizardry_tab")
-    );
 
-    public static final CreativeModeTab CUSTOM_CREATIVE_TAB = FabricCreativeModeTab.builder()
-            .icon(() -> new ItemStack(ModItems.AGARTHAN_THUNDER))
-            .title(Component.translatable("creativeTab.wizardry-tab"))
-            .displayItems((params, output) -> {
-                output.accept(ModItems.ICE_SHIELD);
-                output.accept(ModItems.AGARTHAN_THUNDER);
-            })
-            .build();
-
-    public static void registerAll() {
-        //Add creative tab
-        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, CUSTOM_CREATIVE_TAB_KEY, CUSTOM_CREATIVE_TAB);
-    }
+    public static void register() {}
 }

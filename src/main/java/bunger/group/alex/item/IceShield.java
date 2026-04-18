@@ -2,7 +2,6 @@ package bunger.group.alex.item;
 
 import bunger.group.alex.SpellHelpers;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
