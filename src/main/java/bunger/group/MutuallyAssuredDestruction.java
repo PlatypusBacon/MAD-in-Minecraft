@@ -35,6 +35,8 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		// Blocks
 		ModBlocks.register();
 
+		bunger.group.csmit863.item.ModItems.register();
+
 		// Tick Events
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
 			SpellHelpers.tick();

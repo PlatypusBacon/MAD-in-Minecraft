@@ -31,8 +31,8 @@ public class HallucinationClientMixin {
             int r = player.getRandom().nextInt(3);
             sound = switch (r) {
                 case 0 -> SoundEvents.ENDERMAN_TELEPORT;
-                case 1 -> SoundEvents.CREEPER_PRIMED;
-                default -> SoundEvents.GHAST_SCREAM;
+                case 1 -> SoundEvents.GHAST_WARN;
+                default -> SoundEvents.CREEPER_PRIMED;
             };
             float volume = 0.7f + player.getRandom().nextFloat() * 0.6f;
             float pitch = 0.8f + player.getRandom().nextFloat() * 0.6f;
