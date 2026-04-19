@@ -17,6 +17,7 @@ public class IceShield extends SpellTemplate {
         super(properties, 10, 4,  SpellTypes.ICE);
     }
 
+    @Override
     public void cast(Level level, LivingEntity user, ItemStack stack) {
         if (level.isClientSide()) {
             return; // I lowkey dont fuck with client only magic

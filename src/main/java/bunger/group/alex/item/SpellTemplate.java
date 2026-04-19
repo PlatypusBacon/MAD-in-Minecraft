@@ -53,5 +53,5 @@ public class SpellTemplate extends Item {
 }
 
 enum SpellTypes {
-    Lighting, ICE
+    LIGHTNING, ICE, FIRE
 }

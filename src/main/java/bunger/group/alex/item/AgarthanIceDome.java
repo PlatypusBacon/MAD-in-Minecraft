@@ -13,6 +13,7 @@ public class AgarthanIceDome extends SpellTemplate {
         super(properties, 40, 7,  SpellTypes.ICE);
     }
 
+    @Override
     public void cast(Level level, LivingEntity user, ItemStack stack) {
         if (level.isClientSide()) {
             return; // I lowkey dont fuck with client only magic

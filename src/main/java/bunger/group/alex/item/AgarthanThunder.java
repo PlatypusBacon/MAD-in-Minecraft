@@ -4,15 +4,10 @@ import bunger.group.alex.ParticleHelpers;
 import bunger.group.alex.SpellHelpers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -23,9 +18,10 @@ import java.util.Optional;
 public class AgarthanThunder extends SpellTemplate {
 
     public AgarthanThunder(Properties properties) {
-        super(properties, 100, 50, SpellTypes.Lighting);
+        super(properties, 100, 50, SpellTypes.LIGHTNING);
     }
 
+    @Override
     public void cast(Level level, LivingEntity user, ItemStack stack) {
         if (level.isClientSide()) {
             return; // I lowkey dont fuck with client only magic

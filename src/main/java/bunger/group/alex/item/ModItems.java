@@ -34,6 +34,12 @@ public class ModItems {
             new AgarthanThunder.Properties()
     );
 
+    public static final Item IGNITION = registerItem(
+            "spell_fire_ignition",
+            Ignition::new,
+            new Ignition.Properties()
+    );
+
     public static <T extends Item> T registerItem(
             String name,
             Function<Item.Properties, T> itemFactory,
