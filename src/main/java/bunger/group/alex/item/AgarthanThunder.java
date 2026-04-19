@@ -97,9 +97,11 @@ public class AgarthanThunder extends SpellTemplate {
                     double offsetX = Math.cos(angle) * dist;
                     double offsetZ = Math.sin(angle) * dist;
 
-                    BlockPos place = new BlockPos((int) (finalCentre1.x + offsetX),
-                            (int) finalCentre1.y,
-                            (int) (finalCentre1.z + offsetZ));
+                    int x = (int) (finalCentre1.x + offsetX);
+                    int z = (int) (finalCentre1.z + offsetZ);
+                    int y = level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING, x, z);
+
+                    BlockPos place = new BlockPos(x, y, z);
 
                     LightningBolt lightningBolt = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
                     lightningBolt.setPos(place.getCenter());
@@ -108,6 +110,8 @@ public class AgarthanThunder extends SpellTemplate {
 
             });
         }
+
+        ParticleHelpers.spawnBeamParticles(level, start, end, ParticleTypes.CLOUD);
     }
 
 }
