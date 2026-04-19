@@ -2,6 +2,7 @@ package bunger.group.csmit863.item;
 
 import bunger.group.MutuallyAssuredDestruction;
 import bunger.group.csmit863.effects.HallucinationEffect;
+import bunger.group.csmit863.effects.MadnessEffect;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -25,6 +26,11 @@ public class ModItems {
             Registry.registerForHolder(BuiltInRegistries.MOB_EFFECT,
                     Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, "hallucination"),
                     new HallucinationEffect().setBlendDuration(150, 20, 60));
+
+    public static final Holder<MobEffect> MADNESS_EFFECT =
+            Registry.registerForHolder(BuiltInRegistries.MOB_EFFECT,
+                    Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, "madness"),
+                    new MadnessEffect());
 
     public static final Consumable MAGIC_MUSHROOM_CONSUMABLE = Consumables.defaultFood()
             .build();
