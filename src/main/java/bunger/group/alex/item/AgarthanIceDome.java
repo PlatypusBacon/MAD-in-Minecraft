@@ -2,19 +2,15 @@ package bunger.group.alex.item;
 
 import bunger.group.alex.SpellHelpers;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 
-public class IceShield extends SpellTemplate {
-    public IceShield(Properties properties) {
-        super(properties, 10, 4,  SpellTypes.ICE);
+public class AgarthanIceDome extends SpellTemplate {
+    public AgarthanIceDome(Properties properties) {
+        super(properties, 40, 7,  SpellTypes.ICE);
     }
 
     @Override
@@ -49,8 +45,10 @@ public class IceShield extends SpellTemplate {
         Vec3 right = normal.cross(up).normalize();
         Vec3 forward = right.cross(normal).normalize();
 
-        for (int x = -1; x <= 1; x++) {
-            for (int y = -1; y <= 1; y++) {
+        int areaDelta = 9;
+
+        for (int x = -areaDelta; x <= areaDelta; x++) {
+            for (int y = -areaDelta; y <= areaDelta; y++) {
 
                 Vec3 point = hitPoint
                         .add(right.scale(x))
@@ -72,7 +70,7 @@ public class IceShield extends SpellTemplate {
                     final BlockPos finalPos = pos;
                     final Level finalLevel = level;
 
-                    SpellHelpers.runAfterTicks(60, () -> {
+                    SpellHelpers.runAfterTicks(80, () -> {
                         if (finalLevel.getBlockState(finalPos).is(Blocks.ICE) || finalLevel.getBlockState(finalPos).is(Blocks.WATER)) {
                             finalLevel.setBlock(finalPos, Blocks.AIR.defaultBlockState(), 3);
                         }
