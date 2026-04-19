@@ -11,6 +11,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.equipment.ArmorType;
 
 import java.util.function.Function;
 
@@ -38,6 +39,41 @@ public class ModItems {
             "spell_fire_ignition",
             Ignition::new,
             new Ignition.Properties()
+    );
+
+    public static final Item STAFF_OF_TELEPORTATION = registerItem(
+            "spell_staff_of_teleportation",
+            StaffOfTeleportation::new,
+            new StaffOfTeleportation.Properties()
+    );
+
+    // Armour
+    public static final Item CLOTH_HELMET = registerItem(
+            "cloth_helmet",
+            Item::new,
+            new Item.Properties().humanoidArmor(ClothArmorMaterial.INSTANCE, ArmorType.HELMET)
+                    .durability(ArmorType.HELMET.getDurability(ClothArmorMaterial.BASE_DURABILITY))
+    );
+
+    public static final Item CLOTH_CHESTPLATE = registerItem(
+            "cloth_chestplate",
+            Item::new,
+            new Item.Properties().humanoidArmor(ClothArmorMaterial.INSTANCE, ArmorType.CHESTPLATE)
+                    .durability(ArmorType.CHESTPLATE.getDurability(ClothArmorMaterial.BASE_DURABILITY))
+    );
+
+    public static final Item CLOTH_LEGGINGS = registerItem(
+            "cloth_leggings",
+            Item::new,
+            new Item.Properties().humanoidArmor(ClothArmorMaterial.INSTANCE, ArmorType.LEGGINGS)
+                    .durability(ArmorType.LEGGINGS.getDurability(ClothArmorMaterial.BASE_DURABILITY))
+    );
+
+    public static final Item CLOTH_BOOTS = registerItem(
+            "cloth_boots",
+            Item::new,
+            new Item.Properties().humanoidArmor(ClothArmorMaterial.INSTANCE, ArmorType.BOOTS)
+                    .durability(ArmorType.BOOTS.getDurability(ClothArmorMaterial.BASE_DURABILITY))
     );
 
     public static <T extends Item> T registerItem(

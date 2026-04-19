@@ -40,6 +40,9 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 			if (server.getTickCount() % 2 == 0) {
 				for (ServerPlayer player : server.getPlayerList().getPlayers()) {
 					Mana.ManaData mana = Mana.get(player);
+
+					mana.recalculateMaxMana();
+
 					if (mana.getCurrentMana() < mana.getMaxMana()) {
 						mana.incrementCurrentMana();
 						ServerPlayNetworking.send(player, new ManaPacket(mana.getCurrentMana(), mana.getMaxMana()));

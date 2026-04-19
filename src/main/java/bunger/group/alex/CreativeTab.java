@@ -32,6 +32,13 @@ public class CreativeTab {
                 output.accept(ModItems.AGARTHAN_THUNDER);
                 output.accept(ModItems.AGARTHAN_ICE_DOME);
                 output.accept(ModItems.IGNITION);
+                output.accept(ModItems.STAFF_OF_TELEPORTATION);
+
+                // Armour
+                output.accept(ModItems.CLOTH_HELMET);
+                output.accept(ModItems.CLOTH_CHESTPLATE);
+                output.accept(ModItems.CLOTH_LEGGINGS);
+                output.accept(ModItems.CLOTH_BOOTS);
 
                 // Blocks
                 output.accept(ModBlocks.SPELL_DESK);
