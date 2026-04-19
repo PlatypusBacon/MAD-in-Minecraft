@@ -3,7 +3,8 @@
 	"package": "bunger.group.client.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"client": [
-		"ExampleClientMixin"
+		"ExampleClientMixin",
+		"HallucinationClientMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

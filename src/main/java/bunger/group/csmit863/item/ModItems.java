@@ -24,12 +24,9 @@ public class ModItems {
     public static final Holder<MobEffect> HALLUCINATION_EFFECT =
             Registry.registerForHolder(BuiltInRegistries.MOB_EFFECT,
                     Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, "hallucination"),
-                    new HallucinationEffect());
+                    new HallucinationEffect().setBlendDuration(150, 20, 60));
 
     public static final Consumable MAGIC_MUSHROOM_CONSUMABLE = Consumables.defaultFood()
-            .onConsume(new ApplyStatusEffectsConsumeEffect(new MobEffectInstance(HALLUCINATION_EFFECT, 20 * 30, 0), 1.0f))
-            .onConsume(new ApplyStatusEffectsConsumeEffect(new MobEffectInstance(MobEffects.HUNGER, 100, 1), 1.0f))
-            .onConsume(new ApplyStatusEffectsConsumeEffect(new MobEffectInstance(MobEffects.NAUSEA, 1000, 10), 1.0f))
             .build();
 
     public static final FoodProperties MAGIC_MUSHROOM_FOOD = new FoodProperties.Builder()
@@ -38,7 +35,7 @@ public class ModItems {
 
     public static final Item MAGIC_MUSHROOM = registerItem(
             "magic_mushroom",
-            Item::new,
+            MagicMushroom::new,
             new Item.Properties().food(MAGIC_MUSHROOM_FOOD, MAGIC_MUSHROOM_CONSUMABLE)
     );
 

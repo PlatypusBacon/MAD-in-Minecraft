@@ -20,10 +20,6 @@ public class MagicMushroom extends Item {
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level world, LivingEntity user) {
         if (!world.isClientSide() && user instanceof Player player) {
-            // apply hunger/confusion as before
-            player.addEffect(new MobEffectInstance(MobEffects.HUNGER, 100, 1));
-            player.addEffect(new MobEffectInstance(MobEffects.NAUSEA, 1000, 10));
-
             MobEffectInstance current = player.getEffect(ModItems.HALLUCINATION_EFFECT);
             int newAmp = BASE_AMPLIFIER;
             int newDuration = BASE_DURATION;
