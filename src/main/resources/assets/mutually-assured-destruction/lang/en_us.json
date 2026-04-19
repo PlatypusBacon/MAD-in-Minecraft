@@ -1,8 +1,8 @@
 {
     "effect.mutually-assured-destruction.red_darkness": "Voremoth's Rage",
-    "entity:mutually-assured-destruction.prophet": "Prophet",
-    "entity:mutually-assured-destruction.voremoth": "Voremoth",
-    "block:mutually-assured-destruction.altar_fragment": "Altar Fragment",
-    "block:mutually-assured-destruction.altar": "Altar"
+    "entity.mutually-assured-destruction.prophet": "Prophet",
+    "entity.mutually-assured-destruction.voremoth": "Voremoth",
+    "block.mutually-assured-destruction.altar_fragment": "Altar Fragment",
+    "block.mutually-assured-destruction.altar": "Altar"
 
 }

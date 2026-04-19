@@ -57,13 +57,13 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 
 	public static final Block ALTAR_FRAGMENT = AltarFragmentBlock.registerBlock("altar_fragment",
         AltarFragmentBlock::new,
-        BlockBehaviour.Properties.of().strength(15.0F).requiresCorrectToolForDrops(),
+        BlockBehaviour.Properties.of().strength(4.0F),
         true
     );
 
 	public static final Block ALTAR = AltarBlock.registerBlock("altar",
         AltarBlock::new,
-        BlockBehaviour.Properties.of().strength(15.0F).requiresCorrectToolForDrops(),
+        BlockBehaviour.Properties.of().strength(4.0F),
         true
     );
 

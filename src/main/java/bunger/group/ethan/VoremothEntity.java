@@ -6,9 +6,14 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.animal.axolotl.Axolotl;
+import net.minecraft.world.entity.animal.squid.Squid;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.Guardian;
+import net.minecraft.world.entity.monster.illager.Pillager;
 import net.minecraft.world.entity.monster.Ghast.GhastMoveControl;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -20,7 +25,10 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundSoundPacket;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.Identifier;
+import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -31,9 +39,14 @@ import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.effect.MobEffects;
+import org.jspecify.annotations.Nullable;
+
 
 // TODO: add mob attacks
 // TODO: fix pathfinding
@@ -41,29 +54,36 @@ import net.minecraft.world.effect.MobEffects;
 
 public class VoremothEntity extends PathfinderMob {
 
+    private int laserTimer = 0;
+    private int laserCooldown = 0;
+    private static final int LASER_WARMUP = 60;
+    @Nullable
+    public LivingEntity laserTarget = null;
+    public int getLaserTimer() { return laserTimer; }
+
+
     public VoremothEntity(EntityType<? extends VoremothEntity> entityType, Level world) {
         super(entityType, world);
-        this.noPhysics = true;
+        //this.noPhysics = true;
     }
 
     public static AttributeSupplier.Builder createCubeAttributes() {
         return PathfinderMob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 500.0F)
-                .add(Attributes.TEMPT_RANGE, 10)
                 .add(Attributes.MOVEMENT_SPEED, 0.3)
                 .add(Attributes.FLYING_SPEED, 3.0)
-                .add(Attributes.SCALE, 3.0)
+                .add(Attributes.SCALE, 40.0)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0F)
                 .add(Attributes.CAMERA_DISTANCE, 1.0F);
     }
 
     protected void registerGoals() {
-        //this.goalSelector.addGoal(0, new LookAtPlayerGoal(this, Player.class, 50.0F, 1.0F));
+        this.goalSelector.addGoal(0, new LookAtPlayerGoal(this, Player.class, 100.0F, 1.0F));
         this.moveControl = new FlyingMoveControl(this, 0, true);
         this.setNoGravity(true);
         // this.goalSelector.addGoal(1, new LookRandomlyGoal(this));
         // this.goalSelector.addGoal(5, new GhastMoveControl(this));
-        this.goalSelector.addGoal(4, new WaterAvoidingRandomFlyingGoal(this, 1.0D));
+        //this.goalSelector.addGoal(4, new WaterAvoidingRandomFlyingGoal(this, 0.1D));
 
     }
 
@@ -100,11 +120,43 @@ public class VoremothEntity extends PathfinderMob {
         bossBar.removePlayer(player);
     }
 
-    @Override
-    public void customServerAiStep(ServerLevel level) {
-        super.customServerAiStep(level);
-        bossBar.setProgress(this.getHealth() / this.getMaxHealth());
+@Override
+public void customServerAiStep(ServerLevel level) {
+    super.customServerAiStep(level);
+
+
+    // Update health bar
+    bossBar.setProgress(this.getHealth() / this.getMaxHealth());
+
+    if (laserCooldown > 0) {
+        laserCooldown--;
+        this.setLaserTarget(null);
+        return;
     }
+
+    Player target = level.getNearestPlayer(this, 75.0);
+    if (target != null) {
+        this.setLaserTarget(target);
+        laserTimer++;
+
+        if (laserTimer >= LASER_WARMUP) {
+            LightningBolt lightning = EntityType.LIGHTNING_BOLT.create(
+                level, EntitySpawnReason.TRIGGERED
+            );
+            if (lightning != null) {
+                lightning.setPos(target.getX(), target.getY(), target.getZ());
+                lightning.setVisualOnly(false);
+                level.addFreshEntity(lightning);
+            }
+            laserTimer = 0;
+            laserCooldown = 100;
+            this.setLaserTarget(null);
+        }
+    } else {
+        laserTimer = 0;
+        this.setLaserTarget(null);
+    }
+}
 
     @Override
     protected PathNavigation createNavigation(Level level) {
@@ -118,8 +170,8 @@ public class VoremothEntity extends PathfinderMob {
     @Override
     public void playAmbientSound() {
         SoundEvent sound = AMBIENT_SOUNDS[this.random.nextInt(AMBIENT_SOUNDS.length)];
-        float pitch = 0.4F;
-        float volume = 0.4F;
+        float pitch = 0.6F;
+        float volume = 0.9F;
 
         this.level().playSound(
             null,
@@ -133,7 +185,7 @@ public class VoremothEntity extends PathfinderMob {
 
     @Override
     public int getAmbientSoundInterval() {
-        return 320 + this.random.nextInt(160); 
+        return 100 + this.random.nextInt(160); 
     }
 
 
@@ -145,7 +197,7 @@ public class VoremothEntity extends PathfinderMob {
         if (ambientTimer <= 0) {
             SoundEvent sound = VOREMOTH_AMBIENT;
             float pitch = 1.0F;
-            float volume = 0.2F;
+            float volume = 0.1F;
 
             this.level().playSound(
                 null,
@@ -157,22 +209,6 @@ public class VoremothEntity extends PathfinderMob {
         );
             ambientTimer = 2880;
         }
-        // if (this.level().isClientSide()) {
-        //     // spawn particles around the entity every tick
-        //     for (int i = 0; i < 150; i++) {
-        //         double offsetX = (this.random.nextDouble() - 0.5) * 60;
-        //         double offsetY = (this.random.nextDouble() - 0.5) * 60;
-        //         double offsetZ = (this.random.nextDouble() - 0.5) * 60;
-        //         this.level().addParticle(
-        //             ParticleTypes.CRIMSON_SPORE,
-        //             this.getX() + offsetX,
-        //             this.getY() + offsetY,
-        //             this.getZ() + offsetZ,
-        //             0, 0, 0
-        //         );
-
-        //     }
-        // }
     }
 
     @Override
@@ -190,22 +226,25 @@ public class VoremothEntity extends PathfinderMob {
     public void setInvulnerable(boolean invulnerable) {
         super.setInvulnerable(false);
     }
+
+
+    private static final EntityDataAccessor<Integer> LASER_TARGET_ID = SynchedEntityData.defineId(VoremothEntity.class, EntityDataSerializers.INT);
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(LASER_TARGET_ID, -1);
+    }
+
+    public void setLaserTarget(@Nullable LivingEntity target) {
+        this.laserTarget = target;
+        this.entityData.set(LASER_TARGET_ID, target != null ? target.getId() : -1);
+    }
+
+    public int getLaserTargetId() {
+        return this.entityData.get(LASER_TARGET_ID);
+    }
     
-
-
-
-    
-
-    // Event trigger currently in AltarEventHandler, but could also be triggered here in onAddedToLevel or similar
-    // @Override
-    // public void onAddedToLevel() {
-    //     super.onAddedToLevel();
-    //     if (!this.level().isClientSide()) {
-    //         VoremothBossMechanic.startMechanic(this);
-    //     }
-    // }
-
-
 
    
 

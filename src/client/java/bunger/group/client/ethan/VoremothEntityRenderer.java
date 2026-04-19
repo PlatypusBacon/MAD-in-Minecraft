@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import bunger.group.MutuallyAssuredDestruction;
 import bunger.group.ethan.VoremothEntity;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.EyesLayer;
@@ -21,7 +22,7 @@ public class VoremothEntityRenderer extends MobRenderer<VoremothEntity, Voremoth
 				public RenderType renderType() {
 					return RenderTypes.eyes(Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, "textures/entity/voremoth_glow.png"));
         		}
-    });
+    		});
 	}
 
 	@Override
@@ -39,11 +40,8 @@ public class VoremothEntityRenderer extends MobRenderer<VoremothEntity, Voremoth
     	super.extractRenderState(entity, state, tickDelta);
     	state.xRot = entity.getXRot();
 		state.ageInTicks = entity.tickCount + tickDelta;
+		state.laserTarget = entity.laserTarget;
+    	state.laserTimer = entity.getLaserTimer();
 	}
 
-	// @Override
-    // public void scale(VoremothEntityRenderState state, PoseStack poseStack, float partialTick) {
-    //     poseStack.scale(5.0F, 5.0F, 5.0F);
-    //     super.scale(state, poseStack, partialTick);
-    // }
 }
