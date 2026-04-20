@@ -7,6 +7,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -26,29 +27,41 @@ public class StaffOfTeleportation extends SpellTemplate {
         if (level.isClientSide()) {
             return;
         }
-        double range = this.RANGE;
 
+        boolean selfTeleport = false;
+        if (user instanceof Player player) {
+            if (player.isCrouching()) {selfTeleport = true;}
+        }
+
+        double range = this.RANGE;
         Vec3 start = user.getEyePosition();
         Vec3 look = user.getLookAngle();
         Vec3 end = start.add(look.scale(range));
 
-        EntityHitResult entityHit = null;
-        double closestDist = range * range;
+        EntityHitResult entityHit;
+        if (!selfTeleport) {
+            // Teleport someone else
 
-        AABB searchBox = user.getBoundingBox()
-                .expandTowards(look.scale(range))
-                .inflate(1.0);
+            entityHit = null;
+            double closestDist = range * range;
 
-        for (Entity entity : level.getEntities(user, searchBox, e -> e instanceof LivingEntity && e != user)) {
-            AABB aabb = entity.getBoundingBox().inflate(0.3);
-            Optional<Vec3> hitPoint = aabb.clip(start, end);
-            if (hitPoint.isPresent()) {
-                double dist = start.distanceToSqr(hitPoint.get());
-                if (dist < closestDist) {
-                    closestDist = dist;
-                    entityHit = new EntityHitResult(entity, hitPoint.get());
+            AABB searchBox = user.getBoundingBox()
+                    .expandTowards(look.scale(range))
+                    .inflate(1.0);
+
+            for (Entity entity : level.getEntities(user, searchBox, e -> e instanceof LivingEntity && e != user)) {
+                AABB aabb = entity.getBoundingBox().inflate(0.3);
+                Optional<Vec3> hitPoint = aabb.clip(start, end);
+                if (hitPoint.isPresent()) {
+                    double dist = start.distanceToSqr(hitPoint.get());
+                    if (dist < closestDist) {
+                        closestDist = dist;
+                        entityHit = new EntityHitResult(entity, hitPoint.get());
+                    }
                 }
             }
+        } else {
+            entityHit = new EntityHitResult(user);
         }
 
         if (entityHit != null) {
@@ -106,7 +119,9 @@ public class StaffOfTeleportation extends SpellTemplate {
                 });
             }
         }
-        ParticleHelpers.spawnBeamParticles(level, start, end, ParticleTypes.SQUID_INK);
+        if (!selfTeleport) {
+            ParticleHelpers.spawnBeamParticles(level, start, end, ParticleTypes.SQUID_INK);
+        }
     }
 }
 
