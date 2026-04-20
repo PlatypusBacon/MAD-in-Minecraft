@@ -17,6 +17,12 @@ public class ModEntities {
             EntityType.Builder.<SquirrelEntity>of(SquirrelEntity::new, MobCategory.AMBIENT)
                     .sized(1.5f, 2.0f)
     );
+    public static final EntityType<SquirrelWifeEntity> SQUIRREL_WIFE = register(
+            "squirrel_wife",
+            EntityType.Builder.<SquirrelWifeEntity>of(SquirrelWifeEntity::new, MobCategory.MISC)
+                    .sized(1.5f, 2.0f)
+
+    );
     public static final EntityType<SquirrelBearEntity> SQUIRREL_BEAR = register(
             "squirrel_bear",
             EntityType.Builder.<SquirrelBearEntity>of(SquirrelBearEntity::new, MobCategory.MONSTER)
@@ -25,7 +31,7 @@ public class ModEntities {
     public static final EntityType<GodEntity> GOD = register(
             "god",
             EntityType.Builder.<GodEntity>of(GodEntity::new, MobCategory.MONSTER)
-                    .sized(2.5f, 3.5f)
+                    .sized(12.0f, 12.0f)
     );
     private static <T extends Entity> EntityType<T> register(String name, EntityType.Builder<T> builder) {
         ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, name));
@@ -37,11 +43,13 @@ public class ModEntities {
         var squirrel = SQUIRREL;
         var squirrel_bear = SQUIRREL_BEAR;
         var god = GOD;
+        var wife = SQUIRREL_WIFE;
     }
 
     public static void registerAttributes() {
         FabricDefaultAttributeRegistry.register(SQUIRREL, SquirrelEntity.createCubeAttributes());
         FabricDefaultAttributeRegistry.register(SQUIRREL_BEAR, SquirrelBearEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(SQUIRREL_WIFE, SquirrelWifeEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(GOD, GodEntity.createAttributes());
     }
 }

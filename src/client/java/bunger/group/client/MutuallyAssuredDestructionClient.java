@@ -3,6 +3,7 @@ package bunger.group.client;
 import bunger.group.client.tyler.ModEntityModelLayers;
 import bunger.group.client.tyler.god.GodEntityRenderer;
 import bunger.group.client.tyler.squirrel_bear.SquirrelBearEntityRenderer;
+import bunger.group.client.tyler.squirrel_wife.SquirrelWifeEntityRenderer;
 import bunger.group.tyler.entity.ModEntities;
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -15,6 +16,7 @@ public class MutuallyAssuredDestructionClient implements ClientModInitializer {
 		EntityRenderers.register(ModEntities.SQUIRREL, SquirrelEntityRenderer::new);
 		EntityRenderers.register(ModEntities.SQUIRREL_BEAR, SquirrelBearEntityRenderer::new);
 		EntityRenderers.register(ModEntities.GOD, GodEntityRenderer::new);
+		EntityRenderers.register(ModEntities.SQUIRREL_WIFE, SquirrelWifeEntityRenderer::new);
 
 		// This entrypoint is suitable for setting up client-specific logic, such as rendering.
 	}

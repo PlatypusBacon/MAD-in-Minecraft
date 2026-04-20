@@ -4,6 +4,7 @@ import bunger.group.MutuallyAssuredDestruction;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.datafix.DataFixTypes;
@@ -25,6 +26,8 @@ public class StructureEventData extends SavedData {
     private Rotation structureRotation;
     private net.minecraft.world.level.block.state.BlockState doorBottomState = null;
     private net.minecraft.world.level.block.state.BlockState doorTopState = null;
+    private java.util.List<java.util.UUID> eventPlayers = new java.util.ArrayList<>();
+
 
     // positions
     private BlockPos structureOrigin;
@@ -48,6 +51,8 @@ public class StructureEventData extends SavedData {
                     .forGetter(d -> d.spawnpointLocked),
             Codec.BOOL.optionalFieldOf("doorLocked", false)
                     .forGetter(d -> d.doorLocked),
+            Codec.list(UUIDUtil.CODEC).optionalFieldOf("eventPlayers", new java.util.ArrayList<>())
+                    .forGetter(d -> d.eventPlayers),
             BlockPos.CODEC.optionalFieldOf("trueOrigin", BlockPos.ZERO)
                     .forGetter(d -> d.trueOrigin),
             Rotation.CODEC.optionalFieldOf("structureRotation", Rotation.NONE)
@@ -86,10 +91,10 @@ public class StructureEventData extends SavedData {
         this.paintingPos = BlockPos.ZERO;
     }
 
-    // All-args constructor (used by Codec)
     private StructureEventData(boolean everEntered, int eventDay, long lastDayProcessed,
                                boolean eventComplete, boolean godSpawned, boolean spawnpointLocked,
-                               boolean doorLocked, BlockPos trueOrigin, Rotation structureRotation,
+                               boolean doorLocked, java.util.List<java.util.UUID> eventPlayers,
+                               BlockPos trueOrigin, Rotation structureRotation,
                                BlockPos structureOrigin, BlockPos structureEnd,
                                BlockPos bedPos, BlockPos paintingPos) {
         this.everEntered = everEntered;
@@ -99,6 +104,7 @@ public class StructureEventData extends SavedData {
         this.godSpawned = godSpawned;
         this.spawnpointLocked = spawnpointLocked;
         this.doorLocked = doorLocked;
+        this.eventPlayers = new java.util.ArrayList<>(eventPlayers);
         this.trueOrigin = trueOrigin;
         this.structureRotation = structureRotation;
         this.structureOrigin = structureOrigin;
@@ -132,7 +138,12 @@ public class StructureEventData extends SavedData {
 
     // setters
     public void setEntered()            { everEntered = true; setDirty(); }
-    public void setEventComplete()      { eventComplete = true; spawnpointLocked = false; setDirty(); }
+    public void setEventComplete() {
+        eventComplete = true;
+        spawnpointLocked = false;
+        eventPlayers.clear();
+        setDirty();
+    }
     public void setGodSpawned()         { godSpawned = true; setDirty(); }
     public void setSpawnpointLocked()   { spawnpointLocked = true; setDirty(); }
     public void advanceDay(long day)    { eventDay++; lastDayProcessed = day; setDirty(); }
@@ -158,6 +169,20 @@ public class StructureEventData extends SavedData {
         this.eventComplete    = false;
         this.godSpawned       = false;
         this.spawnpointLocked = false;
+        this.eventPlayers = new java.util.ArrayList<>();
         setDirty();
+    }
+    public void addEventPlayer(java.util.UUID uuid) {
+        if (!eventPlayers.contains(uuid)) {
+            eventPlayers.add(uuid);
+            setDirty();
+        }
+    }
+    public boolean isEventPlayer(java.util.UUID uuid) {
+        return eventPlayers.contains(uuid);
+    }
+
+    public java.util.UUID getPrimaryEventPlayer() {
+        return eventPlayers.isEmpty() ? null : eventPlayers.get(0);
     }
 }

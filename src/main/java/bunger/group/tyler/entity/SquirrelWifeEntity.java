@@ -23,9 +23,9 @@ public class SquirrelWifeEntity extends ArmorStand {
         this.setNoGravity(true);
         this.setInvulnerable(true);
     }
+
     @Override
     public void setItemSlot(EquipmentSlot slot, ItemStack stack) {
-        // only allow whitelisted squeather items per slot
         if (stack.isEmpty()) return; // block removal
 
         boolean allowed = switch (slot) {
@@ -33,19 +33,21 @@ public class SquirrelWifeEntity extends ArmorStand {
             case CHEST -> stack.is(ModItems.SQUEATHER_CHEST);
             case LEGS  -> stack.is(ModItems.SQUEATHER_LEGS);
             case FEET  -> stack.is(ModItems.SQUEATHER_FEET);
-            default    -> false; // block hand slots entirely
+            default    -> false;
         };
 
         if (allowed) {
             super.setItemSlot(slot, stack);
         }
     }
+
     @Override
     public void tick() {
         super.tick();
 
         if (triggered) return;
-
+        if (level().isClientSide()) return;
+        if (level().getGameTime() % 20 != 0) return;
 
         boolean headFilled  = this.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.SQUEATHER_HEAD);
         boolean chestFilled = this.getItemBySlot(EquipmentSlot.CHEST).is(ModItems.SQUEATHER_CHEST);
@@ -55,14 +57,35 @@ public class SquirrelWifeEntity extends ArmorStand {
         if (headFilled && chestFilled && legsFilled && feetFilled) {
             triggered = true;
             BlockPos pos = new BlockPos((int) this.getX(), (int) this.getY(), (int) this.getZ());
-
-            //Wife.start((ServerLevel) level, pos);
+            Wife.start((ServerLevel) level(), pos);
         }
     }
-    //@Override
-    public InteractionResult interactAt(Player player, Vec3 hitVec, InteractionHand hand) {
-        // block all player interaction entirely
-        return InteractionResult.FAIL;
-    }
 
+    @Override
+    public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
+        if (player.isSpectator()) return InteractionResult.SUCCESS;
+        if (player.level().isClientSide()) return InteractionResult.SUCCESS_SERVER;
+
+        ItemStack held = player.getItemInHand(hand);
+
+        // Block taking armor off (empty hand click)
+        if (held.isEmpty()) return InteractionResult.FAIL;
+
+        // Only allow squeather items
+        EquipmentSlot slot = this.getEquipmentSlotForItem(held);
+        boolean allowed = switch (slot) {
+            case HEAD  -> held.is(ModItems.SQUEATHER_HEAD);
+            case CHEST -> held.is(ModItems.SQUEATHER_CHEST);
+            case LEGS  -> held.is(ModItems.SQUEATHER_LEGS);
+            case FEET  -> held.is(ModItems.SQUEATHER_FEET);
+            default    -> false;
+        };
+
+        if (!allowed) return InteractionResult.FAIL;
+
+        // Don't replace already-filled slots
+        if (this.hasItemInSlot(slot)) return InteractionResult.FAIL;
+
+        return super.interact(player, hand, location);
+    }
 }

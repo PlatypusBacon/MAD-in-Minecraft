@@ -1,20 +1,24 @@
 package bunger.group.tyler.entity;
 
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
+import bunger.group.tyler.item.ModItems;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.storage.loot.LootTable;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public class SquirrelEntity extends Animal {
 
@@ -39,13 +43,32 @@ public class SquirrelEntity extends Animal {
                 .add(Attributes.MOVEMENT_SPEED, 0.45)  // base speed (multiplied at runtime)
                 .add(Attributes.FOLLOW_RANGE, 36.0);
     }
+    @Override
+    protected void dropAllDeathLoot(net.minecraft.server.level.ServerLevel level, net.minecraft.world.damagesource.DamageSource source) {
+        System.out.println("[SquirrelEntity] dropAllDeathLoot called");
+        super.dropAllDeathLoot(level, source);
+    }
 
-
+    @Override
+    protected void dropCustomDeathLoot(net.minecraft.server.level.ServerLevel level, net.minecraft.world.damagesource.DamageSource source, boolean killedByPlayer) {
+        super.dropCustomDeathLoot(level, source, killedByPlayer);
+        if (this.random.nextFloat() < 0.5f) {
+            net.minecraft.world.item.Item[] drops = {
+                    ModItems.SQUEATHER_HEAD,
+                    ModItems.SQUEATHER_CHEST,
+                    ModItems.SQUEATHER_LEGS,
+                    ModItems.SQUEATHER_FEET
+            };
+            net.minecraft.world.item.Item chosen = drops[this.random.nextInt(drops.length)];
+            this.spawnAtLocation(level, new net.minecraft.world.item.ItemStack(chosen));
+        }
+    }
 
     @Override
     public boolean isFood(ItemStack itemStack) {
         return false;
     }
+
 
     @Override
     public @Nullable AgeableMob getBreedOffspring(ServerLevel world, AgeableMob entity) {

@@ -29,11 +29,13 @@ public class GodEntityRenderer extends MobRenderer<GodEntity, GodEntityRenderSta
 
     @Override
     protected void scale(GodEntityRenderState state, PoseStack poseStack) {
-        poseStack.scale(6.0f, 6.0f, 6.0f);
+        poseStack.scale(8.0f, 8.0f, 8.0f);
+        poseStack.translate(0.0, 0.2, 0.0);
     }
 
     @Override
     public void extractRenderState(GodEntity entity, GodEntityRenderState state, float tickDelta) {
         super.extractRenderState(entity, state, tickDelta);
+        state.ageScale = 4.0f;
     }
 }

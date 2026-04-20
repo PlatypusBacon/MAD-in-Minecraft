@@ -6,12 +6,15 @@ import bunger.group.tyler.event.god.God;
 import bunger.group.tyler.event.god.SquirrelBearSpawner;
 import bunger.group.tyler.event.god.SquirrelSpawner;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+
+import java.util.Comparator;
 
 public class SundownWatcher {
 
     // sunset tick within a day
-    private static final long SUNSET_TIME   = 10000;
+    private static final long SUNSET_TIME   = 11000;
     // for testing — set to 200 ticks (10 seconds) per "day"
     // change back to 24000 for production
     private static final long DAY_LENGTH    = 24000;
@@ -67,8 +70,11 @@ public class SundownWatcher {
                 + " | painting index: " + paintingIndex);
     }
 
-    private static void onDay5Sundown(ServerLevel level,
-                                      StructureEventData data) {
-        God.start(level, data.getStructureOrigin());
+    private static void onDay5Sundown(ServerLevel level, StructureEventData data) {
+        BlockPos origin = data.getStructureOrigin();
+        var nearest = level.players().stream()
+                .min(Comparator.comparingDouble(a -> a.distanceToSqr(origin.getX(), origin.getY(), origin.getZ())));
+        nearest.ifPresent(p ->
+                God.start(level, origin, (net.minecraft.server.level.ServerPlayer) p));
     }
 }

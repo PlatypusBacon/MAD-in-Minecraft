@@ -154,16 +154,6 @@ public class SetupStructureCommand {
                                 return 1;
                             }))
 
-                    .then(Commands.literal("trigger")
-                            .executes(ctx -> {
-                                ServerLevel level = ctx.getSource().getLevel();
-                                StructureEventData data = StructureEventData.get(level);
-                                God.start(level, data.getStructureOrigin());
-                                ctx.getSource().sendSuccess(
-                                        () -> Component.literal("§aEvent triggered!"), true);
-                                return 1;
-                            }))
-
                     .then(Commands.literal("reset")
                             .executes(ctx -> {
                                 ServerLevel level = ctx.getSource().getLevel();
@@ -207,15 +197,46 @@ public class SetupStructureCommand {
                                 return 1;
                             }))
 
-                    .then(Commands.literal("spawngod")
+                    .then(Commands.literal("trigger")
                             .executes(ctx -> {
                                 ServerLevel level = ctx.getSource().getLevel();
                                 StructureEventData data = StructureEventData.get(level);
                                 BlockPos origin = data.getStructureOrigin();
-                                data.setGodSpawned();
-                                God.scheduleGodRespawnLoop(level, origin);
+                                var nearest = level.players().stream()
+                                        .min((a, b) -> Double.compare(
+                                                a.distanceToSqr(origin.getX(), origin.getY(), origin.getZ()),
+                                                b.distanceToSqr(origin.getX(), origin.getY(), origin.getZ())));
+                                if (nearest.isEmpty()) {
+                                    ctx.getSource().sendSuccess(
+                                            () -> Component.literal("§cNo players found near origin!"), false);
+                                    return 0;
+                                }
+                                God.start(level, origin, (ServerPlayer) nearest.get());
                                 ctx.getSource().sendSuccess(
-                                        () -> Component.literal("§aGod event started!"), true);
+                                        () -> Component.literal("§aEvent triggered!"), true);
+                                return 1;
+                            }))
+
+                    .then(Commands.literal("spawngod")
+                            .executes(ctx -> {
+                                ServerPlayer player = ctx.getSource().getPlayerOrException();
+                                ServerLevel level = ctx.getSource().getLevel();
+                                StructureEventData data = StructureEventData.get(level);
+
+                                var look = player.getLookAngle();
+                                var spawnPos = player.position().add(-look.x * 4.0, 0.0, -look.z * 4.0);
+
+                                var god = bunger.group.tyler.entity.ModEntities.GOD.create(level,
+                                        net.minecraft.world.entity.EntitySpawnReason.MOB_SUMMONED);
+                                if (god == null) return 0;
+
+                                god.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
+                                god.setTrackedPlayer(player);
+                                level.addFreshEntity(god);
+                                data.setGodSpawned();
+
+                                ctx.getSource().sendSuccess(
+                                        () -> Component.literal("§aGod spawned!"), true);
                                 return 1;
                             }))
 

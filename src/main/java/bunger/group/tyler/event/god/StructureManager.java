@@ -50,8 +50,26 @@ public class StructureManager {
 
             for (ServerPlayer player : level.players()) {
                 if (bounds.contains(player.getX(), player.getY(), player.getZ())) {
-                    onFirstEntry(level, player, data);
-                    return;
+                    if (!data.hasBeenEntered()) {
+                        onFirstEntry(level, player, data);
+                        return;
+                    } else if (!data.isEventComplete() && !data.isEventPlayer(player.getUUID())) {
+                        // additional player entered during event
+                        data.addEventPlayer(player.getUUID());
+                        data.setSpawnpointLocked();
+                        BlockPos bed = data.getBedPos();
+                        player.setRespawnPosition(
+                                new ServerPlayer.RespawnConfig(
+                                        LevelData.RespawnData.of(level.dimension(), bed, 0f, 0f),
+                                        true
+                                ),
+                                false
+                        );
+                        player.sendSystemMessage(
+                                Component.literal("§4You feel something watching you..."));
+                        player.sendSystemMessage(
+                                Component.literal("§7§oYour fate is sealed to this place."));
+                    }
                 }
             }
         });
@@ -62,21 +80,21 @@ public class StructureManager {
                                      StructureEventData data) {
         data.setEntered();
         data.setSpawnpointLocked();
+        data.addEventPlayer(player.getUUID());
 
-        // set spawnpoint immediately to the bed
         BlockPos bed = data.getBedPos();
         player.setRespawnPosition(
                 new ServerPlayer.RespawnConfig(
                         LevelData.RespawnData.of(level.dimension(), bed, 0f, 0f),
-                        true  // forced
+                        true
                 ),
-                false  // no announcement
+                false
         );
 
         player.sendSystemMessage(
-                Component.literal("§4You feel something watching you..."));
+                Component.literal("§4Welcome Home"));
         player.sendSystemMessage(
-                Component.literal("§7§oYour fate is sealed to this place."));
+                Component.literal("§7§oCome inside and see your wife."));
     }
 
     // --- Unbreakable blocks ---
