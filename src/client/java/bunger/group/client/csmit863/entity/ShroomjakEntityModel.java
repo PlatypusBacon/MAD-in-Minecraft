@@ -41,33 +41,37 @@ public class ShroomjakEntityModel extends EntityModel<ShroomjakRenderState> {
     public static LayerDefinition getTexturedModelData() {
         MeshDefinition modelData = new MeshDefinition();
         PartDefinition root = modelData.getRoot();
-        root.addOrReplaceChild(
-                PartNames.BODY,
-                CubeListBuilder.create().addBox(
-                        /* x */ -6,
-                        /* y */ -6,
-                        /* z */ -6,
-                        /* width */ 12,
-                        /* height */ 12,
-                        /* depth */ 12
-                ),
-                PartPose.offset(0, 8, 0)
+        // Body
+        root.addOrReplaceChild(PartNames.BODY,
+                CubeListBuilder.create().texOffs(16, 16).addBox(-4, 0, -2, 8, 12, 4),
+                PartPose.offset(0, 6, 0)
         );
-        root.addOrReplaceChild(
-                PartNames.HEAD,
-                CubeListBuilder.create().texOffs(36, 0).addBox(-3, -6, -3, 6, 6, 6),
-                PartPose.offset(0, 2, 0)
+        // Head
+        root.addOrReplaceChild(PartNames.HEAD,
+                CubeListBuilder.create().texOffs(0, 0).addBox(-4, -8, -4, 8, 8, 8),
+                PartPose.offset(0, 6, 0)
         );
-        root.addOrReplaceChild(
-                PartNames.LEFT_LEG,
-                CubeListBuilder.create().texOffs(48, 12).addBox(-2, 0, -2, 4, 10, 4),
-                PartPose.offset(-2.5f, 14, 0)
+        // Left front leg
+        root.addOrReplaceChild(PartNames.LEFT_LEG,
+                CubeListBuilder.create().texOffs(0, 16).addBox(-2, 0, -2, 4, 6, 4),
+                PartPose.offset(-2, 18, 2)
         );
-        root.addOrReplaceChild(
-                PartNames.RIGHT_LEG,
-                CubeListBuilder.create().texOffs(48, 12).addBox(-2, 0, -2, 4, 10, 4),
-                PartPose.offset(2.5f, 14, 0)
+        // Right front leg
+        root.addOrReplaceChild(PartNames.RIGHT_LEG,
+                CubeListBuilder.create().texOffs(0, 16).addBox(-2, 0, -2, 4, 6, 4),
+                PartPose.offset(2, 18, 2)
         );
+        // Left back leg
+        root.addOrReplaceChild("left_hind_leg",
+                CubeListBuilder.create().texOffs(0, 16).addBox(-2, 0, -2, 4, 6, 4),
+                PartPose.offset(-2, 18, -2)
+        );
+        // Right back leg
+        root.addOrReplaceChild("right_hind_leg",
+                CubeListBuilder.create().texOffs(0, 16).addBox(-2, 0, -2, 4, 6, 4),
+                PartPose.offset(2, 18, -2)
+        );
+
         return LayerDefinition.create(modelData, 64, 32);
     }
 }

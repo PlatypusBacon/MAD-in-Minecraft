@@ -15,7 +15,7 @@ public class ModEntityTypes {
     public static final EntityType<ShroomjakEntity> SHROOMJAK = register(
             "shroomjak",
             EntityType.Builder.<ShroomjakEntity>of(ShroomjakEntity::new, MobCategory.MISC)
-                    .sized(0.75f, 1.75f)
+                    .sized(0.54f, 1.53f) // width, height
     );
 
     private static <T extends Entity> EntityType<T> register(String name, EntityType.Builder<T> builder) {
