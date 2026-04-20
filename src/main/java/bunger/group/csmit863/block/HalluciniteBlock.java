@@ -16,7 +16,7 @@ import java.util.List;
 
 public class HalluciniteBlock extends Block {
     private static final int EFFECT_RANGE = 15;
-    private static final int EFFECT_DURATION = 60; // ticks, refreshed every random tick
+    private static final int EFFECT_DURATION = 300; // ticks, refreshed every random tick
 
     public HalluciniteBlock(BlockBehaviour.Properties properties) {
         super(properties);
@@ -39,13 +39,13 @@ public class HalluciniteBlock extends Block {
                     ModItems.HALLUCINATION_EFFECT,
                     EFFECT_DURATION,
                     0,
-                    true,  // ambient - subtle particles
-                    false  // no particles
+                    true,
+                    true
             ));
         }
 
-        // 1% chance per random tick to spawn a shroomjak
-        if (random.nextFloat() < 0.01f) {
+        // 10% chance per random tick to spawn a shroomjak
+        if (random.nextFloat() < 0.05f) {
             ModEntityTypes.SHROOMJAK.spawn(
                     level,
                     pos.above(),

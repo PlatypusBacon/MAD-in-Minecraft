@@ -50,8 +50,8 @@ public class MagicMushroomBlock extends BushBlock {
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         int growth = state.getValue(GROWTH);
-        // very slow natural growth - about 1% chance per random tick
-        if (random.nextFloat() < 0.01f) {
+        // slow natural growth - about 10% chance per random tick
+        if (random.nextFloat() < 0.10f) {
             grow(state, level, pos, growth);
         }
     }

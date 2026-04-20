@@ -33,7 +33,7 @@ public class ShroomjakEntity extends PathfinderMob {
         this(ModEntityTypes.SHROOMJAK, world);
     }
     private static final int SPRAY_RANGE = 3; // blocks away
-    private static final int SPRAY_COOLDOWN = 40; // ticks between sprays
+    private static final int SPRAY_COOLDOWN = 100; // ticks between sprays
     private int sprayCooldown = 0;
     public ShroomjakEntity(EntityType<? extends ShroomjakEntity> entityType, Level world) {
         super(entityType, world);
@@ -82,7 +82,8 @@ public class ShroomjakEntity extends PathfinderMob {
                     nearestPlayer.addEffect(new MobEffectInstance(ModItems.HALLUCINATION_EFFECT, newDuration, newAmp));
                     nearestPlayer.addEffect(new MobEffectInstance(MobEffects.MINING_FATIGUE, newDuration, newAmp));
                     nearestPlayer.addEffect(new MobEffectInstance(MobEffects.NAUSEA, newDuration, newAmp));
-                    nearestPlayer.addEffect(new MobEffectInstance(MobEffects.DARKNESS, newDuration, newAmp));
+                    nearestPlayer.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, newDuration, 1));
+                    nearestPlayer.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 5, 1));
 
 
                     // Spray particles
@@ -113,25 +114,9 @@ public class ShroomjakEntity extends PathfinderMob {
                         10, 0.2, 0.2, 0.2, 0.05
                 );
 
-                // convert only the block directly beneath to moss first
-                BlockPos directlyBelow = this.blockPosition().below();
-                BlockState belowState = serverLevel.getBlockState(directlyBelow);
-                if (belowState.is(Blocks.DIRT) || belowState.is(Blocks.GRASS_BLOCK)) {
-                    serverLevel.setBlock(directlyBelow, Blocks.MOSS_BLOCK.defaultBlockState(), 3);
-                }
-
-                // then bonemeal everything in 2 block radius
-                for (int x = -2; x <= 2; x++) {
-                    for (int z = -2; z <= 2; z++) {
-                        BlockPos nearPos = this.blockPosition().offset(x, 0, z);
-                        BoneMealItem.growCrop(ItemStack.EMPTY, serverLevel, nearPos);
-                        BoneMealItem.growCrop(ItemStack.EMPTY, serverLevel, nearPos.below());
-                    }
-                }
-
                 // randomly place magic mushrooms in nearby positions
                 for (int i = 0; i < 3; i++) {
-                    if (this.random.nextFloat() < 0.08f) {
+                    if (this.random.nextFloat() < 0.2f) {
                         BlockPos mushroomPos = this.blockPosition().offset(
                                 this.random.nextInt(9) - 4,
                                 0,
@@ -144,6 +129,26 @@ public class ShroomjakEntity extends PathfinderMob {
                         }
                     }
                 }
+
+                // convert only the block directly beneath to moss first
+                BlockPos directlyBelow = this.blockPosition().below();
+                BlockState belowState = serverLevel.getBlockState(directlyBelow);
+                if (belowState.is(Blocks.DIRT) || belowState.is(Blocks.GRASS_BLOCK)) {
+                    serverLevel.setBlock(directlyBelow, Blocks.MOSS_BLOCK.defaultBlockState(), 3);
+                }
+
+
+
+                // then bonemeal everything in 2 block radius
+                for (int x = -2; x <= 2; x++) {
+                    for (int z = -2; z <= 2; z++) {
+                        BlockPos nearPos = this.blockPosition().offset(x, 0, z);
+                        BoneMealItem.growCrop(ItemStack.EMPTY, serverLevel, nearPos);
+                        BoneMealItem.growCrop(ItemStack.EMPTY, serverLevel, nearPos.below());
+                    }
+                }
+
+
 
                 bonemealCooldown = BONEMEAL_COOLDOWN;
             }
