@@ -23,7 +23,7 @@ public class Ignition extends SpellTemplate {
     @Override
     public void cast(Level level, LivingEntity user, ItemStack stack) {
         if (level.isClientSide()) {
-            return; // I lowkey dont fuck with client only magic
+            return;
         }
 
         double range = this.RANGE;
@@ -40,20 +40,66 @@ public class Ignition extends SpellTemplate {
                 user
         ));
 
-        if (blockHit.getType() != HitResult.Type.MISS) {
+        EntityHitResult entityHit = null;
+        double closestDist = range * range;
+
+        AABB searchBox = user.getBoundingBox()
+                .expandTowards(look.scale(range))
+                .inflate(1.0);
+
+        for (Entity entity : level.getEntities(user, searchBox, e -> e instanceof LivingEntity && e != user)) {
+            AABB aabb = entity.getBoundingBox().inflate(0.3);
+            Optional<Vec3> hitPoint = aabb.clip(start, end);
+            if (hitPoint.isPresent()) {
+                double dist = start.distanceToSqr(hitPoint.get());
+                if (dist < closestDist) {
+                    closestDist = dist;
+                    entityHit = new EntityHitResult(entity, hitPoint.get());
+                }
+            }
+        }
+
+        if (entityHit != null) {
+            Entity entity = entityHit.getEntity();
+            entity.setRemainingFireTicks(100);
+            end = entityHit.getLocation();
+
+            // light blocks beneath them
+            BlockPos below = BlockPos.containing(entity.position()).below();
+            for (int x = -1; x <= 1; x++) {
+                for (int z = -1; z <= 1; z++) {
+                    BlockPos pos = below.offset(x, 0, z);
+                    BlockPos firePos = pos.above();
+                    if (!level.isEmptyBlock(pos) && level.isEmptyBlock(firePos)) {
+                        level.setBlock(firePos, Blocks.FIRE.defaultBlockState(), 3);
+                    }
+                }
+            }
+        } else if (blockHit.getType() != HitResult.Type.MISS) {
             end = blockHit.getLocation();
-            BlockPos center = blockHit.getBlockPos();
+            Vec3 hitPoint = blockHit.getLocation();
+            Direction hitFace = blockHit.getDirection();
 
-            int radius = 2; // adjust for spread size
-            for (int x = -radius; x <= radius; x++) {
-                for (int y = -radius; y <= radius; y++) {
-                    for (int z = -radius; z <= radius; z++) {
-                        BlockPos nearby = center.offset(x, y, z);
+            Vec3 normal = new Vec3(hitFace.getStepX(), hitFace.getStepY(), hitFace.getStepZ());
+            Vec3 up = Math.abs(normal.y) > 0.9 ? new Vec3(1, 0, 0) : new Vec3(0, 1, 0);
+            Vec3 right = normal.cross(up).normalize();
+            Vec3 forward = right.cross(normal).normalize();
 
-                        // try to place fire on top, sides, and bottom of each block
+            for (int x = -1; x <= 1; x++) {
+                for (int y = -1; y <= 1; y++) {
+                    Vec3 point = hitPoint
+                            .add(right.scale(x))
+                            .add(forward.scale(y));
+
+                    BlockPos nearbyPos = BlockPos.containing(point);
+                    BlockPos solidPos = nearbyPos.relative(hitFace.getOpposite());
+
+                    if (level.getBlockState(solidPos).is(Blocks.SNOW)) {
+                        level.setBlock(solidPos, Blocks.FIRE.defaultBlockState(), 3);
+                    } else {
                         for (Direction dir : Direction.values()) {
-                            BlockPos firePos = nearby.relative(dir);
-                            if (!level.isEmptyBlock(nearby) && level.isEmptyBlock(firePos)) {
+                            BlockPos firePos = solidPos.relative(dir);
+                            if (!level.isEmptyBlock(solidPos) && level.isEmptyBlock(firePos)) {
                                 level.setBlock(firePos, Blocks.FIRE.defaultBlockState(), 3);
                             }
                         }
@@ -61,7 +107,6 @@ public class Ignition extends SpellTemplate {
                 }
             }
         }
-
 
         ParticleHelpers.spawnBeamParticles(level, start, end, ParticleTypes.FLAME);
     }
