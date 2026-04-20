@@ -97,7 +97,6 @@ public class StaffOfTeleportation extends SpellTemplate {
             int z = (int) (centre.z + offsetZ);
             int y = level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING, x, z);
 
-            entity.teleportTo(x, y, z);
 
             // now spawn particles around fella AFTER
 
@@ -118,6 +117,10 @@ public class StaffOfTeleportation extends SpellTemplate {
                     }
                 });
             }
+
+            // Now teleport into the particles
+
+            entity.teleportTo(x, y, z);
         }
         if (!selfTeleport) {
             ParticleHelpers.spawnBeamParticles(level, start, end, ParticleTypes.SQUID_INK);

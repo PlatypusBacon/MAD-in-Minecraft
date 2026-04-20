@@ -49,23 +49,29 @@ public class ModItems {
 
     public static final Item BLANK_LIGHTNING_SCROLL = registerItem(
             "blank_lightning_scroll",
-            BlankScroll::new,
+            (Item.Properties properties) -> new BlankScroll(properties, SpellTypes.LIGHTNING),
             new BlankScroll.Properties()
     );
 
     public static final Item BLANK_FIRE_SCROLL = registerItem(
             "blank_fire_scroll",
-            BlankScroll::new,
+            (Item.Properties properties) -> new BlankScroll(properties, SpellTypes.FIRE),
             new BlankScroll.Properties()
     );
 
     public static final Item BLANK_ICE_SCROLL = registerItem(
             "blank_ice_scroll",
-            BlankScroll::new,
+            (Item.Properties properties) -> new BlankScroll(properties, SpellTypes.ICE),
             new BlankScroll.Properties()
     );
 
     // Materials
+    public static final Item PURE_MANA = registerItem(
+            "pure_mana",
+            Item::new,
+            new Item.Properties()
+    );
+
 
 
     // Armour

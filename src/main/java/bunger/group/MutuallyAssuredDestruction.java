@@ -1,12 +1,16 @@
 package bunger.group;
 
 import bunger.group.alex.CreativeTab;
+import bunger.group.alex.spell.LearnSpellPacket;
 import bunger.group.alex.Mana;
 import bunger.group.alex.ManaPacket;
 import bunger.group.alex.ParticleHelpers;
 import bunger.group.alex.SpellHelpers;
 import bunger.group.alex.block.ModBlocks;
+import bunger.group.alex.block.entity.ModBlockEntities;
 import bunger.group.alex.item.ModItems;
+import bunger.group.alex.menu.ModMenuType;
+import bunger.group.alex.menu.SpellDeskMenu;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
@@ -22,27 +26,38 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		// Register mana sync packet
+		// Packets
 		PayloadTypeRegistry.clientboundPlay().register(ManaPacket.TYPE, ManaPacket.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(LearnSpellPacket.TYPE, LearnSpellPacket.CODEC);
 
 		// Items
 		ModItems.register();
 
 		// Blocks
 		ModBlocks.register();
+		ModBlockEntities.initialize();
 
-		// Tick Events
+		// Menus
+		ModMenuType.initialize();
+
+		// Handle spell learning on server
+		ServerPlayNetworking.registerGlobalReceiver(LearnSpellPacket.TYPE, (payload, context) -> {
+			context.server().execute(() -> {
+				if (context.player().containerMenu instanceof SpellDeskMenu menu) {
+					menu.tryLearnSpell(context.player(), payload.spellIndex());
+				}
+			});
+		});
+
+		// Tick events
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
 			SpellHelpers.tick();
 			ParticleHelpers.tick();
 
-			// Regens everyone 10 mana a second
 			if (server.getTickCount() % 2 == 0) {
 				for (ServerPlayer player : server.getPlayerList().getPlayers()) {
 					Mana.ManaData mana = Mana.get(player);
-
 					mana.recalculateMaxMana();
-
 					if (mana.getCurrentMana() < mana.getMaxMana()) {
 						mana.incrementCurrentMana();
 						ServerPlayNetworking.send(player, new ManaPacket(mana.getCurrentMana(), mana.getMaxMana()));
@@ -51,10 +66,10 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 			}
 		});
 
-		// Creative Tab
+		// Creative tab
 		CreativeTab.register();
 
-		// Mana init - set new players to 100 mana and sync to client
+		// Mana init on join
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
 			ServerPlayer player = handler.player;
 			Mana.ManaData mana = Mana.get(player);

@@ -34,6 +34,8 @@ public class CreativeTab {
                 output.accept(ModItems.IGNITION);
                 output.accept(ModItems.STAFF_OF_TELEPORTATION);
                 output.accept(ModItems.BLANK_LIGHTNING_SCROLL);
+                output.accept(ModItems.BLANK_FIRE_SCROLL);
+                output.accept(ModItems.BLANK_ICE_SCROLL);
 
                 // Armour
                 output.accept(ModItems.CLOTH_HELMET);

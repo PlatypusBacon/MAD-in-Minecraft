@@ -17,11 +17,11 @@ public class SpellTemplate extends Item {
     SpellTypes TYPE;
 
     public SpellTemplate(Properties properties, int manaUse, int range, SpellTypes type) {
+        super(properties.stacksTo(1));
         properties.stacksTo(1);
         this.MANA_USE = manaUse;
         this.RANGE = range;
         this.TYPE = type;
-        super(properties);
     }
 
     public void cast(Level level, LivingEntity user, ItemStack stack) {
@@ -52,6 +52,3 @@ public class SpellTemplate extends Item {
 
 }
 
-enum SpellTypes {
-    LIGHTNING, ICE, FIRE, STAFF
-}
