@@ -3,6 +3,7 @@ package bunger.group.csmit863.entity;
 import bunger.group.MutuallyAssuredDestruction;
 import bunger.group.csmit863.effects.HallucinationEffect;
 import bunger.group.csmit863.item.ModItems;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
@@ -18,9 +19,13 @@ import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.animal.cow.Cow;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BoneMealItem;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class ShroomjakEntity extends PathfinderMob {
     public ShroomjakEntity(Level world) {
@@ -32,6 +37,8 @@ public class ShroomjakEntity extends PathfinderMob {
     public ShroomjakEntity(EntityType<? extends ShroomjakEntity> entityType, Level world) {
         super(entityType, world);
     }
+    private static final int BONEMEAL_COOLDOWN = 50; // 200 ticks = 10 seconds
+    private int bonemealCooldown = 0;
 
     public static AttributeSupplier.Builder createCubeAttributes() {
         return PathfinderMob.createMobAttributes()
@@ -80,7 +87,7 @@ public class ShroomjakEntity extends PathfinderMob {
                     // Spray particles
                     ServerLevel serverLevel = (ServerLevel) level();
                     serverLevel.sendParticles(
-                            ParticleTypes.SPIT, // or whatever particle fits
+                            ParticleTypes.LARGE_SMOKE, // or whatever particle fits
                             this.getX(), this.getY() + 1, this.getZ(),
                             400,   // count
                             1.5, 0.5, 1.5, // spread x/y/z
@@ -89,6 +96,25 @@ public class ShroomjakEntity extends PathfinderMob {
 
                     sprayCooldown = SPRAY_COOLDOWN;
                 }
+            }
+
+            if (bonemealCooldown > 0) {
+                bonemealCooldown--;
+            }
+
+            if (bonemealCooldown == 0) {
+                ServerLevel serverLevel = (ServerLevel) level();
+                BlockPos pos = this.blockPosition().below();
+                BlockState state = serverLevel.getBlockState(pos);
+
+                if (state.is(Blocks.DIRT) || state.is(Blocks.GRASS_BLOCK)) {
+                    serverLevel.setBlock(pos, Blocks.MOSS_BLOCK.defaultBlockState(), 3);
+                    BoneMealItem.growCrop(ItemStack.EMPTY, serverLevel, pos);
+                } else if (state.is(Blocks.MOSS_BLOCK)) {
+                    BoneMealItem.growCrop(ItemStack.EMPTY, serverLevel, pos);
+                }
+
+                bonemealCooldown = BONEMEAL_COOLDOWN;
             }
         }
     }

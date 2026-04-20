@@ -5,7 +5,7 @@
   "passes": [
     {
       "vertex_shader": "minecraft:core/screenquad",
-      "fragment_shader": "mutually-assured-destruction:post/hallucination",
+      "fragment_shader": "mutually-assured-destruction:post/colored_bloom",
       "inputs": [
         {
           "sampler_name": "In",
