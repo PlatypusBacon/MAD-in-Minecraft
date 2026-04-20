@@ -38,7 +38,7 @@ public class ShroomjakEntity extends PathfinderMob {
     public ShroomjakEntity(EntityType<? extends ShroomjakEntity> entityType, Level world) {
         super(entityType, world);
     }
-    private static final int BONEMEAL_COOLDOWN = 50; // 200 ticks = 10 seconds
+    private static final int BONEMEAL_COOLDOWN = 300; // 200 ticks = 10 seconds
     private int bonemealCooldown = 0;
 
     public static AttributeSupplier.Builder createCubeAttributes() {
@@ -105,32 +105,35 @@ public class ShroomjakEntity extends PathfinderMob {
 
             if (bonemealCooldown == 0) {
                 ServerLevel serverLevel = (ServerLevel) level();
+
                 // black particles from head
                 serverLevel.sendParticles(
                         ParticleTypes.SQUID_INK,
-                        this.getX()+0.5, this.getY() + 2, this.getZ()+0.5, // +1.5 = head height
-                        10,
-                        0.2, 0.2, 0.2, // tight spread around head
-                        0.05
+                        this.getX(), this.getY() + 2, this.getZ(),
+                        10, 0.2, 0.2, 0.2, 0.05
                 );
-                BlockPos pos = this.blockPosition().below();
-                BlockState state = serverLevel.getBlockState(pos);
 
-                if (state.is(Blocks.DIRT) || state.is(Blocks.GRASS_BLOCK)) {
-                    serverLevel.setBlock(pos, Blocks.MOSS_BLOCK.defaultBlockState(), 3);
-                    BoneMealItem.growCrop(ItemStack.EMPTY, serverLevel, pos);
-                } else if (state.is(Blocks.MOSS_BLOCK)) {
-                    BoneMealItem.growCrop(ItemStack.EMPTY, serverLevel, pos);
+                // bonemeal and moss everything in 4 block radius
+                for (int x = -4; x <= 4; x++) {
+                    for (int z = -4; z <= 4; z++) {
+                        BlockPos nearPos = this.blockPosition().offset(x, 0, z);
+                        BlockState nearState = serverLevel.getBlockState(nearPos);
+
+                        if (nearState.is(Blocks.DIRT) || nearState.is(Blocks.GRASS_BLOCK)) {
+                            serverLevel.setBlock(nearPos, Blocks.MOSS_BLOCK.defaultBlockState(), 3);
+                        }
+
+                        BoneMealItem.growCrop(ItemStack.EMPTY, serverLevel, nearPos);
+                    }
                 }
 
-                // randomly place magic mushroom on nearby moss
-                // place multiple mushrooms in random nearby positions
+                // randomly place magic mushrooms in nearby positions
                 for (int i = 0; i < 3; i++) {
                     if (this.random.nextFloat() < 0.02f) {
                         BlockPos mushroomPos = this.blockPosition().offset(
-                                this.random.nextInt(5) - 2,  // -2 to +2 x
+                                this.random.nextInt(9) - 4,
                                 0,
-                                this.random.nextInt(5) - 2   // -2 to +2 z
+                                this.random.nextInt(9) - 4
                         );
                         BlockState above = serverLevel.getBlockState(mushroomPos);
                         BlockState below = serverLevel.getBlockState(mushroomPos.below());
