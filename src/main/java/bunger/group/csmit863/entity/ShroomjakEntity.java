@@ -118,18 +118,24 @@ public class ShroomjakEntity extends PathfinderMob {
                     for (int z = -4; z <= 4; z++) {
                         BlockPos nearPos = this.blockPosition().offset(x, 0, z);
                         BlockState nearState = serverLevel.getBlockState(nearPos);
+                        BlockState below = serverLevel.getBlockState(nearPos.below());
 
+                        // convert dirt/grass to moss
                         if (nearState.is(Blocks.DIRT) || nearState.is(Blocks.GRASS_BLOCK)) {
                             serverLevel.setBlock(nearPos, Blocks.MOSS_BLOCK.defaultBlockState(), 3);
+                            BoneMealItem.growCrop(ItemStack.EMPTY, serverLevel, nearPos);
+                        } else if (below.is(Blocks.DIRT) || below.is(Blocks.GRASS_BLOCK)) {
+                            serverLevel.setBlock(nearPos.below(), Blocks.MOSS_BLOCK.defaultBlockState(), 3);
+                            BoneMealItem.growCrop(ItemStack.EMPTY, serverLevel, nearPos.below());
+                        } else {
+                            BoneMealItem.growCrop(ItemStack.EMPTY, serverLevel, nearPos);
                         }
-
-                        BoneMealItem.growCrop(ItemStack.EMPTY, serverLevel, nearPos);
                     }
                 }
 
                 // randomly place magic mushrooms in nearby positions
                 for (int i = 0; i < 3; i++) {
-                    if (this.random.nextFloat() < 0.02f) {
+                    if (this.random.nextFloat() < 0.08f) {
                         BlockPos mushroomPos = this.blockPosition().offset(
                                 this.random.nextInt(9) - 4,
                                 0,
