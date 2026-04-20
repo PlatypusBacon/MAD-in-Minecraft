@@ -1,4 +1,4 @@
-package bunger.group.alex.item;
+package bunger.group.alex.item.armor;
 
 import bunger.group.MutuallyAssuredDestruction;
 import net.minecraft.core.registries.BuiltInRegistries;

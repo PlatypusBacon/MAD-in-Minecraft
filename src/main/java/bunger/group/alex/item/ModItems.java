@@ -1,22 +1,20 @@
 package bunger.group.alex.item;
 
 import bunger.group.MutuallyAssuredDestruction;
-import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
+import bunger.group.alex.item.armor.ClothArmorMaterial;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.equipment.ArmorType;
 
 import java.util.function.Function;
 
 public class ModItems {
 
+    //Spells
     public static final Item ICE_SHIELD = registerItem(
             "spell_ice_ice_shield",
             IceShield::new, // funky lambda I am not that sure of
@@ -46,6 +44,29 @@ public class ModItems {
             StaffOfTeleportation::new,
             new StaffOfTeleportation.Properties()
     );
+
+    // Blank Spells
+
+    public static final Item BLANK_LIGHTNING_SCROLL = registerItem(
+            "blank_lightning_scroll",
+            BlankScroll::new,
+            new BlankScroll.Properties()
+    );
+
+    public static final Item BLANK_FIRE_SCROLL = registerItem(
+            "blank_fire_scroll",
+            BlankScroll::new,
+            new BlankScroll.Properties()
+    );
+
+    public static final Item BLANK_ICE_SCROLL = registerItem(
+            "blank_ice_scroll",
+            BlankScroll::new,
+            new BlankScroll.Properties()
+    );
+
+    // Materials
+
 
     // Armour
     public static final Item CLOTH_HELMET = registerItem(

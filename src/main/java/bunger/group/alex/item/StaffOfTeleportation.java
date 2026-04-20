@@ -84,7 +84,27 @@ public class StaffOfTeleportation extends SpellTemplate {
             int z = (int) (centre.z + offsetZ);
             int y = level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING, x, z);
 
-            entity.teleportRelative(x, y, z);
+            entity.teleportTo(x, y, z);
+
+            // now spawn particles around fella AFTER
+
+            Vec3 newCentre = new Vec3(x, y, z);
+
+            for (int i = 0; i < 20; i++){
+
+                final Double yOffset = (double) i * 0.1F;
+                Vec3 offsetCentre = newCentre.add(0, yOffset, 0);
+
+                ParticleHelpers.runForTicks(30, new Runnable() {
+                    double offset = 0;
+                    @Override
+                    public void run() {
+                        offset += 0.1;
+                        ParticleHelpers.spawnRingParticles(level, offsetCentre, 1,
+                                offset, ParticleTypes.SQUID_INK);
+                    }
+                });
+            }
         }
         ParticleHelpers.spawnBeamParticles(level, start, end, ParticleTypes.SQUID_INK);
     }
