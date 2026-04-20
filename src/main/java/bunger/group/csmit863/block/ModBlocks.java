@@ -26,6 +26,16 @@ public class ModBlocks {
             false
     );
 
+    public static final Block HALLUCINITE_BLOCK = register(
+            "hallucinite_block",
+            HalluciniteBlock::new,
+            BlockBehaviour.Properties.of()
+                    .strength(1.5f)
+                    .randomTicks()
+                    .lightLevel(state -> 3),
+            true
+    );
+
     private static Block register(String name, Function<BlockBehaviour.Properties, Block> blockFactory, BlockBehaviour.Properties settings, boolean shouldRegisterItem) {
         // Create a registry key for the block
         ResourceKey<Block> blockKey = keyOfBlock(name);

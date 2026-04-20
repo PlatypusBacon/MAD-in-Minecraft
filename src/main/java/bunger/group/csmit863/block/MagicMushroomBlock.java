@@ -12,14 +12,24 @@ import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.MushroomBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class MagicMushroomBlock extends BushBlock {
+    public static final IntegerProperty GROWTH = IntegerProperty.create("growth", 0, 4);
     private static final VoxelShape SHAPE = Block.box(4, 0, 4, 12, 8, 12);
 
     public MagicMushroomBlock(BlockBehaviour.Properties properties) {
         super(properties);
+        this.registerDefaultState(this.stateDefinition.any().setValue(GROWTH, 0));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(GROWTH);
     }
 
     @Override
@@ -33,10 +43,32 @@ public class MagicMushroomBlock extends BushBlock {
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
+    public boolean isRandomlyTicking(BlockState state) {
         return true;
     }
 
+    @Override
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        int growth = state.getValue(GROWTH);
+        // very slow natural growth - about 1% chance per random tick
+        if (random.nextFloat() < 0.01f) {
+            grow(state, level, pos, growth);
+        }
+    }
+
+    private void grow(BlockState state, ServerLevel level, BlockPos pos, int growth) {
+        if (growth >= 4) {
+            // fully grown - convert to hallucinite block
+            level.setBlock(pos, ModBlocks.HALLUCINITE_BLOCK.defaultBlockState(), 3);
+        } else {
+            level.setBlock(pos, state.setValue(GROWTH, growth + 1), 3);
+        }
+    }
+
+    @Override
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
+        return state.getValue(GROWTH) < 4;
+    }
 
     @Override
     public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
@@ -45,11 +77,6 @@ public class MagicMushroomBlock extends BushBlock {
 
     @Override
     public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
-        level.removeBlock(pos, false);
-
-        MushroomBlock hugeMushroomBlock = (MushroomBlock) Blocks.BROWN_MUSHROOM;
-        if (!hugeMushroomBlock.growMushroom(level, pos, Blocks.BROWN_MUSHROOM_BLOCK.defaultBlockState(), random)) {
-            level.setBlock(pos, state, 3);
-        }
+        grow(state, level, pos, state.getValue(GROWTH));
     }
 }
