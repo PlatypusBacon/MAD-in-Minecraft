@@ -108,28 +108,24 @@ public class ShroomjakEntity extends PathfinderMob {
 
                 // black particles from head
                 serverLevel.sendParticles(
-                        ParticleTypes.SQUID_INK,
+                        ParticleTypes.SMOKE,
                         this.getX(), this.getY() + 2, this.getZ(),
                         10, 0.2, 0.2, 0.2, 0.05
                 );
 
-                // bonemeal and moss everything in 4 block radius
-                for (int x = -4; x <= 4; x++) {
-                    for (int z = -4; z <= 4; z++) {
-                        BlockPos nearPos = this.blockPosition().offset(x, 0, z);
-                        BlockState nearState = serverLevel.getBlockState(nearPos);
-                        BlockState below = serverLevel.getBlockState(nearPos.below());
+                // convert only the block directly beneath to moss first
+                BlockPos directlyBelow = this.blockPosition().below();
+                BlockState belowState = serverLevel.getBlockState(directlyBelow);
+                if (belowState.is(Blocks.DIRT) || belowState.is(Blocks.GRASS_BLOCK)) {
+                    serverLevel.setBlock(directlyBelow, Blocks.MOSS_BLOCK.defaultBlockState(), 3);
+                }
 
-                        // convert dirt/grass to moss
-                        if (nearState.is(Blocks.DIRT) || nearState.is(Blocks.GRASS_BLOCK)) {
-                            serverLevel.setBlock(nearPos, Blocks.MOSS_BLOCK.defaultBlockState(), 3);
-                            BoneMealItem.growCrop(ItemStack.EMPTY, serverLevel, nearPos);
-                        } else if (below.is(Blocks.DIRT) || below.is(Blocks.GRASS_BLOCK)) {
-                            serverLevel.setBlock(nearPos.below(), Blocks.MOSS_BLOCK.defaultBlockState(), 3);
-                            BoneMealItem.growCrop(ItemStack.EMPTY, serverLevel, nearPos.below());
-                        } else {
-                            BoneMealItem.growCrop(ItemStack.EMPTY, serverLevel, nearPos);
-                        }
+                // then bonemeal everything in 2 block radius
+                for (int x = -2; x <= 2; x++) {
+                    for (int z = -2; z <= 2; z++) {
+                        BlockPos nearPos = this.blockPosition().offset(x, 0, z);
+                        BoneMealItem.growCrop(ItemStack.EMPTY, serverLevel, nearPos);
+                        BoneMealItem.growCrop(ItemStack.EMPTY, serverLevel, nearPos.below());
                     }
                 }
 
