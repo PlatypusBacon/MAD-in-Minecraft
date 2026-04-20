@@ -5,6 +5,7 @@ import bunger.group.csmit863.effects.HallucinationEffect;
 import bunger.group.csmit863.item.ModItems;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
@@ -46,6 +47,15 @@ public class ShroomjakEntity extends PathfinderMob {
         this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Cow.class, 4));
         this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
     }
+
+    @Override
+    protected void dropCustomDeathLoot(ServerLevel level, DamageSource source, boolean killedByPlayer) {
+        super.dropCustomDeathLoot(level, source, killedByPlayer);
+        if (this.random.nextFloat() < 0.7f) {
+            this.spawnAtLocation(level, ModItems.MAGIC_MUSHROOM);
+        }
+    }
+
     @Override
     public void tick() {
         super.tick();
