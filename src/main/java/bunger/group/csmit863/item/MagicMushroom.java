@@ -1,21 +1,23 @@
 package bunger.group.csmit863.item;
+import bunger.group.csmit863.block.ModBlocks;
 import bunger.group.csmit863.effects.HallucinationEffect;
 import net.minecraft.server.dedicated.Settings;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class MagicMushroom extends Item {
+public class MagicMushroom extends BlockItem {
     private static final int BASE_DURATION = 20 * 30;   // 600 ticks
     private static final int MAX_DURATION  = 20 * 60 * 10; // 12000 ticks
     private static final int BASE_AMPLIFIER = 0;
     private static final int MAX_AMPLIFIER = 4;
 
-    public MagicMushroom(Properties properties) { super(properties); }
+    public MagicMushroom(Properties properties) { super(ModBlocks.MAGIC_MUSHROOM_BLOCK, properties); }
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level world, LivingEntity user) {

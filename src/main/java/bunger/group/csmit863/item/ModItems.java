@@ -1,6 +1,7 @@
 package bunger.group.csmit863.item;
 
 import bunger.group.MutuallyAssuredDestruction;
+import bunger.group.csmit863.block.MagicMushroomBlock;
 import bunger.group.csmit863.effects.HallucinationEffect;
 import bunger.group.csmit863.effects.MadnessEffect;
 import net.minecraft.core.Holder;
@@ -17,6 +18,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.consume_effects.ApplyStatusEffectsConsumeEffect;
 import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.item.component.Consumables;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
 import java.util.function.Function;
 
@@ -44,6 +47,7 @@ public class ModItems {
             MagicMushroom::new,
             new Item.Properties().food(MAGIC_MUSHROOM_FOOD, MAGIC_MUSHROOM_CONSUMABLE)
     );
+
 
     public static <T extends Item> T registerItem(String name, Function<Item.Properties, T> itemFactory, Item.Properties settings) {
         ResourceKey<Item> itemKey = ResourceKey.create(Registries.ITEM,

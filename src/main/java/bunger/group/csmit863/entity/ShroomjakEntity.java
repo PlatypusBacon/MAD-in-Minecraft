@@ -1,6 +1,7 @@
 package bunger.group.csmit863.entity;
 
 import bunger.group.MutuallyAssuredDestruction;
+import bunger.group.csmit863.block.ModBlocks;
 import bunger.group.csmit863.effects.HallucinationEffect;
 import bunger.group.csmit863.item.ModItems;
 import net.minecraft.core.BlockPos;
@@ -104,6 +105,14 @@ public class ShroomjakEntity extends PathfinderMob {
 
             if (bonemealCooldown == 0) {
                 ServerLevel serverLevel = (ServerLevel) level();
+                // black particles from head
+                serverLevel.sendParticles(
+                        ParticleTypes.SQUID_INK,
+                        this.getX()+0.5, this.getY() + 2, this.getZ()+0.5, // +1.5 = head height
+                        10,
+                        0.2, 0.2, 0.2, // tight spread around head
+                        0.05
+                );
                 BlockPos pos = this.blockPosition().below();
                 BlockState state = serverLevel.getBlockState(pos);
 
@@ -112,6 +121,23 @@ public class ShroomjakEntity extends PathfinderMob {
                     BoneMealItem.growCrop(ItemStack.EMPTY, serverLevel, pos);
                 } else if (state.is(Blocks.MOSS_BLOCK)) {
                     BoneMealItem.growCrop(ItemStack.EMPTY, serverLevel, pos);
+                }
+
+                // randomly place magic mushroom on nearby moss
+                // place multiple mushrooms in random nearby positions
+                for (int i = 0; i < 3; i++) {
+                    if (this.random.nextFloat() < 0.02f) {
+                        BlockPos mushroomPos = this.blockPosition().offset(
+                                this.random.nextInt(5) - 2,  // -2 to +2 x
+                                0,
+                                this.random.nextInt(5) - 2   // -2 to +2 z
+                        );
+                        BlockState above = serverLevel.getBlockState(mushroomPos);
+                        BlockState below = serverLevel.getBlockState(mushroomPos.below());
+                        if (above.isAir() && (below.isSolidRender() || below.is(Blocks.GRASS_BLOCK) || below.is(Blocks.MOSS_BLOCK))) {
+                            serverLevel.setBlock(mushroomPos, ModBlocks.MAGIC_MUSHROOM_BLOCK.defaultBlockState(), 3);
+                        }
+                    }
                 }
 
                 bonemealCooldown = BONEMEAL_COOLDOWN;

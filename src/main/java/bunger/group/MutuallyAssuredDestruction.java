@@ -36,6 +36,7 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		ModBlocks.register();
 
 		bunger.group.csmit863.item.ModItems.register();
+		bunger.group.csmit863.block.ModBlocks.initialize();
 
 		bunger.group.csmit863.entity.ModEntityTypes.registerModEntityTypes();
 		bunger.group.csmit863.entity.ModEntityTypes.registerAttributes();
