@@ -69,5 +69,21 @@
                 "stream": true  
             }
         ]
+    },
+    "voremoth_hit": {
+        "sounds": [
+            {
+                "name": "mutually-assured-destruction:voremoth_hit",
+                "stream": true  
+            }
+        ]
+    },
+    "voremoth_charge": {
+        "sounds": [
+            {
+                "name": "mutually-assured-destruction:voremoth_charge",
+                "stream": true  
+            }
+        ]
     }
 }

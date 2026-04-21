@@ -21,6 +21,7 @@ import net.minecraft.world.item.ItemStack;
 import java.util.Optional;
 
 import bunger.group.MutuallyAssuredDestruction;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -134,9 +135,20 @@ public void customServerAiStep(ServerLevel level) {
         return;
     }
 
-    Player target = level.getNearestPlayer(this, 75.0);
+    Player target = level.getNearestPlayer(this, 50.0);
     if (target != null) {
         this.setLaserTarget(target);
+
+        if (laserTimer == 0) {
+            this.level().playSound(
+                null,
+                this.getX(), this.getY(), this.getZ(),
+                MutuallyAssuredDestruction.VOREMOTH_CHARGE,
+                SoundSource.AMBIENT,
+                0.5F,
+                0.9F
+            );
+        }
         laserTimer++;
 
         if (laserTimer >= LASER_WARMUP) {
@@ -188,6 +200,38 @@ public void customServerAiStep(ServerLevel level) {
         return 100 + this.random.nextInt(160); 
     }
 
+    @Override
+    public void playHurtSound(final DamageSource source) {
+        this.level().playSound(
+            null,
+            //new BlockPos(((int) Math.round(source.getSourcePosition().x)), (int) Math.round(source.getSourcePosition().y), (int) Math.round(source.getSourcePosition().z)),
+            this.getX(), this.getY(), this.getZ(),
+            MutuallyAssuredDestruction.VOREMOTH_HIT,
+            SoundSource.AMBIENT,
+            0.75F,
+            1.0F
+        );
+    }
+
+    @Override
+    public boolean requiresCustomPersistence() {
+        return true;
+    }
+
+    @Override
+    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+        return false;
+    }
+
+    // @Override
+    // public void onRemovedFromLevel() {
+    //     super.onRemovedFromLevel();
+    //     System.out.println("VOREMOTHTEST: Voremoth removed from level, reason: " + this.getRemovalReason());
+    // }
+
+
+
+
 
     private int ambientTimer = 0;
     @Override
@@ -224,6 +268,10 @@ public void customServerAiStep(ServerLevel level) {
 
     @Override
     public void setInvulnerable(boolean invulnerable) {
+        System.out.println("VOREMOTHTEST: setInvulnerable called with: " + invulnerable);
+        for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
+            System.out.println("  " + element);
+        }
         super.setInvulnerable(false);
     }
 

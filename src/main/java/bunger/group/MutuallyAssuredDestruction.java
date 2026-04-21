@@ -71,6 +71,10 @@ public class MutuallyAssuredDestruction implements ModInitializer {
     	Identifier.fromNamespaceAndPath(MOD_ID, "altar_form")
 	);
 
+	public static final SoundEvent VOREMOTH_HIT = SoundEvent.createFixedRangeEvent(
+    	Identifier.fromNamespaceAndPath(MOD_ID, "voremoth_hit"), 100.0F);
+	public static final SoundEvent VOREMOTH_CHARGE = SoundEvent.createFixedRangeEvent(
+    	Identifier.fromNamespaceAndPath(MOD_ID, "voremoth_charge"), 100.0F);
 	public static final SoundEvent VOREMOTH1 = SoundEvent.createFixedRangeEvent(
     	Identifier.fromNamespaceAndPath(MOD_ID, "voremoth1"), 100.0F);
 	public static final SoundEvent VOREMOTH2 = SoundEvent.createFixedRangeEvent(

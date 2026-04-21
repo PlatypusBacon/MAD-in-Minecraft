@@ -10,13 +10,17 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Entity.RemovalReason;
 import net.minecraft.world.level.levelgen.placement.SurfaceWaterDepthFilter;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import java.util.HashMap;
 import java.util.Map;
+
+import bunger.group.MutuallyAssuredDestruction;
 import bunger.group.ethan.RedDarknessEffect;
 import bunger.group.ethan.VoremothEntity;
 
@@ -33,17 +37,29 @@ public class VoremothBossMechanic {
     public static BeamColor REQUIRED_COLOR = BeamColor.RED;
     private static int cycleTimer = 0;
     private static VoremothEntity activeVoremoth = null;
-    private static int SURFACE_Y_LEVEL = 63; // y level to spawn beams from
+    private static int SURFACE_Y_LEVEL = 63;
+    private static int damageTimer = 0;
 
     public static void register() {
         ServerTickEvents.END_SERVER_TICK.register(server -> {
-            if (activeVoremoth == null || activeVoremoth.getHealth() == 0) {
-                //System.out.println("VOREMOTHMECHANICS: No active Voremoth, skipping mechanic logic.");
+        if (activeVoremoth == null || activeVoremoth.isRemoved()) {
+            for (ServerLevel level : server.getAllLevels()) {
+                for (Entity entity : level.getAllEntities()) {
+                    if (entity instanceof VoremothEntity voremoth && !voremoth.isRemoved()) {
+                        System.out.println("VOREMOTHTEST: Re-found voremoth after removal");
+                        activeVoremoth = voremoth;
+                        break;
+                    }
+                }
+            }
+            if (activeVoremoth == null || activeVoremoth.isRemoved()) {
                 ACTIVE_BEAMS.clear();
                 return;
             }
+        }
 
             cycleTimer++;
+            damageTimer++;
 
             // spawn fake beam particles every tick
             for (ServerLevel level : server.getAllLevels()) {
@@ -57,7 +73,9 @@ public class VoremothBossMechanic {
 
                 }
        
-            //System.out.println("Boss invulnerable to beacon damage: " + activeVoremoth.isInvulnerableTo(level, level.damageSources().source(ModDamageTypes.BEACON_DAMAGE)) + " | cycleTimer: " + cycleTimer + " | level: " + level);
+            // System.out.println("Boss invulnerable to beacon damage: " + activeVoremoth.isInvulnerableTo(level, level.damageSources().source(ModDamageTypes.BEACON_DAMAGE)) + " | cycleTimer: " + cycleTimer + " | level: " + level);
+            // System.out.println("Is removed: " + activeVoremoth.isRemoved());
+
 
             }
 
@@ -104,13 +122,14 @@ public class VoremothBossMechanic {
         if (server != null) {
             for (ServerLevel level : server.getAllLevels()) {
                 for (ServerPlayer player : level.players()) {
-                    if (player.distanceTo(activeVoremoth) < 100) {
+                    ServerPlayer livePlayer = level.getServer().getPlayerList().getPlayer(player.getUUID());
+                    if (livePlayer != null && livePlayer.distanceTo(activeVoremoth) < 100) {
                         String message = switch (REQUIRED_COLOR) {
                             case RED -> "BLOOD";
                             case BLUE -> "POWER";
                             case WHITE -> "PURITY";
                         };
-                        player.sendOverlayMessage(
+                        livePlayer.sendOverlayMessage(
                             Component.literal("Voremoth demands ")
                                 .append(Component.literal(message)
                                     .withStyle(getColorStyle(REQUIRED_COLOR)))
@@ -137,24 +156,28 @@ public class VoremothBossMechanic {
         }
     }
 
+
+
     private static void checkPlayerInBeam(ServerPlayer player, ServerLevel level) {
+        ServerPlayer livePlayer = level.getServer().getPlayerList().getPlayer(player.getUUID());
+        if (livePlayer == null) return;
         for (Map.Entry<BlockPos, BeamColor> entry : ACTIVE_BEAMS.entrySet()) {
             BlockPos beamPos = entry.getKey();
             BeamColor beamColor = entry.getValue();
 
             double dist = Math.sqrt(
-                Math.pow(player.getX() - beamPos.getX(), 2) +
-                Math.pow(player.getZ() - beamPos.getZ(), 2)
+                Math.pow(livePlayer.getX() - beamPos.getX(), 2) +
+                Math.pow(livePlayer.getZ() - beamPos.getZ(), 2)
             );
 
             if (dist < 2.0) {
                 if (beamColor == REQUIRED_COLOR) {
-                    if (player.tickCount % 21 == 0 && activeVoremoth != null) {
+                    if (damageTimer % 20 == 0 && activeVoremoth != null) {
                         //System.out.println("VOREMOTHIMMUNITY: Boss invulnerable to beacon damage: " + activeVoremoth.isInvulnerableTo(level, level.damageSources().source(ModDamageTypes.BEACON_DAMAGE)));
                         activeVoremoth.hurtServer(level, level.damageSources().source(ModDamageTypes.BEACON_DAMAGE), 5.0F);
                     }
                 } else {
-                    player.addEffect(new MobEffectInstance(
+                    livePlayer.addEffect(new MobEffectInstance(
                         BuiltInRegistries.MOB_EFFECT.wrapAsHolder(RedDarknessEffect.RED_DARKNESS),
                         1200, 0
                     ));

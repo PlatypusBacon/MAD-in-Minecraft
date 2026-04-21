@@ -13,10 +13,11 @@ public class AltarEventHandler {
 
     public static void register() {
         ServerLivingEntityEvents.ALLOW_DEATH.register((entity, source, amount) -> {
-            if (entity instanceof ProphetEntity player) { //TODO: this should not be prophet entity
+            if (entity instanceof ServerPlayer player) { //TODO: this should not be prophet entity
                 BlockPos below = player.blockPosition().below();
-                if (player.level().getBlockState(below).getBlock() 
-                        instanceof AltarBlock) {
+                 System.out.println("ALTARTEST: Player died, block below: " + player.level().getBlockState(below).getBlock());
+                if (player.level().getBlockState(below).getBlock() instanceof AltarBlock) {
+                    System.out.println("ALTARTEST: Spawning new boss!");
                     spawnBoss((ServerLevel) player.level(), below);
                 }
             }
@@ -47,6 +48,7 @@ public class AltarEventHandler {
             }
             
             // set position before adding to world
+            boss.setPersistenceRequired();
             boss.setPos(spawnX, spawnY, spawnZ);
             level.addFreshEntity(boss);
             VoremothBossMechanic.startMechanic(boss, altarPos);
