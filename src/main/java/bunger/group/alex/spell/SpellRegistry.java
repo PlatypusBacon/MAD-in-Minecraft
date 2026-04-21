@@ -13,7 +13,9 @@ public class SpellRegistry {
             new SpellDefinition("Agarthan Ice Dome",SpellTypes.ICE,75, ModItems.AGARTHAN_ICE_DOME),
 
             // LIGHTNING
-            new SpellDefinition("Agarthan Thunder",SpellTypes.LIGHTNING,75, ModItems.AGARTHAN_THUNDER),
+            new SpellDefinition("Zap", SpellTypes.LIGHTNING, 10, ModItems.ZAP),
+            new SpellDefinition("Agarthan Thunder", SpellTypes.LIGHTNING,75, ModItems.AGARTHAN_THUNDER),
+
 
             // FIRE
             new SpellDefinition("Ignition", SpellTypes.FIRE,15, ModItems.IGNITION),

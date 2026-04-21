@@ -35,11 +35,11 @@ public class MutuallyAssuredDestructionClient implements ClientModInitializer {
 		HudElementRegistry.attachElementBefore(
 				VanillaHudElements.CHAT,
 				Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, "mana_bar"),
-				MutuallyAssuredDestructionClient::render
+				MutuallyAssuredDestructionClient::renderMana
 		);
 	}
 
-	private static void render(GuiGraphicsExtractor graphics, DeltaTracker delta) {
+	private static void renderMana(GuiGraphicsExtractor graphics, DeltaTracker delta) {
 		Minecraft client = Minecraft.getInstance();
 		if (client.player == null || client.options.hideGui) return;
 

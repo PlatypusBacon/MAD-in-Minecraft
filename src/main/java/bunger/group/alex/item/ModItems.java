@@ -27,6 +27,11 @@ public class ModItems {
             new AgarthanIceDome.Properties()
     );
 
+    public static final Item ZAP = registerItem(
+            "zap",
+            Zap::new,
+            new Zap.Properties()
+    );
     public static final Item AGARTHAN_THUNDER = registerItem(
             "spell_lightning_agarthan_thunder",
             AgarthanThunder::new,
@@ -67,7 +72,7 @@ public class ModItems {
 
     // Materials
     public static final Item PURE_MANA = registerItem(
-            "pure_mana",
+            "eitr",
             Item::new,
             new Item.Properties()
     );

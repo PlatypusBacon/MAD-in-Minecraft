@@ -30,12 +30,14 @@ public class CreativeTab {
                 // Items
                 output.accept(ModItems.ICE_SHIELD);
                 output.accept(ModItems.AGARTHAN_THUNDER);
+                output.accept(ModItems.ZAP);
                 output.accept(ModItems.AGARTHAN_ICE_DOME);
                 output.accept(ModItems.IGNITION);
                 output.accept(ModItems.STAFF_OF_TELEPORTATION);
                 output.accept(ModItems.BLANK_LIGHTNING_SCROLL);
                 output.accept(ModItems.BLANK_FIRE_SCROLL);
                 output.accept(ModItems.BLANK_ICE_SCROLL);
+                output.accept(ModItems.PURE_MANA);
 
                 // Armour
                 output.accept(ModItems.CLOTH_HELMET);
