@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": "mutually-assured-destruction:thick_stick",
+    "X": "#minecraft:copper_tool_materials"
+  },
+  "pattern": [
+    "XX",
+    "X#",
+    " #"
+  ],
+  "result": {
+    "id": "mutually-assured-destruction:thick_copper_axe"
+  }
+}

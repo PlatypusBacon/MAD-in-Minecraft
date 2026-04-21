@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [ "PPP", " S ", " S " ],
   "key": {
-    "P": "#minecraft:cobblestone",
+    "P": "#minecraft:gold_tool_materials",
     "S": "mutually-assured-destruction:thick_stick"
   },
   "result": "mutually-assured-destruction:thick_stone_pickaxe"

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": "mutually-assured-destruction:long_stick",
+    "X": "#minecraft:iron_tool_materials"
+  },
+  "pattern": [
+    "  X",
+    " # ",
+    "#  "
+  ],
+  "result": {
+    "id": "mutually-assured-destruction:long_iron_spear"
+  }
+}

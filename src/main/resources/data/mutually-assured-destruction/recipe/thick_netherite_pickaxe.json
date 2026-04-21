@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:crafting_shaped",
-  "pattern": [ "PPP", " S ", " S " ],
-  "key": {
-    "P": "#minecraft:netherite_tool_materials",
-    "S": "mutually-assured-destruction:thick_stick"
-  },
-  "result": "mutually-assured-destruction:thick_netherite_pickaxe"
-}
