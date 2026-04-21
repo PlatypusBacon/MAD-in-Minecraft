@@ -1,9 +1,11 @@
 package bunger.group.tyler.entity;
 
 import bunger.group.tyler.item.ModItems;
+import bunger.group.tyler.sound.ModSounds;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -68,7 +70,10 @@ public class SquirrelEntity extends Animal {
     public boolean isFood(ItemStack itemStack) {
         return false;
     }
-
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return ModSounds.SQUIRREL_AMBIENT;
+    }
 
     @Override
     public @Nullable AgeableMob getBreedOffspring(ServerLevel world, AgeableMob entity) {

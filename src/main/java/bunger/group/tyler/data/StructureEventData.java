@@ -27,7 +27,10 @@ public class StructureEventData extends SavedData {
     private net.minecraft.world.level.block.state.BlockState doorBottomState = null;
     private net.minecraft.world.level.block.state.BlockState doorTopState = null;
     private java.util.List<java.util.UUID> eventPlayers = new java.util.ArrayList<>();
+    private boolean wifeEventTriggered = false;
 
+    public boolean isWifeEventTriggered() { return wifeEventTriggered; }
+    public void setWifeEventTriggered() { wifeEventTriggered = true; setDirty(); }
 
     // positions
     private BlockPos structureOrigin;

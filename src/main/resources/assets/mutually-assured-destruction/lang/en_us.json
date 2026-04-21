@@ -4,6 +4,7 @@
   "item.mutually-assured-destruction.squeather_legs": "Leg Squeather",
   "item.mutually-assured-destruction.squeather_head": "Head Squeather",
   "item.mutually-assured-destruction.squeather_chest": "Chest Squeather",
+  "item.mutually-assured-destruction.squirrel_stapeler": "Squirrel Stapeler",
   "entity.mutually-assured-destruction.squirrel": "Squirrel",
   "entity.mutually-assured-destruction.squirrel_bear": "Squirrel Bear",
   "entity.mutually-assured-destruction.god": "God",
@@ -21,6 +22,6 @@
   "painting.mutually-assured-destruction.god_coming_2.author": "Unknown",
   "painting.mutually-assured-destruction.god_coming_1.author": "Unknown",
   "painting.mutually-assured-destruction.god_coming_0.author": "Unknown",
-  "block.mutually-assured-destruction.squirrel_wife": "Squirrel Wife",
+  "entity.mutually-assured-destruction.squirrel_wife": "Squirrel Wife",
   "enchantment.mutually-assured-destruction.stapled": "STAPLED"
 }

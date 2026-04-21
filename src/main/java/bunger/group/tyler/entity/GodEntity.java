@@ -20,7 +20,7 @@ public class GodEntity extends Mob {
     private int despawnTicks = -1;
     private static final double HOVER_HEIGHT = 0.3;
     private ServerPlayer trackedPlayer = null;
-    private static final int PAUSE_TICKS = 60;
+    private static final int PAUSE_TICKS = 50;
     private static final double RISE_SPEED = 0.05;
     private Vec3 frozenPos = null;
     private float lastYaw = 0;

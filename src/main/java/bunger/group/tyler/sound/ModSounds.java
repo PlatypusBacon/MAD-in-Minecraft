@@ -20,6 +20,7 @@ public class ModSounds {
     public static final SoundEvent BEAR_ACTIVE = registerSound("bear_active");
     public static final SoundEvent RELOAD = registerSound("reload");
     public static final SoundEvent BEAR_IDLE = registerSound("bear_idle");
+    public static final SoundEvent SLIP = registerSound("slip");
     // actual registration of all the custom SoundEvents
     private static SoundEvent registerSound(String id) {
         Identifier identifier = Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, id);

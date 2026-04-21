@@ -24,6 +24,11 @@
       { "name": "mutually-assured-destruction:reload", "volume": 1.0 }
     ]
   },
+  "slip": {
+    "sounds": [
+      { "name": "mutually-assured-destruction:slip", "volume": 1.0 }
+    ]
+  },
   "god_is_coming": {
     "sounds": [
       {

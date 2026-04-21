@@ -23,7 +23,7 @@ public class SquirrelBearEntity extends PathfinderMob implements Enemy {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 1000.0)       // ~20 squirrel gun shots to kill
+                .add(Attributes.MAX_HEALTH, 500.0)       // ~20 squirrel gun shots to kill
                 .add(Attributes.MOVEMENT_SPEED, 0.45)
                 .add(Attributes.ATTACK_DAMAGE, 8.0)       // hits hard like a hoglin
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.6)
@@ -44,7 +44,7 @@ public class SquirrelBearEntity extends PathfinderMob implements Enemy {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return ModSounds.BEAR_IDLE; // placeholder — replace with ModSounds
+        return ModSounds.BEAR_IDLE;
     }
 
     @Override

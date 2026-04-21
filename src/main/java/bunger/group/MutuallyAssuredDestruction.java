@@ -5,16 +5,13 @@ import bunger.group.tyler.command.SetupStructureCommand;
 import bunger.group.tyler.entity.ModEntities;
 import bunger.group.tyler.event.SundownWatcher;
 import bunger.group.tyler.event.TickScheduler;
+import bunger.group.tyler.event.Trip;
 import bunger.group.tyler.event.god.StructureManager;
 import bunger.group.tyler.item.ModItems;
 import bunger.group.tyler.sound.ModSounds;
 import bunger.group.tyler.structure.ModStructures;
 import net.fabricmc.api.ModInitializer;
 
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.Identifier;
-import net.minecraft.world.entity.decoration.painting.PaintingVariant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +29,7 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		// Proceed with mild caution.
 
 		ModStructures.register();
+		Trip.register();
 		ModBlocks.registerModBlocks();
 		ModSounds.initialize();
 		TickScheduler.register();

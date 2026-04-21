@@ -45,6 +45,11 @@ public class ModItems {
             SquirrelGunItem::new,
             new Item.Properties()
     );
+    public static final Item SQUIRREL_STAPELER = register(
+            "squirrel_stapeler",
+            SquirrelStapelerItem::new,
+            new Item.Properties()
+    );
 
     private static <T extends Item> T register(String name,
                                                java.util.function.Function<Item.Properties, T> factory,
@@ -63,5 +68,6 @@ public class ModItems {
         );
         ModArmorMaterials.initialize();
         var squirrel_gun = SQUIRREL_GUN;
+        var squirrel_stapeler = SQUIRREL_STAPELER;
     }
 }

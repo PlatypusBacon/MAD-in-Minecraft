@@ -1,6 +1,7 @@
 package bunger.group.tyler.event.god;
 
 import bunger.group.tyler.data.StructureEventData;
+import bunger.group.tyler.event.wife.Wife;
 import bunger.group.tyler.structure.StructurePlacer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
@@ -11,10 +12,11 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.storage.LevelData;
 import net.minecraft.world.phys.AABB;
 
-public class StructureManager {
 
+public class StructureManager {
     public static void register() {
         registerEntryDetection();
+        registerWifeArmorCheck();
         registerUnbreakableBlocks();
         registerUnplaceableBlocks();
         registerUnbreakableEntities();
@@ -139,6 +141,45 @@ public class StructureManager {
                     return net.minecraft.world.InteractionResult.PASS;
                 });
     }
+    private static void registerWifeArmorCheck() {
+        ServerTickEvents.END_SERVER_TICK.register(server -> {
+            ServerLevel level = server.overworld();
+            StructureEventData data = StructureEventData.get(level);
+
+            if (!data.hasBeenEntered() || data.isEventComplete()) return;
+            if (data.isWifeEventTriggered()) return;
+
+            // only check every 20 ticks for performance
+            if (level.getGameTime() % 20 != 0) return;
+
+            AABB bounds = getStructureBounds(data).inflate(4.0);
+
+            var wives = level.getEntitiesOfClass(
+                    bunger.group.tyler.entity.SquirrelWifeEntity.class, bounds);
+
+            for (var wife : wives) {
+                if (isFullyEquippedWithSqueather(wife)) {
+                    data.setWifeEventTriggered();
+                    Wife.start(level, wife.blockPosition());
+                    return;
+                }
+            }
+        });
+    }
+
+    private static boolean isFullyEquippedWithSqueather(
+            bunger.group.tyler.entity.SquirrelWifeEntity wife) {
+        var head  = wife.getItemBySlot(net.minecraft.world.entity.EquipmentSlot.HEAD);
+        var chest = wife.getItemBySlot(net.minecraft.world.entity.EquipmentSlot.CHEST);
+        var legs  = wife.getItemBySlot(net.minecraft.world.entity.EquipmentSlot.LEGS);
+        var feet  = wife.getItemBySlot(net.minecraft.world.entity.EquipmentSlot.FEET);
+
+        return head.is(bunger.group.tyler.item.ModItems.SQUEATHER_HEAD)
+                && chest.is(bunger.group.tyler.item.ModItems.SQUEATHER_CHEST)
+                && legs.is(bunger.group.tyler.item.ModItems.SQUEATHER_LEGS)
+                && feet.is(bunger.group.tyler.item.ModItems.SQUEATHER_FEET);
+    }
+
     private static void registerFirePrevention() {
         ServerTickEvents.END_SERVER_TICK.register(server -> {
             ServerLevel level = server.overworld();

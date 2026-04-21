@@ -1,6 +1,7 @@
 package bunger.group.client;
 
 import bunger.group.client.tyler.ModEntityModelLayers;
+import bunger.group.client.tyler.SleepScreenOverlay;
 import bunger.group.client.tyler.god.GodEntityRenderer;
 import bunger.group.client.tyler.squirrel_bear.SquirrelBearEntityRenderer;
 import bunger.group.client.tyler.squirrel_wife.SquirrelWifeEntityRenderer;
@@ -17,7 +18,7 @@ public class MutuallyAssuredDestructionClient implements ClientModInitializer {
 		EntityRenderers.register(ModEntities.SQUIRREL_BEAR, SquirrelBearEntityRenderer::new);
 		EntityRenderers.register(ModEntities.GOD, GodEntityRenderer::new);
 		EntityRenderers.register(ModEntities.SQUIRREL_WIFE, SquirrelWifeEntityRenderer::new);
-
+		SleepScreenOverlay.register();
 		// This entrypoint is suitable for setting up client-specific logic, such as rendering.
 	}
 }
