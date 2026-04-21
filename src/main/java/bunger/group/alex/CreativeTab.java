@@ -38,6 +38,7 @@ public class CreativeTab {
                 output.accept(ModItems.BLANK_LIGHTNING_SCROLL);
                 output.accept(ModItems.BLANK_FIRE_SCROLL);
                 output.accept(ModItems.BLANK_ICE_SCROLL);
+                output.accept(ModItems.BLANK_EARTH_SCROLL);
                 output.accept(ModItems.PURE_MANA);
 
                 // Armour

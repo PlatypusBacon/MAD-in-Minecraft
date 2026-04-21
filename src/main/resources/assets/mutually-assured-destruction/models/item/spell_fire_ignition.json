@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "mutually-assured-destruction:item/spell_fire_ignition"
+  }
+}

@@ -45,7 +45,7 @@ public class ModItems {
     );
 
     public static final Item IMPALE = registerItem(
-            "spell_earth_imaple",
+            "spell_earth_impale",
             Impale::new,
             new Impale.Properties()
     );
@@ -76,9 +76,21 @@ public class ModItems {
             new BlankScroll.Properties()
     );
 
+    public static final Item BLANK_EARTH_SCROLL = registerItem(
+            "blank_earth_scroll",
+            (Item.Properties properties) -> new BlankScroll(properties, SpellTypes.EARTH),
+            new BlankScroll.Properties()
+    );
+
     // Materials
     public static final Item PURE_MANA = registerItem(
             "eitr",
+            Item::new,
+            new Item.Properties()
+    );
+
+    public static final Item CLOTH = registerItem(
+            "cloth",
             Item::new,
             new Item.Properties()
     );

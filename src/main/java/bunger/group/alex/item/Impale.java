@@ -16,13 +16,14 @@ import net.minecraft.world.phys.*;
 import java.util.List;
 import java.util.Optional;
 
-public class Impale extends SpellTemplate {
 
+public class Impale extends SpellTemplate {
 
     public Impale(Properties properties) {
         super(properties, 20, 10,  SpellTypes.EARTH);
     }
 
+    //TODO Remove pillar after its at max one at a time?
     @Override
     public void cast(Level level, LivingEntity user, ItemStack stack) {
         if (level.isClientSide()) {
@@ -50,7 +51,7 @@ public class Impale extends SpellTemplate {
                 return;
             }
 
-            int height = java.util.concurrent.ThreadLocalRandom.current().nextInt(3, 7);
+            int height = java.util.concurrent.ThreadLocalRandom.current().nextInt(2, 6);
 
             for (int i = 0; i < height; i++) {
                 blockTouched = blockTouched.above();
@@ -75,12 +76,10 @@ public class Impale extends SpellTemplate {
             for (Entity e : entities) {
                 e.setDeltaMovement(e.getDeltaMovement().x, -1, e.getDeltaMovement().z);
 
-                e.fallDistance = 3F;
+                e.fallDistance = height;
                 e.hurtMarked = true;
             }
+            ParticleHelpers.spawnRingParticles(level, end, 0.5, 0,  ParticleTypes.DUST_PLUME);
         }
-
-        ParticleHelpers.spawnRingParticles(level, end, 0.5, 0,  ParticleTypes.DUST_PLUME);
     }
-
 }

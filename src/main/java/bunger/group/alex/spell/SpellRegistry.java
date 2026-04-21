@@ -8,6 +8,13 @@ import java.util.List;
 public class SpellRegistry {
 
     public static final List<SpellDefinition> ALL_SPELLS = List.of(
+
+            // EARTH
+            new SpellDefinition("Impale", SpellTypes.EARTH,25, ModItems.IMPALE),
+
+            // FIRE
+            new SpellDefinition("Ignition", SpellTypes.FIRE,15, ModItems.IGNITION),
+
             // ICE
             new SpellDefinition("Ice Shield",SpellTypes.ICE,10, ModItems.ICE_SHIELD),
             new SpellDefinition("Agarthan Ice Dome",SpellTypes.ICE,75, ModItems.AGARTHAN_ICE_DOME),
@@ -15,10 +22,6 @@ public class SpellRegistry {
             // LIGHTNING
             new SpellDefinition("Zap", SpellTypes.LIGHTNING, 10, ModItems.ZAP),
             new SpellDefinition("Agarthan Thunder", SpellTypes.LIGHTNING,75, ModItems.AGARTHAN_THUNDER),
-
-
-            // FIRE
-            new SpellDefinition("Ignition", SpellTypes.FIRE,15, ModItems.IGNITION),
 
             // STAFF
             new SpellDefinition("Staff of Teleportation", SpellTypes.STAFF, 30, ModItems.STAFF_OF_TELEPORTATION)
