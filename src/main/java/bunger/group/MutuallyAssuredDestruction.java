@@ -1,14 +1,6 @@
 package bunger.group;
 
-import bunger.group.tyler.block.ModBlocks;
-import bunger.group.tyler.command.SetupStructureCommand;
-import bunger.group.tyler.entity.ModEntities;
-import bunger.group.tyler.event.SundownWatcher;
-import bunger.group.tyler2.event.Trip;
-import bunger.group.tyler.event.god.StructureManager;
-import bunger.group.tyler.item.ModItems;
-import bunger.group.tyler.sound.ModSounds;
-import bunger.group.tyler.structure.ModStructures;
+import bunger.group.tyler2.item.ModCreativeTabs;
 import net.fabricmc.api.ModInitializer;
 
 import org.slf4j.Logger;
@@ -27,16 +19,18 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
 
-		ModStructures.register();
-		Trip.register();
-		ModBlocks.registerModBlocks();
-		ModSounds.initialize();
-		TickScheduler.register();
-		StructureManager.register();
-		SundownWatcher.register();
-		SetupStructureCommand.register();
-		ModItems.registerModItems();
-		ModEntities.registerModEntityTypes();
-		ModEntities.registerAttributes();
+		bunger.group.tyler.structure.ModStructures.register();
+		bunger.group.tyler2.event.Trip.register();
+		bunger.group.tyler.block.ModBlocks.registerModBlocks();
+		bunger.group.tyler.sound.ModSounds.initialize();
+		bunger.group.tyler.event.TickScheduler.register();
+		bunger.group.tyler.event.god.StructureManager.register();
+		bunger.group.tyler.event.SundownWatcher.register();
+		bunger.group.tyler.command.SetupStructureCommand.register();
+		bunger.group.tyler.item.ModItems.registerModItems();
+		bunger.group.tyler2.item.ModItems.registerModItems();
+		bunger.group.tyler.entity.ModEntities.registerModEntityTypes();
+		bunger.group.tyler.entity.ModEntities.registerAttributes();
+		ModCreativeTabs.registerCreativeTabs();
 	}
 }

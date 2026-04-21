@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [ "PPP", " S ", " S " ],
+  "key": {
+    "P": "#minecraft:golden_tool_materials",
+    "S": "mutually-assured-destruction:long_stick"
+  },
+  "result": "mutually-assured-destruction:long_gold_pickaxe"
+}

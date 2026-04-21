@@ -1,5 +1,6 @@
 package bunger.group.tyler.event.god;
 
+import bunger.group.tyler.event.TickScheduler;
 import bunger.group.tyler.sound.ModSounds;
 import bunger.group.tyler.structure.StructurePlacer;
 import net.minecraft.core.BlockPos;

@@ -2,6 +2,7 @@ package bunger.group.tyler.structure;
 
 import bunger.group.MutuallyAssuredDestruction;
 import bunger.group.tyler.data.StructureEventData;
+import bunger.group.tyler.event.TickScheduler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
