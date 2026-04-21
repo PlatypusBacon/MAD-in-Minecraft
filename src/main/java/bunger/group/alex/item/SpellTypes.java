@@ -1,5 +1,5 @@
 package bunger.group.alex.item;
 
 public enum SpellTypes {
-    LIGHTNING, ICE, FIRE, STAFF
+    LIGHTNING, ICE, FIRE, EARTH, STAFF
 }

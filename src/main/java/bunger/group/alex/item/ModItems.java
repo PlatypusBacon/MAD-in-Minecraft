@@ -44,6 +44,12 @@ public class ModItems {
             new Ignition.Properties()
     );
 
+    public static final Item IMPALE = registerItem(
+            "spell_earth_imaple",
+            EarthSpike::new,
+            new EarthSpike.Properties()
+    );
+
     public static final Item STAFF_OF_TELEPORTATION = registerItem(
             "spell_staff_of_teleportation",
             StaffOfTeleportation::new,
