@@ -5,6 +5,7 @@ build/
 out/
 classes/
 src/main/resources/data/mutually-assured-destruction/recipe
+src/main/java/bunger/group/tyler2
 # eclipse
 
 *.launch

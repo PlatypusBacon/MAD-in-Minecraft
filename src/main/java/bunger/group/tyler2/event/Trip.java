@@ -1,4 +1,4 @@
-package bunger.group.tyler.event;
+package bunger.group.tyler2.event;
 
 import bunger.group.tyler.sound.ModSounds;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;

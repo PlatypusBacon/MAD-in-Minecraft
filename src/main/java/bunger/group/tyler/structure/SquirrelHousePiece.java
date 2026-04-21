@@ -2,8 +2,6 @@ package bunger.group.tyler.structure;
 
 import bunger.group.MutuallyAssuredDestruction;
 import bunger.group.tyler.data.StructureEventData;
-import bunger.group.tyler.event.TickScheduler;
-import bunger.group.tyler.structure.StructurePlacer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
@@ -15,7 +13,6 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.TemplateStructurePiece;
-import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 
