@@ -1,53 +1,39 @@
 package bunger.group.csmit863.block;
 
+import bunger.group.csmit863.biome.ModBiomes;
 import bunger.group.csmit863.entity.ModEntityTypes;
 import bunger.group.csmit863.item.ModItems;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.chunk.LevelChunkSection;
 
 import java.util.List;
 
 public class HalluciniteBlock extends Block {
     private static final int EFFECT_RANGE = 15;
-    private static final int EFFECT_DURATION = 300; // ticks, refreshed every random tick
-    private static final int SPREAD_RANGE = 3;
+    private static final int EFFECT_DURATION = 300;
+
     public HalluciniteBlock(BlockBehaviour.Properties properties) {
         super(properties);
     }
-
-    private void trySpread(ServerLevel level, BlockPos pos, RandomSource random) {
-        // pick a random nearby block
-        BlockPos target = pos.offset(
-                random.nextInt(SPREAD_RANGE * 2 + 1) - SPREAD_RANGE,
-                random.nextInt(3) - 1,
-                random.nextInt(SPREAD_RANGE * 2 + 1) - SPREAD_RANGE
-        );
-
-        BlockState targetState = level.getBlockState(target);
-        Block targetBlock = targetState.getBlock();
-
-        boolean isConvertible = targetState.is(Blocks.DIRT)
-                || targetState.is(Blocks.GRASS_BLOCK)
-                || targetState.is(Blocks.COARSE_DIRT)
-                || targetState.is(Blocks.ROOTED_DIRT)
-                || targetState.is(BlockTags.LOGS)
-                || targetState.is(BlockTags.PLANKS);
-
-        if (isConvertible) {
-            level.setBlock(target, ModBlocks.HALLUCINITE_BLOCK.defaultBlockState(), 3);
-        }
-    }
-
 
     @Override
     public boolean isRandomlyTicking(BlockState state) {
@@ -56,7 +42,10 @@ public class HalluciniteBlock extends Block {
 
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        // apply hallucination to nearby players
+        // Decay check — runs before anything else; if decayed, block is gone
+        if (!level.getBlockState(pos).is(ModBlocks.HALLUCINITE_BLOCK)) return;
+
+        // Apply hallucination to nearby players
         List<Player> nearbyPlayers = level.getEntitiesOfClass(
                 Player.class,
                 new net.minecraft.world.phys.AABB(pos).inflate(EFFECT_RANGE)
@@ -81,8 +70,6 @@ public class HalluciniteBlock extends Block {
                     EntitySpawnReason.TRIGGERED
             );
         }
-        if (random.nextFloat() < 1.0f) {
-            trySpread(level, pos, random);
-        }
+
     }
 }

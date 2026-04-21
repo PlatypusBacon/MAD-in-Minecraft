@@ -118,7 +118,7 @@ public class ShroomjakEntity extends Animal {
                     nearestPlayer.addEffect(new MobEffectInstance(MobEffects.MINING_FATIGUE, newDuration, newAmp));
                     nearestPlayer.addEffect(new MobEffectInstance(MobEffects.NAUSEA, newDuration, newAmp));
                     nearestPlayer.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, newDuration, 1));
-                    nearestPlayer.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 5, 1));
+                    nearestPlayer.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 1000, 1));
 
 
                     // Spray particles
