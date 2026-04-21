@@ -4,6 +4,9 @@ import bunger.group.MutuallyAssuredDestruction;
 import bunger.group.alex.ManaPacket;
 import bunger.group.alex.menu.ModMenuType;
 import bunger.group.client.alex.rendering.screens.inventory.SpellDeskScreen;
+import bunger.group.client.csmit863.entity.ModEntityModelLayers;
+import bunger.group.client.csmit863.entity.ShroomjakEntityRenderer;
+import bunger.group.csmit863.entity.ModEntityTypes;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
@@ -12,6 +15,7 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Util;
 
@@ -37,6 +41,9 @@ public class MutuallyAssuredDestructionClient implements ClientModInitializer {
 				Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, "mana_bar"),
 				MutuallyAssuredDestructionClient::render
 		);
+
+		ModEntityModelLayers.registerModelLayers();
+		EntityRenderers.register(ModEntityTypes.SHROOMJAK, ShroomjakEntityRenderer::new);
 	}
 
 	private static void render(GuiGraphicsExtractor graphics, DeltaTracker delta) {

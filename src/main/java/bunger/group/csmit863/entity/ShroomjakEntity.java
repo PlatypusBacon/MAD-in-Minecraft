@@ -10,14 +10,14 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
-import net.minecraft.world.entity.ai.goal.TemptGoal;
+import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.cow.Cow;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BoneMealItem;
@@ -25,10 +25,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class ShroomjakEntity extends PathfinderMob {
+public class ShroomjakEntity extends Animal {
     public ShroomjakEntity(Level world) {
         this(ModEntityTypes.SHROOMJAK, world);
     }
@@ -36,7 +37,7 @@ public class ShroomjakEntity extends PathfinderMob {
     private static final int SPRAY_COOLDOWN = 100; // ticks between sprays
     private int sprayCooldown = 0;
     public ShroomjakEntity(EntityType<? extends ShroomjakEntity> entityType, Level world) {
-        super(entityType, world);
+        super(entityType, world);  // Animal's constructor takes the same params, no change needed
     }
     private static final int BONEMEAL_COOLDOWN = 300; // 200 ticks = 10 seconds
     private int bonemealCooldown = 0;
@@ -50,10 +51,21 @@ public class ShroomjakEntity extends PathfinderMob {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new TemptGoal(this, 1, Ingredient.of(Items.BROWN_MUSHROOM), false));
-        this.goalSelector.addGoal(1, new RandomStrollGoal(this, 1));
-        this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Cow.class, 4));
-        this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(0, new BreedGoal(this, 1.0));
+        this.goalSelector.addGoal(1, new TemptGoal(this, 1, Ingredient.of(Items.ROTTEN_FLESH), false));
+        this.goalSelector.addGoal(2, new RandomStrollGoal(this, 1));
+        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Cow.class, 4));
+
+    }
+
+    @Override
+    public boolean isFood(ItemStack stack) {
+        return stack.is(Items.ROTTEN_FLESH);
+    }
+
+    @Override
+    public ShroomjakEntity getBreedOffspring(ServerLevel level, AgeableMob otherParent) {
+        return ModEntityTypes.SHROOMJAK.create(level, EntitySpawnReason.BREEDING);
     }
 
     @Override
@@ -61,6 +73,29 @@ public class ShroomjakEntity extends PathfinderMob {
         super.dropCustomDeathLoot(level, source, killedByPlayer);
         if (this.random.nextFloat() < 0.7f) {
             this.spawnAtLocation(level, ModItems.MAGIC_MUSHROOM);
+        }
+    }
+
+    private void plantNearby(
+            int radius,
+            float probability,
+            Block block,
+            ServerLevel serverLevel
+    ){
+        // randomly place magic mushrooms in nearby positions
+        for (int i = 0; i < radius; i++) {
+            if (this.random.nextFloat() < probability) {// 0.2f
+                BlockPos mushroomPos = this.blockPosition().offset(
+                        this.random.nextInt(9) - radius,
+                        0,
+                        this.random.nextInt(9) - radius
+                );
+                BlockState above = serverLevel.getBlockState(mushroomPos);
+                BlockState below = serverLevel.getBlockState(mushroomPos.below());
+                if (above.isAir() && (below.isSolidRender() || below.is(Blocks.GRASS_BLOCK) || below.is(Blocks.MOSS_BLOCK))) {
+                    serverLevel.setBlock(mushroomPos, block.defaultBlockState(), 3); // ModBlocks.MAGIC_MUSHROOM_BLOCK.defaultBlockState()
+                }
+            }
         }
     }
 
@@ -114,21 +149,10 @@ public class ShroomjakEntity extends PathfinderMob {
                         10, 0.2, 0.2, 0.2, 0.05
                 );
 
-                // randomly place magic mushrooms in nearby positions
-                for (int i = 0; i < 3; i++) {
-                    if (this.random.nextFloat() < 0.2f) {
-                        BlockPos mushroomPos = this.blockPosition().offset(
-                                this.random.nextInt(9) - 4,
-                                0,
-                                this.random.nextInt(9) - 4
-                        );
-                        BlockState above = serverLevel.getBlockState(mushroomPos);
-                        BlockState below = serverLevel.getBlockState(mushroomPos.below());
-                        if (above.isAir() && (below.isSolidRender() || below.is(Blocks.GRASS_BLOCK) || below.is(Blocks.MOSS_BLOCK))) {
-                            serverLevel.setBlock(mushroomPos, ModBlocks.MAGIC_MUSHROOM_BLOCK.defaultBlockState(), 3);
-                        }
-                    }
-                }
+                plantNearby(3, 0.2f, ModBlocks.MAGIC_MUSHROOM_BLOCK, serverLevel);
+                plantNearby(8, 0.2f, Blocks.JUNGLE_SAPLING, serverLevel);
+                plantNearby(8, 0.2f, Blocks.BROWN_MUSHROOM, serverLevel);
+                plantNearby(8, 0.2f, Blocks.RED_MUSHROOM, serverLevel);
 
                 // convert only the block directly beneath to moss first
                 BlockPos directlyBelow = this.blockPosition().below();
