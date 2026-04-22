@@ -3,9 +3,7 @@
 	"credit": "Made with Blockbench",
 	"parent": "minecraft:item/generated",
 	"textures": {
-		"1": "mutually-assured-destruction:item/long_stick",
-		"layer0": "mutually-assured-destruction:item/thick_stick",
-		"particle": "mutually-assured-destruction:item/long_stick"
+		"layer0": "mutually-assured-destruction:item/thick_stick"
 	},
 	"display": {
 		"firstperson_righthand": {

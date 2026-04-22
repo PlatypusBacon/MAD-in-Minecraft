@@ -75,6 +75,14 @@ public class ModItems {
     public static final Item LONG_NETHERITE_PICKAXE = register("long_netherite_pickaxe", p -> new LongPickaxe(ModToolMaterials.LONG_NETHERITE,p),  new Item.Properties());
     public static final Item LONG_COPPER_PICKAXE = register("long_copper_pickaxe", p -> new LongPickaxe(ModToolMaterials.LONG_COPPER,p),  new Item.Properties());
 
+    public static final Item LONG_WOODEN_AXE    = register("long_wooden_axe",    p -> new LongAxe(ModToolMaterials.LONG_WOOD,p),       new Item.Properties());
+    public static final Item LONG_STONE_AXE     = register("long_stone_axe",     p -> new LongAxe(ModToolMaterials.LONG_STONE,p),      new Item.Properties());
+    public static final Item LONG_IRON_AXE      = register("long_iron_axe",      p -> new LongAxe(ModToolMaterials.LONG_IRON,p),       new Item.Properties());
+    public static final Item LONG_GOLD_AXE    = register("long_gold_axe",    p -> new LongAxe(ModToolMaterials.LONG_GOLD,p),       new Item.Properties());
+    public static final Item LONG_DIAMOND_AXE   = register("long_diamond_axe",   p -> new LongAxe(ModToolMaterials.LONG_DIAMOND,p),    new Item.Properties());
+    public static final Item LONG_NETHERITE_AXE = register("long_netherite_axe", p -> new LongAxe(ModToolMaterials.LONG_NETHERITE,p),  new Item.Properties());
+    public static final Item LONG_COPPER_AXE = register("long_copper_axe", p -> new LongAxe(ModToolMaterials.LONG_COPPER,p),  new Item.Properties());
+
     public static final Item LONG_WOODEN_SHOVEL   = register("long_wooden_shovel",    p -> new LongShovel(ModToolMaterials.LONG_WOOD,p),       new Item.Properties());
     public static final Item LONG_STONE_SHOVEL     = register("long_stone_shovel",     p -> new LongShovel(ModToolMaterials.LONG_STONE,p),      new Item.Properties());
     public static final Item LONG_IRON_SHOVEL      = register("long_iron_shovel",      p -> new LongShovel(ModToolMaterials.LONG_IRON,p),       new Item.Properties());

@@ -91,6 +91,15 @@ public class ModCreativeTabs {
                         output.accept(ModItems.LONG_NETHERITE_PICKAXE);
                         output.accept(ModItems.LONG_COPPER_PICKAXE);
 
+                        // Long Axes
+                        output.accept(ModItems.LONG_WOODEN_AXE);
+                        output.accept(ModItems.LONG_STONE_AXE);
+                        output.accept(ModItems.LONG_IRON_AXE);
+                        output.accept(ModItems.LONG_GOLD_AXE);
+                        output.accept(ModItems.LONG_DIAMOND_AXE);
+                        output.accept(ModItems.LONG_NETHERITE_AXE);
+                        output.accept(ModItems.LONG_COPPER_AXE);
+
                         // Long swords
                         output.accept(ModItems.LONG_WOODEN_SWORD);
                         output.accept(ModItems.LONG_STONE_SWORD);
