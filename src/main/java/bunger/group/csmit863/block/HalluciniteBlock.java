@@ -66,26 +66,53 @@ public class HalluciniteBlock extends Block {
 
         // 1% chance per random tick to spawn a shroomjak
         if (random.nextFloat() < 0.01f) {
-            ModEntityTypes.SHROOMJAK.spawn(
-                    level,
-                    pos.above(),
-                    EntitySpawnReason.TRIGGERED
-            );
+            // Find ground level near the spire base
+            // Try random positions around the spire
+            for (int attempts = 0; attempts < 10; attempts++) {
+                int offsetX = random.nextInt(7) - 3;
+                int offsetZ = random.nextInt(7) - 3;
+                BlockPos candidate = pos.offset(offsetX, 0, offsetZ);
+
+                // Walk down to find solid ground
+                for (int dy = 3; dy >= -3; dy--) {
+                    BlockPos ground = candidate.offset(0, dy, 0);
+                    BlockPos above = ground.above();
+                    if (level.getBlockState(ground).isSolid() &&
+                            level.getBlockState(above).isAir() &&
+                            level.getBlockState(above.above()).isAir()) {
+                        ModEntityTypes.SHROOMJAK.spawn(
+                                level,
+                                above,
+                                EntitySpawnReason.TRIGGERED
+                        );
+                        return;
+                    }
+                }
+            }
         }
 
     }
 
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
-        if (random.nextFloat() < 0.3f) { // adjust density
-            double x = pos.getX() + 0.5 + (random.nextDouble() - 0.5) * 0.3;
-            double y = pos.getY() + 1.0;
-            double z = pos.getZ() + 0.5 + (random.nextDouble() - 0.5) * 0.3;
+        if (random.nextFloat() < 0.3f) {
+            // Pick a random side
+            Direction side = Direction.values()[random.nextInt(Direction.values().length)];
+
+            // Start at center of block face on that side
+            double x = pos.getX() + 0.5 + side.getStepX() * 0.5;
+            double y = pos.getY() + 0.5 + side.getStepY() * 0.5;
+            double z = pos.getZ() + 0.5 + side.getStepZ() * 0.5;
+
+            // Velocity shoots outward from that face
+            double vx = side.getStepX() * 0.05 + (random.nextDouble() - 0.5) * 0.02;
+            double vy = side.getStepY() * 0.05 + random.nextDouble() * 0.02;
+            double vz = side.getStepZ() * 0.05 + (random.nextDouble() - 0.5) * 0.02;
 
             level.addParticle(
-                    ParticleTypes.CAMPFIRE_COSY_SMOKE, // or CAMPFIRE_COSY_SMOKE
+                    ParticleTypes.CAMPFIRE_COSY_SMOKE,
                     x, y, z,
-                    0.0, 0.05, 0.0
+                    vx, vy, vz
             );
         }
     }

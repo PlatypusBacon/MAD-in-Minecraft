@@ -2,29 +2,27 @@
   "attributes": {
     "minecraft:gameplay/can_pillager_patrol_spawn": false,
     "minecraft:gameplay/increased_fire_burnout": true,
-    "minecraft:visual/sky_color": "#77a8ff"
+    "minecraft:visual/sky_color": "#C9B3FC"
   },
   "carvers": [
-    "minecraft:cave",
-    "minecraft:cave_extra_underground",
-    "minecraft:canyon"
+    "mutually-assured-destruction:dense_canyon"
   ],
+
   "downfall": 1.0,
   "effects": {
-    "water_color": 4159204,
+    "water_color": 8716543,
     "grass_color": 4159204,
     "foliage_color": 4159204,
-    "fog_color": 12638463
+    "fog_color": 6619135
   },
   "features": [
-    [],
     [
-      "minecraft:lake_lava_underground",
+      "mutually-assured-destruction:crater"
+    ],
+    [
       "minecraft:lake_lava_surface"
     ],
-    [
-      "minecraft:amethyst_geode"
-    ],
+    [],
     [
       "minecraft:monster_room",
       "minecraft:monster_room_deep"
@@ -73,7 +71,10 @@
       "minecraft:brown_mushroom_taiga",
       "minecraft:red_mushroom_taiga",
       "minecraft:patch_sugar_cane",
-      "minecraft:patch_firefly_bush_near_water"
+      "minecraft:patch_firefly_bush_near_water",
+      "minecraft:trees_jungle",
+      "minecraft:vines",
+      "mutually-assured-destruction:hallucinite_spire"
     ],
     [
       "minecraft:freeze_top_layer"
@@ -91,17 +92,19 @@
       }
     ],
     "axolotls": [],
-    "creature": [
+    "creature": [],
+    "misc": [
       {
         "type": "mutually-assured-destruction:shroomjak",
-        "maxCount": 8,
-        "minCount": 4,
+        "maxCount": 4,
+        "minCount": 1,
         "weight": 8
       }
     ],
-    "misc": [],
     "monster": [
-      {"type": "minecraft:witch", "minCount": 1, "maxCount": 3, "weight": 5}
+      {"type": "minecraft:witch", "minCount": 1, "maxCount": 3, "weight": 5},
+      {"type": "minecraft:creeper", "minCount": 1, "maxCount": 3, "weight": 5},
+      {"type": "minecraft:enderman", "minCount": 1, "maxCount": 3, "weight": 5}
     ],
     "underground_water_creature": [
       {
