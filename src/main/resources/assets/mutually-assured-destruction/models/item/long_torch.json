@@ -1,0 +1,33 @@
+{
+	"format_version": "1.21.11",
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:item/generated",
+	"textures": {
+		"layer0": "mutually-assured-destruction:item/long_torch"
+	},
+	"display": {
+		"thirdperson_righthand": {
+			"translation": [4, 7.25, 2]
+		},
+		"thirdperson_lefthand": {
+			"translation": [-4, 4.75, 1.5]
+		},
+		"firstperson_righthand": {
+			"translation": [5.5, 6.75, 1.25],
+			"scale": [1, 1, 0.61]
+		},
+		"firstperson_lefthand": {
+			"translation": [0, 5.5, 0],
+			"scale": [1, 1, 0.51]
+		},
+		"gui": {
+			"translation": [3.5, 0, 0]
+		},
+		"fixed": {
+			"translation": [4.5, 0, 0]
+		},
+		"on_shelf": {
+			"translation": [4.5, 0, 0]
+		}
+	}
+}

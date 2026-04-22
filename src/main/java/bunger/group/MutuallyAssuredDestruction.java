@@ -29,6 +29,7 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		bunger.group.tyler.command.SetupStructureCommand.register();
 		bunger.group.tyler.item.ModItems.registerModItems();
 		bunger.group.tyler2.item.ModItems.registerModItems();
+		bunger.group.tyler2.block.ModBlocks.registerModBlocks();
 		bunger.group.tyler.entity.ModEntities.registerModEntityTypes();
 		bunger.group.tyler.entity.ModEntities.registerAttributes();
 		ModCreativeTabs.registerCreativeTabs();

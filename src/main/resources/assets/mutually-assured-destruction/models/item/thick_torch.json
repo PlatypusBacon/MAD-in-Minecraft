@@ -1,0 +1,39 @@
+{
+	"format_version": "1.21.11",
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:item/generated",
+	"textures": {
+		"layer0": "mutually-assured-destruction:item/thick_torch"
+	},
+	"display": {
+		"thirdperson_righthand": {
+			"translation": [0.25, -5.25, 2]
+		},
+		"thirdperson_lefthand": {
+			"translation": [-0.25, -5.5, 2]
+		},
+		"firstperson_righthand": {
+			"translation": [2, -5.5, 1.25],
+			"scale": [1, 1, 0.61]
+		},
+		"firstperson_lefthand": {
+			"translation": [2.5, -5.75, 0],
+			"scale": [1, 1, 0.51]
+		},
+		"ground": {
+			"translation": [0, -6.5, 0]
+		},
+		"gui": {
+			"translation": [0.5, -9.75, 0],
+			"scale": [1.64, 1.55, 1.62]
+		},
+		"fixed": {
+			"translation": [1, -9, 0],
+			"scale": [1.59, 1.59, 1.62]
+		},
+		"on_shelf": {
+			"translation": [2.25, -2.5, 0],
+			"scale": [1.43, 1.28, 1.44]
+		}
+	}
+}
