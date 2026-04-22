@@ -109,6 +109,7 @@ public class ModCreativeTabs {
                         output.accept(ModItems.LONG_NETHERITE_SWORD);
                         output.accept(ModItems.LONG_COPPER_SWORD);
 
+
                         // Long hoes
                         output.accept(ModItems.LONG_WOODEN_HOE);
                         output.accept(ModItems.LONG_STONE_HOE);

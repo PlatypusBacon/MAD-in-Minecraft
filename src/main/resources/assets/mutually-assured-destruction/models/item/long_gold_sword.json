@@ -3,7 +3,7 @@
 	"credit": "Made with Blockbench",
 	"parent": "minecraft:item/generated",
 	"textures": {
-		"layer0": "mutually-assured-destruction:item/long_shovel/long_stone_shovel"
+		"layer0": "mutually-assured-destruction:item/long_sword/long_gold_sword"
 	},
 	"display": {
 		"thirdperson_righthand": {
