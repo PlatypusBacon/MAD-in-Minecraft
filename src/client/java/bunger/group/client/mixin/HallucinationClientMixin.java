@@ -52,4 +52,5 @@ public class HallucinationClientMixin {
                     0.8f + player.getRandom().nextFloat() * 0.6f);
         }
     }
+
 }

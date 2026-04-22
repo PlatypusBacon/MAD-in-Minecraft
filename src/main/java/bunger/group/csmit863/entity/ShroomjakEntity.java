@@ -92,7 +92,12 @@ public class ShroomjakEntity extends Animal {
                 );
                 BlockState above = serverLevel.getBlockState(mushroomPos);
                 BlockState below = serverLevel.getBlockState(mushroomPos.below());
-                if (above.isAir() && (below.isSolidRender() || below.is(Blocks.GRASS_BLOCK) || below.is(Blocks.MOSS_BLOCK))) {
+                if (
+                        above.isAir() &&
+                                (below.isSolidRender() && (
+                                        below.is(Blocks.GRASS_BLOCK) ||
+                                                    below.is(Blocks.DIRT)
+                                        ))) {
                     serverLevel.setBlock(mushroomPos, block.defaultBlockState(), 3); // ModBlocks.MAGIC_MUSHROOM_BLOCK.defaultBlockState()
                 }
             }
@@ -118,7 +123,7 @@ public class ShroomjakEntity extends Animal {
                     nearestPlayer.addEffect(new MobEffectInstance(MobEffects.MINING_FATIGUE, newDuration, newAmp));
                     nearestPlayer.addEffect(new MobEffectInstance(MobEffects.NAUSEA, newDuration, newAmp));
                     nearestPlayer.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, newDuration, 1));
-                    nearestPlayer.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 1000, 1));
+                    nearestPlayer.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 500, 1));
 
 
                     // Spray particles
@@ -126,7 +131,7 @@ public class ShroomjakEntity extends Animal {
                     serverLevel.sendParticles(
                             ParticleTypes.LARGE_SMOKE, // or whatever particle fits
                             this.getX(), this.getY() + 1, this.getZ(),
-                            400,   // count
+                            200,   // count
                             1.5, 0.5, 1.5, // spread x/y/z
                             0.05  // speed
                     );
@@ -154,16 +159,8 @@ public class ShroomjakEntity extends Animal {
                 plantNearby(8, 0.2f, Blocks.BROWN_MUSHROOM, serverLevel);
                 plantNearby(8, 0.2f, Blocks.RED_MUSHROOM, serverLevel);
 
-                // convert only the block directly beneath to moss first
-                BlockPos directlyBelow = this.blockPosition().below();
-                BlockState belowState = serverLevel.getBlockState(directlyBelow);
-                if (belowState.is(Blocks.DIRT) || belowState.is(Blocks.GRASS_BLOCK)) {
-                    serverLevel.setBlock(directlyBelow, Blocks.MOSS_BLOCK.defaultBlockState(), 3);
-                }
 
-
-
-                // then bonemeal everything in 2 block radius
+                // bonemeal everything in 2 block radius
                 for (int x = -2; x <= 2; x++) {
                     for (int z = -2; z <= 2; z++) {
                         BlockPos nearPos = this.blockPosition().offset(x, 0, z);
@@ -172,7 +169,12 @@ public class ShroomjakEntity extends Animal {
                     }
                 }
 
-
+                // convert the block beneath to moss
+                BlockPos directlyBelow = this.blockPosition().below();
+                BlockState belowState = serverLevel.getBlockState(directlyBelow);
+                if (belowState.is(Blocks.DIRT) || belowState.is(Blocks.GRASS_BLOCK)) {
+                    serverLevel.setBlock(directlyBelow, Blocks.MOSS_BLOCK.defaultBlockState(), 3);
+                }
 
                 bonemealCooldown = BONEMEAL_COOLDOWN;
             }

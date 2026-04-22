@@ -1,6 +1,7 @@
 package bunger.group.csmit863.block;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
@@ -75,5 +76,25 @@ public class MagicMushroomBlock extends BushBlock {
     @Override
     public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
         grow(state, level, pos, state.getValue(GROWTH));
+    }
+
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+        if (random.nextFloat() < 0.3f) { // adjust density
+            double x = pos.getX() + 0.5 + (random.nextDouble() - 0.5) * 0.3;
+            double y = pos.getY() + 1.0;
+            double z = pos.getZ() + 0.5 + (random.nextDouble() - 0.5) * 0.3;
+
+            level.addParticle(
+                    ParticleTypes.SOUL, // or CAMPFIRE_COSY_SMOKE
+                    x, y, z,
+                    0.0, 0.05, 0.0
+            );
+            level.addParticle(
+                    ParticleTypes.ENCHANT, // or CAMPFIRE_COSY_SMOKE
+                    x, y, z,
+                    0.0, 0.05, 0.0
+            );
+        }
     }
 }

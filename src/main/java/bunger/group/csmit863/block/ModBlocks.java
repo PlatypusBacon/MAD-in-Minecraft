@@ -32,7 +32,7 @@ public class ModBlocks {
             BlockBehaviour.Properties.of()
                     .strength(1.5f)
                     .randomTicks()
-                    .lightLevel(state -> 3),
+                    .lightLevel(state -> 8),
             true
     );
 

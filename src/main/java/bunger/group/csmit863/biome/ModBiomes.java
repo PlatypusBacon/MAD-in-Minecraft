@@ -11,4 +11,8 @@ public class ModBiomes {
             Registries.BIOME,
             Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, "shroom_shire")
     );
+
+    public static void initialise() {
+
+    }
 }

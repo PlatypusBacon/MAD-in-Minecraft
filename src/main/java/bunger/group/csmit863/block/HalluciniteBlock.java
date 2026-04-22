@@ -6,6 +6,7 @@ import bunger.group.csmit863.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
@@ -16,6 +17,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Block;
@@ -71,5 +73,20 @@ public class HalluciniteBlock extends Block {
             );
         }
 
+    }
+
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+        if (random.nextFloat() < 0.3f) { // adjust density
+            double x = pos.getX() + 0.5 + (random.nextDouble() - 0.5) * 0.3;
+            double y = pos.getY() + 1.0;
+            double z = pos.getZ() + 0.5 + (random.nextDouble() - 0.5) * 0.3;
+
+            level.addParticle(
+                    ParticleTypes.CAMPFIRE_COSY_SMOKE, // or CAMPFIRE_COSY_SMOKE
+                    x, y, z,
+                    0.0, 0.05, 0.0
+            );
+        }
     }
 }
