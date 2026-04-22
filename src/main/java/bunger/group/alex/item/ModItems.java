@@ -3,12 +3,16 @@ package bunger.group.alex.item;
 import bunger.group.MutuallyAssuredDestruction;
 import bunger.group.alex.item.armor.ClothArmorMaterial;
 import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.equipment.ArmorType;
+import net.minecraft.world.item.equipment.Equippable;
 
 import java.util.function.Function;
 
@@ -90,7 +94,7 @@ public class ModItems {
     );
 
     public static final Item CLOTH = registerItem(
-            "cloth",
+            "cloth_item",
             Item::new,
             new Item.Properties()
     );
@@ -101,8 +105,12 @@ public class ModItems {
     public static final Item CLOTH_HELMET = registerItem(
             "cloth_helmet",
             Item::new,
-            new Item.Properties().humanoidArmor(ClothArmorMaterial.INSTANCE, ArmorType.HELMET)
+            new Item.Properties()
+                    .humanoidArmor(ClothArmorMaterial.INSTANCE, ArmorType.HELMET)
                     .durability(ArmorType.HELMET.getDurability(ClothArmorMaterial.BASE_DURABILITY))
+                    .component(DataComponents.EQUIPPABLE, Equippable.builder(EquipmentSlot.HEAD)
+                            .setEquipSound(SoundEvents.ARMOR_EQUIP_LEATHER)
+                            .build())
     );
 
     public static final Item CLOTH_CHESTPLATE = registerItem(
