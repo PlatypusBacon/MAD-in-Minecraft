@@ -1,24 +1,32 @@
 #version 150
 
-uniform sampler2D InSampler;
-uniform float GameTime;
+uniform sampler2D In;
 
 in vec2 texCoord;
 out vec4 fragColor;
 
 void main() {
-    vec4 color = texture(InSampler, texCoord);
+    vec2 uv = texCoord;
+    vec2 centered = uv - 0.5;
 
-    float t = GameTime * 3.0;
+    // sample normal view
+    vec4 main_view = texture(In, uv);
 
-    float r = 0.5 + 0.5 * sin(t);
-    float g = 0.5 + 0.5 * sin(t + 2.094); // 120 degrees offset
-    float b = 0.5 + 0.5 * sin(t + 4.189); // 240 degrees offset
+    // sample a zoomed centered copy - this is the "second eye"
+    vec2 inner_uv = centered * 2.0 + 0.5; // zoom in 2x from center
+    vec4 inner_view = texture(In, inner_uv);
 
-    // blue-green-pink cycle
-    color.r *= 0.7 + r * 0.6;
-    color.g *= 0.7 + g * 0.6;
-    color.b *= 0.7 + b * 0.6;
+    // circular mask for the inner eye - radius 0.25 of screen
+    float dist = length(centered);
+    float mask = smoothstep(0.26, 0.24, dist); // 1.0 inside circle, 0.0 outside
 
-    fragColor = vec4(clamp(color.rgb, 0.0, 1.0), color.a);
+    // vignette on the inner circle edge
+    vec4 color = mix(main_view, inner_view, mask);
+
+    // purple tint
+    color.r *= 0.8;
+    color.g *= 0.4;
+    color.b *= 1.0;
+
+    fragColor = color;
 }

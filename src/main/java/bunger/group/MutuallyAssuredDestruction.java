@@ -11,6 +11,7 @@ import bunger.group.alex.block.entity.ModBlockEntities;
 import bunger.group.alex.item.ModItems;
 import bunger.group.alex.menu.ModMenuType;
 import bunger.group.alex.menu.SpellDeskMenu;
+import bunger.group.csmit863.Madness;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
@@ -63,6 +64,7 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 			if (server.getTickCount() % 2 == 0) {
 				for (ServerPlayer player : server.getPlayerList().getPlayers()) {
 					Mana.ManaData mana = Mana.get(player);
+					Madness.MadnessData madness = Madness.get(player);
 					mana.recalculateMaxMana();
 					if (mana.getCurrentMana() < mana.getMaxMana()) {
 						mana.incrementCurrentMana();

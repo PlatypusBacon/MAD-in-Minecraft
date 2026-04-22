@@ -100,7 +100,9 @@
       }
     ],
     "misc": [],
-    "monster": [],
+    "monster": [
+      {"type": "minecraft:witch", "minCount": 1, "maxCount": 3, "weight": 5}
+    ],
     "underground_water_creature": [
       {
         "type": "minecraft:glow_squid",
