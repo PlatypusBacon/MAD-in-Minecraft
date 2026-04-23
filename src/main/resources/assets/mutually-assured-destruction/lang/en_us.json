@@ -1,7 +1,9 @@
 {
-  "item.mutually-assured-destruction.spell_ice_ice_shield": "Ice Shield",
   "item.mutually-assured-destruction.spell_ice_agarthan_ice_dome": "Agarthan Ice Dome",
   "item.mutually-assured-destruction.spell_lightning_agarthan_thunder": "Agarthan Thunder",
+  "item.mutually-assured-destruction.spell_lightning_channel_storm": "Channel Storm",
+  "item.mutually-assured-destruction.spell_lightning_zap": "Zap",
+  "item.mutually-assured-destruction.spell_ice_ice_shield": "Ice Shield",
   "item.mutually-assured-destruction.spell_fire_ignition": "Ignition",
   "item.mutually-assured-destruction.spell_earth_impale": "Impale",
   "item.mutually-assured-destruction.spell_staff_of_teleportation": "Staff of Teleportation",

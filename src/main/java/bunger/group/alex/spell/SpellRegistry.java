@@ -17,14 +17,18 @@ public class SpellRegistry {
 
             // ICE
             new SpellDefinition("Ice Shield",SpellTypes.ICE,10, ModItems.ICE_SHIELD),
-            new SpellDefinition("Agarthan Ice Dome",SpellTypes.ICE,75, ModItems.AGARTHAN_ICE_DOME),
 
             // LIGHTNING
             new SpellDefinition("Zap", SpellTypes.LIGHTNING, 10, ModItems.ZAP),
-            new SpellDefinition("Agarthan Thunder", SpellTypes.LIGHTNING,75, ModItems.AGARTHAN_THUNDER),
+            new SpellDefinition("Channel Storm", SpellTypes.LIGHTNING, 50, ModItems.CHANNEL_STORM),
 
-            // STAFF
-            new SpellDefinition("Staff of Teleportation", SpellTypes.STAFF, 30, ModItems.STAFF_OF_TELEPORTATION)
+            // WATER
+            new SpellDefinition("Summon Water", SpellTypes.WATER, 5, ModItems.SUMMON_WATER),
+            new SpellDefinition("Invoke Rain", SpellTypes.WATER, 30, ModItems.INVOKE_RAIN),
+
+            // AGARTHA
+            new SpellDefinition("Agarthan Thunder", SpellTypes.AGARTHA,100, ModItems.AGARTHAN_THUNDER),
+            new SpellDefinition("Agarthan Ice Dome",SpellTypes.AGARTHA,100, ModItems.AGARTHAN_ICE_DOME)
     );
 
     public static List<SpellDefinition> getSpellsForType(SpellTypes type) {

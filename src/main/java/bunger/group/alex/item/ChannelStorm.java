@@ -17,10 +17,9 @@ import net.minecraft.world.phys.*;
 
 import java.util.Optional;
 
-public class AgarthanThunder extends SpellTemplate {
-
-    public AgarthanThunder(Properties properties) {
-        super(properties, 130, 50, SpellTypes.LIGHTNING);
+public class ChannelStorm extends SpellTemplate {
+    public ChannelStorm(Properties properties) {
+        super(properties, 80, 40, SpellTypes.LIGHTNING);
     }
 
     @Override
@@ -79,29 +78,31 @@ public class AgarthanThunder extends SpellTemplate {
             if (level instanceof ServerLevel serverLevel) {
                 WeatherData weather = serverLevel.getWeatherData();
                 weather.setRaining(true);
-                weather.setRainTime(200);
+                weather.setRainTime(100);
                 weather.setThundering(true);
-                weather.setThunderTime(200);
+                weather.setThunderTime(100);
                 weather.setClearWeatherTime(0);
             }
 
             Vec3 finalCentre = centre;
-            ParticleHelpers.runForTicks(200, new Runnable() {
+            ParticleHelpers.runForTicks(120, new Runnable() {
                 double offset = 0;
                 @Override
                 public void run() {
                     offset += 0.1;
-                    ParticleHelpers.spawnRingParticles(level, finalCentre, 20,
+                    ParticleHelpers.spawnRingParticles(level, finalCentre, 3,
                             offset, ParticleTypes.ELECTRIC_SPARK);
                 }
             });
         }
 
         if (centre != null) {
-            double radius = 20.0;
+            double radius = 3;
             Vec3 finalCentre1 = centre;
-            SpellHelpers.runForTicks(200, () -> {
-                for (int i = 0; i < 5; i++) {
+            int[] tickCounter = {0};
+            SpellHelpers.runForTicks(100, () -> {
+                tickCounter[0]++;
+                if (tickCounter[0] % 10 == 0) {
                     double angle = Math.random() * Math.PI * 2;
                     double dist = Math.sqrt(Math.random()) * radius;
 
@@ -118,11 +119,9 @@ public class AgarthanThunder extends SpellTemplate {
                     lightningBolt.setPos(place.getCenter());
                     level.addFreshEntity(lightningBolt);
                 }
-
             });
         }
 
         ParticleHelpers.spawnBeamParticles(level, start, end, ParticleTypes.CLOUD);
     }
-
 }

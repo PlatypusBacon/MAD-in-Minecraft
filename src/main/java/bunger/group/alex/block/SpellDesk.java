@@ -60,7 +60,7 @@ public class SpellDesk extends BaseEntityBlock {
 
         for (double[] candle : candles) {
             // Only spawn particles ~40% of the time per candle per tick
-            if (random.nextInt(10) > 3) continue;
+            if (random.nextInt(10) > 6) continue;
 
             double x = candle[0] + (random.nextDouble() - 0.5) * 0.05;
             double y = candle[1];

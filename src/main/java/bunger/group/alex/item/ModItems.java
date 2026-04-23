@@ -32,10 +32,17 @@ public class ModItems {
     );
 
     public static final Item ZAP = registerItem(
-            "zap",
+            "spell_lightning_zap",
             Zap::new,
             new Zap.Properties()
     );
+
+    public static final Item CHANNEL_STORM = registerItem(
+            "spell_lightning_channel_storm",
+            ChannelStorm::new,
+            new ChannelStorm.Properties()
+    );
+
     public static final Item AGARTHAN_THUNDER = registerItem(
             "spell_lightning_agarthan_thunder",
             AgarthanThunder::new,
@@ -52,6 +59,18 @@ public class ModItems {
             "spell_earth_impale",
             Impale::new,
             new Impale.Properties()
+    );
+
+    public static final Item SUMMON_WATER = registerItem(
+            "spell_water_summon_water",
+            SummonWater::new,
+            new SummonWater.Properties()
+    );
+
+    public static final Item INVOKE_RAIN = registerItem(
+            "spell_water_invoke_rain",
+            InvokeRain::new,
+            new InvokeRain.Properties()
     );
 
     public static final Item STAFF_OF_TELEPORTATION = registerItem(
