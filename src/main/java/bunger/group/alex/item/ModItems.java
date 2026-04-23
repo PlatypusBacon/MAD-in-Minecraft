@@ -61,6 +61,12 @@ public class ModItems {
             new Impale.Properties()
     );
 
+    public static final Item FOREST_OF_SPIKES = registerItem(
+            "spell_earth_forest_of_spikes",
+            ForestOfSpikes::new,
+            new ForestOfSpikes.Properties()
+    );
+
     public static final Item SUMMON_WATER = registerItem(
             "spell_water_summon_water",
             SummonWater::new,

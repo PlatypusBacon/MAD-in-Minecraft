@@ -35,6 +35,7 @@ public class CreativeTab {
                 output.accept(ModItems.AGARTHAN_ICE_DOME);
                 output.accept(ModItems.IGNITION);
                 output.accept(ModItems.IMPALE);
+                output.accept(ModItems.FOREST_OF_SPIKES);
                 output.accept(ModItems.SUMMON_WATER);
                 output.accept(ModItems.INVOKE_RAIN);
                 output.accept(ModItems.STAFF_OF_TELEPORTATION);

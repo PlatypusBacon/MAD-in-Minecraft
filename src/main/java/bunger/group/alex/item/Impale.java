@@ -1,6 +1,7 @@
 package bunger.group.alex.item;
 
 import bunger.group.alex.ParticleHelpers;
+import bunger.group.alex.SpellHelpers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -13,6 +14,7 @@ import net.minecraft.world.level.block.AirBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,8 +55,11 @@ public class Impale extends SpellTemplate {
 
             int height = java.util.concurrent.ThreadLocalRandom.current().nextInt(2, 6);
 
+            List<BlockPos> positions = new ArrayList<>();
+
             for (int i = 0; i < height; i++) {
                 blockTouched = blockTouched.above();
+                positions.add(blockTouched);
 
                 if (level.isEmptyBlock(blockTouched)) {
                     AABB box = new AABB(blockTouched);
@@ -80,6 +85,21 @@ public class Impale extends SpellTemplate {
                 e.hurtMarked = true;
             }
             ParticleHelpers.spawnRingParticles(level, end, 0.5, 0,  ParticleTypes.DUST_PLUME);
+
+            // Now queue removal
+
+            final Level finalLevel = level;
+            final List<BlockPos> topToBottom = positions.reversed();
+
+            for (int i = 0; i < topToBottom.size(); i++) {
+                int ticks = 100 + 100 * i; // every 5 seconds remove a spike
+                BlockPos pos = topToBottom.get(i);
+                SpellHelpers.runAfterTicks(ticks, () -> {
+                    if (finalLevel.getBlockState(pos).is(Blocks.POINTED_DRIPSTONE)) {
+                        finalLevel.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+                    }
+                });
+            }
         }
     }
 }
