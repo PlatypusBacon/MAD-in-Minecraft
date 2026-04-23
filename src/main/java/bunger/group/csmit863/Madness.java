@@ -5,8 +5,14 @@ import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentSyncPredicate;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentTarget;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 
 public class Madness {
@@ -27,23 +33,43 @@ public class Madness {
     }
 
     public record MadnessData(AttachmentTarget target) {
-        public int getCurrentMana() {
+        public int getCurrentMadness() {
             return target.getAttachedOrElse(CURRENT_MADNESS, 0);
         }
 
         public int incrementCurrentMadness() {
+            int newValue = getCurrentMadness() + 1;
+            setCurrentMadness(newValue); // now capped automatically
+            return getCurrentMadness();
+        }
+
+        public void decrementCurrentMadness() {
             int current = target.getAttachedOrElse(CURRENT_MADNESS, 0);
-            int newValue = current + 1;
-            target.setAttached(CURRENT_MADNESS, newValue);
-            return newValue;
+            if (current > 0) {
+                target.setAttached(CURRENT_MADNESS, current - 1);
+            }
         }
 
         public void useMadness(int value) {
-            this.setCurrentMadness(getCurrentMana()-value);
+            this.setCurrentMadness(getCurrentMadness()-value);
         }
 
         public void setCurrentMadness(int value) {
-            target.setAttached(CURRENT_MADNESS, value);
+            int previous = getCurrentMadness();
+
+            int max = getMaxMadness();
+            int clamped = Math.max(0, Math.min(value, max));
+            target.setAttached(CURRENT_MADNESS, clamped);
+
+            // Trigger when crossing 50 upwards
+            if (previous <= 50 && clamped > 50) {
+                onMadnessThresholdCrossed();
+            }
+        }
+
+        private void onMadnessThresholdCrossed() {
+            if (!(target instanceof ServerPlayer player)) return;
+
         }
 
         public int getMaxMadness() {

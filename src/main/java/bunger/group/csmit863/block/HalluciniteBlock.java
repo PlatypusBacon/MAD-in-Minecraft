@@ -2,6 +2,7 @@ package bunger.group.csmit863.block;
 
 import bunger.group.csmit863.biome.ModBiomes;
 import bunger.group.csmit863.entity.ModEntityTypes;
+import bunger.group.csmit863.entity.ShroomjakEntity;
 import bunger.group.csmit863.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -26,6 +27,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.LevelChunkSection;
+import net.minecraft.world.phys.AABB;
 
 import java.util.List;
 
@@ -40,6 +42,13 @@ public class HalluciniteBlock extends Block {
     @Override
     public boolean isRandomlyTicking(BlockState state) {
         return true;
+    }
+
+    private int countNearbyShroomjaks(ServerLevel level, BlockPos pos, int radius) {
+        return level.getEntitiesOfClass(
+                ShroomjakEntity.class,
+                new AABB(pos).inflate(radius)
+        ).size();
     }
 
     @Override
@@ -60,12 +69,15 @@ public class HalluciniteBlock extends Block {
                     true,
                     true
             ));
-            player.addEffect(new MobEffectInstance(MobEffects.MINING_FATIGUE, EFFECT_DURATION, 1));
             player.addEffect(new MobEffectInstance(MobEffects.NAUSEA, EFFECT_DURATION, 1));
         }
 
-        // 1% chance per random tick to spawn a shroomjak
-        if (random.nextFloat() < 0.01f) {
+        // 5% chance per random tick to spawn a shroomjak
+        if (random.nextFloat() < 0.05f) {
+            // limit check first
+            if (countNearbyShroomjaks(level, pos, 20) >= 5) {
+                return;
+            }
             // Find ground level near the spire base
             // Try random positions around the spire
             for (int attempts = 0; attempts < 10; attempts++) {

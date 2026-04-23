@@ -1,12 +1,14 @@
 package bunger.group.csmit863.entity;
 
 import bunger.group.MutuallyAssuredDestruction;
+import bunger.group.csmit863.CustomSounds;
 import bunger.group.csmit863.block.ModBlocks;
 import bunger.group.csmit863.effects.HallucinationEffect;
 import bunger.group.csmit863.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -17,6 +19,8 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.cow.Cow;
 import net.minecraft.world.entity.player.Player;
@@ -46,16 +50,23 @@ public class ShroomjakEntity extends Animal {
         return PathfinderMob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 5)
                 .add(Attributes.TEMPT_RANGE, 10)
-                .add(Attributes.MOVEMENT_SPEED, 0.3);
+                .add(Attributes.MOVEMENT_SPEED, 0.2)
+                .add(Attributes.ATTACK_DAMAGE, 1)
+                .add(Attributes.FOLLOW_RANGE, 50);
     }
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new BreedGoal(this, 1.0));
-        this.goalSelector.addGoal(1, new TemptGoal(this, 1, Ingredient.of(Items.ROTTEN_FLESH), false));
-        this.goalSelector.addGoal(2, new RandomStrollGoal(this, 1));
-        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Cow.class, 4));
+        this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new BreedGoal(this, 1.0));
+        this.goalSelector.addGoal(2, new TemptGoal(this, 1, Ingredient.of(Items.ROTTEN_FLESH), false));
+        this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.2, true)); // attack
 
+        this.goalSelector.addGoal(4, new RandomStrollGoal(this, 1));
+        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6));
+
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
+        // this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
 
     @Override
@@ -115,6 +126,7 @@ public class ShroomjakEntity extends Animal {
 
             if (sprayCooldown == 0) {
                 Player nearestPlayer = level().getNearestPlayer(this, SPRAY_RANGE);
+
                 if (nearestPlayer != null) {
                     // Give hallucination effect - replace with your actual MobEffect
                     var newDuration = 1000;
@@ -126,7 +138,8 @@ public class ShroomjakEntity extends Animal {
                     nearestPlayer.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 500, 1));
 
 
-                    // Spray particles
+                    // Spray particles, play fart sound
+                    this.playSound(CustomSounds.SHROOMJAK_FART1, 0.3F, 0.8F);
                     ServerLevel serverLevel = (ServerLevel) level();
                     serverLevel.sendParticles(
                             ParticleTypes.LARGE_SMOKE, // or whatever particle fits
@@ -147,7 +160,8 @@ public class ShroomjakEntity extends Animal {
             if (bonemealCooldown == 0) {
                 ServerLevel serverLevel = (ServerLevel) level();
 
-                // black particles from head
+                // black particles from head, play plant sound
+                this.playSound(CustomSounds.SHROOMJAK_PLANT, 0.3F, 1.0F);
                 serverLevel.sendParticles(
                         ParticleTypes.SMOKE,
                         this.getX(), this.getY() + 2, this.getZ(),
@@ -157,8 +171,6 @@ public class ShroomjakEntity extends Animal {
                 plantNearby(3, 0.2f, ModBlocks.MAGIC_MUSHROOM_BLOCK, serverLevel);
                 plantNearby(8, 0.2f, Blocks.JUNGLE_SAPLING, serverLevel);
                 plantNearby(8, 0.2f, Blocks.BROWN_MUSHROOM, serverLevel);
-                plantNearby(8, 0.2f, Blocks.RED_MUSHROOM, serverLevel);
-
 
                 // bonemeal everything in 2 block radius
                 for (int x = -2; x <= 2; x++) {
@@ -169,15 +181,22 @@ public class ShroomjakEntity extends Animal {
                     }
                 }
 
-                // convert the block beneath to moss
-                BlockPos directlyBelow = this.blockPosition().below();
-                BlockState belowState = serverLevel.getBlockState(directlyBelow);
-                if (belowState.is(Blocks.DIRT) || belowState.is(Blocks.GRASS_BLOCK)) {
-                    serverLevel.setBlock(directlyBelow, Blocks.MOSS_BLOCK.defaultBlockState(), 3);
-                }
-
                 bonemealCooldown = BONEMEAL_COOLDOWN;
             }
         }
+
+        
     }
+
+    @Override
+    public void die(DamageSource source) {
+        super.die(source);
+        this.playSound(CustomSounds.SHROOMJAK_ANGRY1, 0.3F, 0.9F);
+    }
+
+    @Override
+    public void playHurtSound(DamageSource source) {
+        this.playSound(CustomSounds.SHROOMJAK_ANGRY2, 0.3F, 0.9F);
+    }
+
 }

@@ -1,6 +1,8 @@
 package bunger.group.csmit863.effects;
 
+import bunger.group.csmit863.Madness;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffect;
@@ -18,9 +20,27 @@ public class HallucinationEffect extends MobEffect {
     // Called every tick to check if the effect can be applied or not
     @Override
     public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
-        // In our case, we just make it return true so that it applies the effect every tick
+        return duration % 10 == 0; // every 5 seconds (100 ticks)
+    }
+
+    @Override
+    public boolean applyEffectTick(ServerLevel level, LivingEntity entity, int amplifier) {
+        if (entity instanceof ServerPlayer player) {
+            Madness.MadnessData madness = Madness.get(player);
+
+            for (int i = 0; i < 50; i++) {
+                madness.incrementCurrentMadness();
+            }
+            int newMadness = madness.getCurrentMadness();
+            madness.setCurrentMadness(newMadness);
+            player.sendSystemMessage(net.minecraft.network.chat.Component.literal(
+                    "the voices are getting louder... [madness: " + newMadness + "]"
+            ));
+        }
         return true;
     }
+
+
 
 
 }

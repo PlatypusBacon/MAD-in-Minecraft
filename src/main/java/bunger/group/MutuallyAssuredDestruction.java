@@ -11,13 +11,18 @@ import bunger.group.alex.block.entity.ModBlockEntities;
 import bunger.group.alex.item.ModItems;
 import bunger.group.alex.menu.ModMenuType;
 import bunger.group.alex.menu.SpellDeskMenu;
+import bunger.group.csmit863.CustomSounds;
 import bunger.group.csmit863.Madness;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,6 +32,9 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+
+		//
+
 		// Packets
 		PayloadTypeRegistry.clientboundPlay().register(ManaPacket.TYPE, ManaPacket.CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(LearnSpellPacket.TYPE, LearnSpellPacket.CODEC);
@@ -43,6 +51,11 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		// Entities
 		bunger.group.csmit863.entity.ModEntityTypes.registerModEntityTypes();
 		bunger.group.csmit863.entity.ModEntityTypes.registerAttributes();
+
+		// Biomes
+		// sounds here cuz why tf not
+		CustomSounds.initialize();
+
 
 		// Menus
 		ModMenuType.initialize();
@@ -70,6 +83,7 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 						mana.incrementCurrentMana();
 						ServerPlayNetworking.send(player, new ManaPacket(mana.getCurrentMana(), mana.getMaxMana()));
 					}
+					madness.decrementCurrentMadness();
 				}
 			}
 		});
@@ -81,9 +95,11 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
 			ServerPlayer player = handler.player;
 			Mana.ManaData mana = Mana.get(player);
+			Madness.MadnessData madness = Madness.get(player);
 			if (mana.getMaxMana() == 0) {
 				mana.setMaxMana(100);
 				mana.setCurrentMana(100);
+				madness.setMaxMadness(100);
 			}
 			ServerPlayNetworking.send(player, new ManaPacket(mana.getCurrentMana(), mana.getMaxMana()));
 		});

@@ -1,9 +1,11 @@
 package bunger.group.csmit863.block;
 
+import bunger.group.csmit863.entity.ModEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -52,16 +54,56 @@ public class MagicMushroomBlock extends BushBlock {
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         int growth = state.getValue(GROWTH);
         grow(state, level, pos, growth);
+
+
     }
 
     private void grow(BlockState state, ServerLevel level, BlockPos pos, int growth) {
         if (growth >= 4) {
-            // fully grown - convert to hallucinite block
+
+            // convert center block
             level.setBlock(pos, ModBlocks.HALLUCINITE_BLOCK.defaultBlockState(), 3);
+            level.sendParticles(
+                    ParticleTypes.SPORE_BLOSSOM_AIR,
+                    pos.getX() + 0.5,
+                    pos.getY() + 1,
+                    pos.getZ() + 0.5,
+                    50,
+                    2.0, 1.0, 2.0,
+                    0.01
+            );
+            int radius = 4;
+            int r2 = radius * radius;
+
+            BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
+
+            for (int x = -radius; x <= radius; x++) {
+                for (int y = -radius; y <= radius; y++) {
+                    for (int z = -radius; z <= radius; z++) {
+
+                        if (x * x + y * y + z * z > r2) continue; // 👈 SPHERE MASK
+
+                        mutable.set(pos.getX() + x, pos.getY() + y, pos.getZ() + z);
+
+                        BlockState stateAt = level.getBlockState(mutable);
+
+                        // Only replace natural ground blocks
+                        if (stateAt.is(Blocks.GRASS_BLOCK) ||
+                                stateAt.is(Blocks.DIRT) ||
+                                stateAt.is(Blocks.COARSE_DIRT)) {
+
+                            level.setBlock(mutable, Blocks.MYCELIUM.defaultBlockState(), 3);
+                        }
+                    }
+                }
+            }
+
         } else {
             level.setBlock(pos, state.setValue(GROWTH, growth + 1), 3);
         }
     }
+
+
 
     @Override
     public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
