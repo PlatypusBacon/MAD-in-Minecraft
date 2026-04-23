@@ -3,7 +3,7 @@
   "pattern": [ "PP", " S", " S" ],
   "key": {
     "P": "#minecraft:iron_tool_materials",
-    "S": "mutually-assured-destruction:long_stick"
+    "S": "mutually-assured-destruction:thick_stick"
   },
-  "result": "mutually-assured-destruction:long_iron_hoe"
+  "result": "mutually-assured-destruction:thick_iron_hoe"
 }

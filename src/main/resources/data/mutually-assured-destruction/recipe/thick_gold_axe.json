@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "#": "mutually-assured-destruction:thick_stick",
-    "X": "#minecraft:copper_tool_materials"
+    "X": "#minecraft:gold_tool_materials"
   },
   "pattern": [
     "XX",
@@ -11,6 +11,6 @@
     " #"
   ],
   "result": {
-    "id": "mutually-assured-destruction:thick_copper_axe"
+    "id": "mutually-assured-destruction:thick_gold_axe"
   }
 }

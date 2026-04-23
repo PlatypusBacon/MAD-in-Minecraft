@@ -3,8 +3,12 @@ package bunger.group.tyler2.block;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.WallTorchBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -37,8 +41,6 @@ public class ThickWallTorchBlock extends WallTorchBlock {
                     propertiesCodec()
             ).apply(i, ThickWallTorchBlock::new));
 
-    private static final Map<net.minecraft.core.Direction, VoxelShape> SHAPES =
-            Shapes.rotateHorizontal(Block.boxZ(4.0, 3.0, 11.0, 12.0, 16.0));
 
     public ThickWallTorchBlock(SimpleParticleType flameParticle, BlockBehaviour.Properties properties) {
         super(flameParticle, properties);
@@ -52,8 +54,16 @@ public class ThickWallTorchBlock extends WallTorchBlock {
     }
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter world,
-                                  BlockPos pos, CollisionContext context) {
-        return SHAPES.get(state.getValue(FACING));
+    public void animateTick(final BlockState state, final Level level, final BlockPos pos, final RandomSource random) {
+        Direction direction = (Direction)state.getValue(FACING);
+        double x = (double)pos.getX() + (double)0.5F;
+        double y = (double)pos.getY() + 0.3;
+        double z = (double)pos.getZ() + (double)0.5F;
+        double h = 0.22;
+        double r = 0.27;
+        Direction opposite = direction.getOpposite();
+        level.addParticle(ParticleTypes.SMOKE, x + 0.27 * (double)opposite.getStepX(), y + 0.22, z + 0.27 * (double)opposite.getStepZ(), (double)0.0F, (double)0.0F, (double)0.0F);
+        level.addParticle(this.flameParticle, x + 0.27 * (double)opposite.getStepX(), y + 0.22, z + 0.27 * (double)opposite.getStepZ(), (double)0.0F, (double)0.0F, (double)0.0F);
     }
+
 }

@@ -3,14 +3,14 @@
   "category": "equipment",
   "key": {
     "#": "mutually-assured-destruction:thick_stick",
-    "X": "#minecraft:wooden_tool_materials"
+    "X": "#minecraft:diamond_tool_materials"
   },
   "pattern": [
-    "  X",
-    " # ",
-    "#  "
+    "X",
+    "X",
+    "#"
   ],
   "result": {
-    "id": "mutually-assured-destruction:thick_wooden_spear"
+    "id": "mutually-assured-destruction:thick_diamond_sword"
   }
 }

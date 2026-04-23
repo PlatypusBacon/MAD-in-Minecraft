@@ -45,7 +45,7 @@ public class ThickTorchBlock extends TorchBlock {
     @Override
     public void animateTick(final BlockState state, final Level level, final BlockPos pos, final RandomSource random) {
         double x = (double)pos.getX() + (double)0.5F;
-        double y = (double)pos.getY() + 0.25;
+        double y = (double)pos.getY() + 0.3;
         double z = (double)pos.getZ() + (double)0.5F;
         level.addParticle(ParticleTypes.SMOKE, x, y, z, (double)0.0F, (double)0.0F, (double)0.0F);
         level.addParticle(this.flameParticle, x, y, z, (double)0.0F, (double)0.0F, (double)0.0F);

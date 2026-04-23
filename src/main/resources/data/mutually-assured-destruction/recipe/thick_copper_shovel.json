@@ -2,15 +2,15 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": "mutually-assured-destruction:long_stick",
+    "#": "mutually-assured-destruction:thick_stick",
     "X": "#minecraft:copper_tool_materials"
   },
   "pattern": [
-    "XX",
-    " #",
-    " #"
+    "X",
+    "#",
+    "#"
   ],
   "result": {
-    "id": "mutually-assured-destruction:long_copper_hoe"
+    "id": "mutually-assured-destruction:thick_copper_shovel"
   }
 }

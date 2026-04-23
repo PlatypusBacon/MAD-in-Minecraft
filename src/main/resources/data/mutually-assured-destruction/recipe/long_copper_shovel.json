@@ -6,11 +6,11 @@
     "X": "#minecraft:copper_tool_materials"
   },
   "pattern": [
-    "XX",
-    " #",
-    " #"
+    "X",
+    "#",
+    "#"
   ],
   "result": {
-    "id": "mutually-assured-destruction:long_copper_hoe"
+    "id": "mutually-assured-destruction:long_copper_shovel"
   }
 }

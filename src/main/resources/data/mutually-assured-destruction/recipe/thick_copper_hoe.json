@@ -1,9 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [ "PPP", " S ", " S " ],
+  "pattern": [ "PP", " S", " S" ],
   "key": {
     "P": "#minecraft:copper_tool_materials",
     "S": "mutually-assured-destruction:thick_stick"
   },
-  "result": "mutually-assured-destruction:thick_copper_pickaxe"
+  "result": "mutually-assured-destruction:thick_copper_hoe"
 }

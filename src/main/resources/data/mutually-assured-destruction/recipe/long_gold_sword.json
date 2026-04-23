@@ -3,14 +3,14 @@
   "category": "equipment",
   "key": {
     "#": "mutually-assured-destruction:long_stick",
-    "X": "#minecraft:copper_tool_materials"
+    "X": "#minecraft:gold_tool_materials"
   },
   "pattern": [
-    "XX",
-    " #",
-    " #"
+    "X",
+    "X",
+    "#"
   ],
   "result": {
-    "id": "mutually-assured-destruction:long_copper_hoe"
+    "id": "mutually-assured-destruction:long_gold_sword"
   }
 }
