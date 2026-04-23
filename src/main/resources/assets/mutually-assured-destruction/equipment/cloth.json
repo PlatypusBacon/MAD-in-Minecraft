@@ -4,6 +4,11 @@
       {
         "texture": "mutually-assured-destruction:cloth"
       }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "mutually-assured-destruction:cloth"
+      }
     ]
   }
 }
