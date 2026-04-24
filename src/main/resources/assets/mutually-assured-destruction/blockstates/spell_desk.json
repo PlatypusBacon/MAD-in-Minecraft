@@ -1,7 +1,8 @@
 {
   "variants": {
-    "": {
-      "model": "mutually-assured-destruction:block/spell_desk"
-    }
+    "facing=north": { "model": "mutually-assured-destruction:block/spell_desk" },
+    "facing=south": { "model": "mutually-assured-destruction:block/spell_desk", "y": 180 },
+    "facing=east":  { "model": "mutually-assured-destruction:block/spell_desk", "y": 90 },
+    "facing=west":  { "model": "mutually-assured-destruction:block/spell_desk", "y": 270 }
   }
 }

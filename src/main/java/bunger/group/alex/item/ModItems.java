@@ -3,12 +3,16 @@ package bunger.group.alex.item;
 import bunger.group.MutuallyAssuredDestruction;
 import bunger.group.alex.item.armor.ClothArmorMaterial;
 import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.equipment.ArmorType;
+import net.minecraft.world.item.equipment.Equippable;
 
 import java.util.function.Function;
 
@@ -27,6 +31,18 @@ public class ModItems {
             new AgarthanIceDome.Properties()
     );
 
+    public static final Item ZAP = registerItem(
+            "spell_lightning_zap",
+            Zap::new,
+            new Zap.Properties()
+    );
+
+    public static final Item CHANNEL_STORM = registerItem(
+            "spell_lightning_channel_storm",
+            ChannelStorm::new,
+            new ChannelStorm.Properties()
+    );
+
     public static final Item AGARTHAN_THUNDER = registerItem(
             "spell_lightning_agarthan_thunder",
             AgarthanThunder::new,
@@ -37,6 +53,30 @@ public class ModItems {
             "spell_fire_ignition",
             Ignition::new,
             new Ignition.Properties()
+    );
+
+    public static final Item IMPALE = registerItem(
+            "spell_earth_impale",
+            Impale::new,
+            new Impale.Properties()
+    );
+
+    public static final Item FOREST_OF_SPIKES = registerItem(
+            "spell_earth_forest_of_spikes",
+            ForestOfSpikes::new,
+            new ForestOfSpikes.Properties()
+    );
+
+    public static final Item SUMMON_WATER = registerItem(
+            "spell_water_summon_water",
+            SummonWater::new,
+            new SummonWater.Properties()
+    );
+
+    public static final Item INVOKE_RAIN = registerItem(
+            "spell_water_invoke_rain",
+            InvokeRain::new,
+            new InvokeRain.Properties()
     );
 
     public static final Item STAFF_OF_TELEPORTATION = registerItem(
@@ -65,9 +105,21 @@ public class ModItems {
             new BlankScroll.Properties()
     );
 
+    public static final Item BLANK_EARTH_SCROLL = registerItem(
+            "blank_earth_scroll",
+            (Item.Properties properties) -> new BlankScroll(properties, SpellTypes.EARTH),
+            new BlankScroll.Properties()
+    );
+
     // Materials
     public static final Item PURE_MANA = registerItem(
-            "pure_mana",
+            "eitr",
+            Item::new,
+            new Item.Properties()
+    );
+
+    public static final Item CLOTH = registerItem(
+            "cloth_item",
             Item::new,
             new Item.Properties()
     );
@@ -78,8 +130,12 @@ public class ModItems {
     public static final Item CLOTH_HELMET = registerItem(
             "cloth_helmet",
             Item::new,
-            new Item.Properties().humanoidArmor(ClothArmorMaterial.INSTANCE, ArmorType.HELMET)
+            new Item.Properties()
+                    .humanoidArmor(ClothArmorMaterial.INSTANCE, ArmorType.HELMET)
                     .durability(ArmorType.HELMET.getDurability(ClothArmorMaterial.BASE_DURABILITY))
+                    .component(DataComponents.EQUIPPABLE, Equippable.builder(EquipmentSlot.HEAD)
+                            .setEquipSound(SoundEvents.ARMOR_EQUIP_LEATHER)
+                            .build())
     );
 
     public static final Item CLOTH_CHESTPLATE = registerItem(
