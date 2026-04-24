@@ -26,5 +26,13 @@
   "shroomjak_plant": {
     "subtitle": "sound.mutually-assured-destruction.shroomjak_plant",
     "sounds": ["mutually-assured-destruction:shroomjak_plant"]
+  },
+  "shroom_noise": {
+    "subtitle": "sound.mutually-assured-destruction.shroom_noise",
+    "sounds": ["mutually-assured-destruction:shroom_noise"]
+  },
+  "shroom_terror": {
+    "subtitle": "sound.mutually-assured-destruction.shroom_terror",
+    "sounds": ["mutually-assured-destruction:shroom_terror"]
   }
 }

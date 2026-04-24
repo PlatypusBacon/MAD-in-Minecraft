@@ -20,6 +20,8 @@ public class CustomSounds {
     public static final SoundEvent SHROOMJAK_FART1 = registerSound("shroomjak_fart1");
     public static final SoundEvent SHROOMJAK_NORMAL1 = registerSound("shroomjak_normal1");
     public static final SoundEvent SHROOMJAK_PLANT = registerSound("shroomjak_plant");
+    public static final SoundEvent SHROOM_NOISE = registerSound("shroom_noise");
+    public static final SoundEvent SHROOM_TERROR = registerSound("shroom_terror");
 
     // actual registration of all the custom SoundEvents
     private static SoundEvent registerSound(String id) {

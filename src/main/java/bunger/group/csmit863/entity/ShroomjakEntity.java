@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -139,7 +140,7 @@ public class ShroomjakEntity extends Animal {
 
 
                     // Spray particles, play fart sound
-                    this.playSound(CustomSounds.SHROOMJAK_FART1, 0.3F, 0.8F);
+                    this.playSound(SoundEvents.FIRE_EXTINGUISH, 0.3F, 0.8F);
                     ServerLevel serverLevel = (ServerLevel) level();
                     serverLevel.sendParticles(
                             ParticleTypes.LARGE_SMOKE, // or whatever particle fits
@@ -161,7 +162,7 @@ public class ShroomjakEntity extends Animal {
                 ServerLevel serverLevel = (ServerLevel) level();
 
                 // black particles from head, play plant sound
-                this.playSound(CustomSounds.SHROOMJAK_PLANT, 0.3F, 1.0F);
+                this.playSound(CustomSounds.SHROOM_NOISE, 0.3F, 0.9F);
                 serverLevel.sendParticles(
                         ParticleTypes.SMOKE,
                         this.getX(), this.getY() + 2, this.getZ(),
@@ -191,7 +192,7 @@ public class ShroomjakEntity extends Animal {
     @Override
     public void die(DamageSource source) {
         super.die(source);
-        this.playSound(CustomSounds.SHROOMJAK_ANGRY1, 0.3F, 0.9F);
+        this.playSound(CustomSounds.SHROOM_TERROR, 0.3F, 0.9F);
     }
 
     @Override
