@@ -1,6 +1,5 @@
 package bunger.group;
 
-import bunger.group.tyler2.item.ModCreativeTabs;
 import net.fabricmc.api.ModInitializer;
 
 import org.slf4j.Logger;
@@ -32,6 +31,9 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		bunger.group.tyler2.block.ModBlocks.registerModBlocks();
 		bunger.group.tyler.entity.ModEntities.registerModEntityTypes();
 		bunger.group.tyler.entity.ModEntities.registerAttributes();
-		ModCreativeTabs.registerCreativeTabs();
+		bunger.group.tyler2.item.ModCreativeTabs.registerCreativeTabs();
+		bunger.group.tyler.item.ModCreativeTabs.registerCreativeTabs();
+		bunger.group.tyler.ModCombatEvents.register();
+		bunger.group.tyler.net.PunchSidePacket.registerServer();
 	}
 }

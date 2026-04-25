@@ -3,7 +3,10 @@
 	"package": "bunger.group.client.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"client": [
-		"ExampleClientMixin"
+		"ExampleClientMixin",
+		"AttackSwingMixin",
+		"HandRendererMixin",
+		"LivingEntitySwingMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

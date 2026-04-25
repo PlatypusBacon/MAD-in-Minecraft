@@ -14,14 +14,14 @@ public class ModCreativeTabs {
 
     public static final ResourceKey<CreativeModeTab> MOD_TAB_KEY = ResourceKey.create(
             Registries.CREATIVE_MODE_TAB,
-            Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, "mod_tab")
+            Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, "sticks_tab")
     );
 
     public static final CreativeModeTab MOD_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
             MOD_TAB_KEY,
             CreativeModeTab.builder(CreativeModeTab.Row.TOP,6)
-                    .title(Component.translatable("itemGroup.mutually-assured-destruction.mod_tab"))
+                    .title(Component.translatable("itemGroup.mutually-assured-destruction.sticks_tab"))
                     .icon(() -> ModItems.LONG_STICK.getDefaultInstance())
                     .displayItems((parameters, output) -> {
                         // Sticks

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": "mutually-assured-destruction:squirrel_stapeler",
+    "X": "#minecraft:squirrel_bear_claw",
+    "Y": "#mutually-assured-destruction:squeather"
+  },
+  "pattern": [
+    "X X",
+    "Y#Y"
+  ],
+  "result": {
+    "id": "mutually-assured-destruction:bear_boxers"
+  }
+}

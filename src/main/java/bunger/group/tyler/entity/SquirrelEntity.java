@@ -1,11 +1,15 @@
 package bunger.group.tyler.entity;
 
+import bunger.group.tyler.enchantment.ModEnchantments;
 import bunger.group.tyler.item.ModItems;
 import bunger.group.tyler.sound.ModSounds;
+import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -15,6 +19,8 @@ import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -52,9 +58,9 @@ public class SquirrelEntity extends Animal {
     }
 
     @Override
-    protected void dropCustomDeathLoot(net.minecraft.server.level.ServerLevel level, net.minecraft.world.damagesource.DamageSource source, boolean killedByPlayer) {
+    protected void dropCustomDeathLoot(ServerLevel level, DamageSource source, boolean killedByPlayer) {
         super.dropCustomDeathLoot(level, source, killedByPlayer);
-        if (this.random.nextFloat() < 0.5f) {
+        if (this.random.nextFloat() < 0.7f) {
             net.minecraft.world.item.Item[] drops = {
                     ModItems.SQUEATHER_HEAD,
                     ModItems.SQUEATHER_CHEST,
@@ -62,7 +68,19 @@ public class SquirrelEntity extends Animal {
                     ModItems.SQUEATHER_FEET
             };
             net.minecraft.world.item.Item chosen = drops[this.random.nextInt(drops.length)];
-            this.spawnAtLocation(level, new net.minecraft.world.item.ItemStack(chosen));
+            ItemStack stack = new ItemStack(chosen);
+
+            // Apply the stapeled enchantment
+            Registry<Enchantment> registry = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+            registry.get(ModEnchantments.STAPELED).ifPresent(enchantmentHolder -> {
+                ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(
+                        stack.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY)
+                );
+                mutable.set(enchantmentHolder, 1);
+                stack.set(DataComponents.ENCHANTMENTS, mutable.toImmutable());
+            });
+
+            this.spawnAtLocation(level, stack);
         }
     }
 

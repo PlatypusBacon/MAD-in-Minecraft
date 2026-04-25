@@ -1,6 +1,12 @@
 package bunger.group.tyler.entity;
 
+import bunger.group.tyler.enchantment.ModEnchantments;
+import bunger.group.tyler.item.ModItems;
 import bunger.group.tyler.sound.ModSounds;
+import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -13,6 +19,9 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.Level;
 
 public class SquirrelBearEntity extends PathfinderMob implements Enemy {
@@ -41,7 +50,16 @@ public class SquirrelBearEntity extends PathfinderMob implements Enemy {
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(
                 this, Player.class, true));
     }
-
+    @Override
+    protected void dropCustomDeathLoot(ServerLevel level, DamageSource source, boolean killedByPlayer) {
+        super.dropCustomDeathLoot(level, source, killedByPlayer);
+            net.minecraft.world.item.Item[] drops = {
+                    ModItems.SQUIRREL_BEAR_CLAW
+            };
+            net.minecraft.world.item.Item chosen = drops[this.random.nextInt(drops.length)];
+            ItemStack stack = new ItemStack(chosen);
+            this.spawnAtLocation(level, stack);
+    }
     @Override
     protected SoundEvent getAmbientSound() {
         return ModSounds.BEAR_IDLE;

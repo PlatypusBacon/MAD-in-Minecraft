@@ -50,6 +50,16 @@ public class ModItems {
             SquirrelStapelerItem::new,
             new Item.Properties()
     );
+    public static final Item SQUIRREL_BEAR_CLAW = register(
+            "squirrel_bear_claw",
+            SquirrelBearClawItem::new,
+            new Item.Properties()
+    );
+    public static final Item BEAR_BOXERS = register(
+            "bear_boxers",
+            BearBoxersItem::new,
+            new Item.Properties()
+    );
 
     private static <T extends Item> T register(String name,
                                                java.util.function.Function<Item.Properties, T> factory,
@@ -69,5 +79,7 @@ public class ModItems {
         ModArmorMaterials.initialize();
         var squirrel_gun = SQUIRREL_GUN;
         var squirrel_stapeler = SQUIRREL_STAPELER;
+        var squirrel_bear_claw = SQUIRREL_BEAR_CLAW;
+        var bear_boxers = BEAR_BOXERS;
     }
 }

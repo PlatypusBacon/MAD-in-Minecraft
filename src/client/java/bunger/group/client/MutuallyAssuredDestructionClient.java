@@ -16,6 +16,8 @@ public class MutuallyAssuredDestructionClient implements ClientModInitializer {
 		EntityRenderers.register(bunger.group.tyler.entity.ModEntities.GOD, GodEntityRenderer::new);
 		EntityRenderers.register(bunger.group.tyler.entity.ModEntities.SQUIRREL_WIFE, SquirrelWifeEntityRenderer::new);
 		bunger.group.client.tyler.SleepScreenOverlay.register();
+		bunger.group.client.tyler.bear_boxers.BearBoxersRenderer.register();
+		bunger.group.client.tyler.net.PunchSidePacketClient.registerClient();
 		// This entrypoint is suitable for setting up client-specific logic, such as rendering.
 	}
 }
