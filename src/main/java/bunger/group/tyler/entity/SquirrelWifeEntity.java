@@ -5,13 +5,17 @@ import bunger.group.tyler.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
 
 public class SquirrelWifeEntity extends ArmorStand {
@@ -87,5 +91,15 @@ public class SquirrelWifeEntity extends ArmorStand {
         if (this.hasItemInSlot(slot)) return InteractionResult.FAIL;
 
         return super.interact(player, hand, location);
+    }
+    public void agghh(ServerLevel level, DamageSource source) {
+        this.dropAllDeathLoot(level, source);
+        this.kill(level);
+        for(EquipmentSlot slot : EquipmentSlot.VALUES) {
+            ItemStack itemStack = this.equipment.set(slot, ItemStack.EMPTY);
+            if (!itemStack.isEmpty() && !EnchantmentHelper.has(itemStack, EnchantmentEffectComponents.PREVENT_EQUIPMENT_DROP)) {
+                Block.popResource(this.level(), this.blockPosition().above(), itemStack);
+            }
+        }
     }
 }

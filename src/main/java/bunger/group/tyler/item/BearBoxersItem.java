@@ -41,7 +41,12 @@ public class BearBoxersItem extends Item {
         }
         return InteractionResult.CONSUME;
     }
-
+    @Override
+    public void postHurtEnemy(final ItemStack stack, final LivingEntity target, final LivingEntity attacker) {
+        if (target.isDeadOrDying() && attacker instanceof Player player) {
+            player.heal(1.0f);
+        }
+    }
     @Override
     public int getUseDuration(ItemStack stack, LivingEntity entity) {
         return 15;
