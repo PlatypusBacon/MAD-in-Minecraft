@@ -2,7 +2,10 @@ package bunger.group.client;
 
 import bunger.group.MutuallyAssuredDestruction;
 import bunger.group.alex.ManaPacket;
+import bunger.group.alex.entity.ModEntityTypes;
 import bunger.group.alex.menu.ModMenuType;
+import bunger.group.client.alex.entity.model.ModEntityModelLayers;
+import bunger.group.client.alex.entity.renderer.WraithEntityRenderer;
 import bunger.group.client.alex.rendering.screens.inventory.SpellDeskScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -12,6 +15,7 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Util;
 
@@ -25,6 +29,11 @@ public class MutuallyAssuredDestructionClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
+		//Mobs
+
+		ModEntityModelLayers.registerModelLayers();
+		EntityRenderers.register(ModEntityTypes.WRAITH, WraithEntityRenderer::new);
+
 		MenuScreens.register(ModMenuType.SPELL_DESK, SpellDeskScreen::new);
 
 		ClientPlayNetworking.registerGlobalReceiver(ManaPacket.TYPE, (payload, context) -> {

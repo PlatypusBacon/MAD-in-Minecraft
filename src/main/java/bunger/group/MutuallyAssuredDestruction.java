@@ -1,6 +1,7 @@
 package bunger.group;
 
 import bunger.group.alex.CreativeTab;
+import bunger.group.alex.entity.ModEntityTypes;
 import bunger.group.alex.spell.LearnSpellPacket;
 import bunger.group.alex.Mana;
 import bunger.group.alex.ManaPacket;
@@ -36,6 +37,10 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		// Blocks
 		ModBlocks.register();
 		ModBlockEntities.initialize();
+
+		// Mobs
+		ModEntityTypes.registerModEntityTypes();
+		ModEntityTypes.registerAttributes();
 
 		// Menus
 		ModMenuType.initialize();
