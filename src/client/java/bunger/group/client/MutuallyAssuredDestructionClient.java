@@ -6,8 +6,10 @@ import bunger.group.alex.menu.ModMenuType;
 import bunger.group.client.alex.rendering.screens.inventory.SpellDeskScreen;
 import bunger.group.client.csmit863.entity.ModEntityModelLayers;
 import bunger.group.client.csmit863.entity.ShroomjakEntityRenderer;
+import bunger.group.csmit863.CustomSounds;
 import bunger.group.csmit863.entity.ModEntityTypes;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
@@ -16,8 +18,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.Music;
 import net.minecraft.util.Util;
+import net.minecraft.world.level.biome.Biome;
 
 public class MutuallyAssuredDestructionClient implements ClientModInitializer {
 
@@ -26,6 +33,8 @@ public class MutuallyAssuredDestructionClient implements ClientModInitializer {
 	private static float displayedMana = 0;
 	private static long fullManaTime = -1;
 	private static final long HIDE_AFTER_MS = 5000;
+
+	private static boolean inShroomShire = false;  // ← add this
 
 	@Override
 	public void onInitializeClient() {
@@ -44,6 +53,38 @@ public class MutuallyAssuredDestructionClient implements ClientModInitializer {
 
 		ModEntityModelLayers.registerModelLayers();
 		EntityRenderers.register(ModEntityTypes.SHROOMJAK, ShroomjakEntityRenderer::new);
+
+		// Biome music — defined here so CustomSounds is already initialized
+		ResourceKey<Biome> SHROOM_SHIRE = ResourceKey.create(
+				Registries.BIOME,
+				Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, "shroom_shire")
+		);
+
+		Music shroomShireMusic1 = new Music(
+				Holder.direct(CustomSounds.MUSIC_TO_MY_EARS),
+				Integer.MAX_VALUE, Integer.MAX_VALUE, true
+		);
+		Music shroomShireMusic2 = new Music(
+				Holder.direct(CustomSounds.THE_ALIEN),  // add this to CustomSounds
+				Integer.MAX_VALUE, Integer.MAX_VALUE, true
+		);
+
+		ClientTickEvents.END_CLIENT_TICK.register(client -> {
+			if (client.player == null || client.level == null) return;
+
+			var musicManager = client.getMusicManager();
+			boolean nowInBiome = client.level.getBiome(client.player.blockPosition()).is(SHROOM_SHIRE);
+
+			if (nowInBiome && !inShroomShire) {
+				Music pick = Math.random() < 0.5 ? shroomShireMusic1 : shroomShireMusic2;
+				musicManager.startPlaying(pick);
+			} else if (!nowInBiome && inShroomShire) {
+				musicManager.stopPlaying();
+			}
+
+			inShroomShire = nowInBiome;
+		});
+
 	}
 
 	private static void renderMana(GuiGraphicsExtractor graphics, DeltaTracker delta) {
