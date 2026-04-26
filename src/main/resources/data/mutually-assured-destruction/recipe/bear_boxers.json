@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "#": "mutually-assured-destruction:squirrel_stapeler",
-    "X": "#minecraft:squirrel_bear_claw",
+    "X": "mutually-assured-destruction:squirrel_bear_claw",
     "Y": "#mutually-assured-destruction:squeather"
   },
   "pattern": [

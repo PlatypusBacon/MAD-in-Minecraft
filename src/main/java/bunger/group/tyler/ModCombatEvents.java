@@ -19,6 +19,8 @@ import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -105,7 +107,15 @@ public class ModCombatEvents {
 
                     attacker.setLastHurtMob(entity);
                     attacker.causeFoodExhaustion(0.1f);
-
+                    // Brief speed boost after landing a hit
+                    attacker.addEffect(new MobEffectInstance(
+                            MobEffects.SPEED,
+                            40,  // 2 seconds
+                            0,
+                            false, // not ambient
+                            false, // no particles (subtle)
+                            false  // no icon in HUD
+                    ));
                     // damageStatsAndHearts is private — replicate it manually
                     float actualDamage = oldHealth - target.getHealth();
                     if (actualDamage > 0f) {
@@ -175,10 +185,7 @@ public class ModCombatEvents {
         InteractionResult result = equippable.equipOnTarget(attacker, target, stack);
 
         if (result == InteractionResult.SUCCESS) {
-            // equipOnTarget already called stack.split(1), consuming from attacker's hand
-            // if hand is now empty we don't need to do anything extra
-            // but if attacker had count > 1, stack is already shrunk by split()
-            return InteractionResult.SUCCESS;
+            return result;
         }
 
         return InteractionResult.PASS;

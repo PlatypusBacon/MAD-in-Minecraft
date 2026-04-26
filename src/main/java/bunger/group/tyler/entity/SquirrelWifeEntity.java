@@ -57,7 +57,7 @@ public class SquirrelWifeEntity extends ArmorStand {
         if (headFilled && chestFilled && legsFilled && feetFilled) {
             triggered = true;
             BlockPos pos = new BlockPos((int) this.getX(), (int) this.getY(), (int) this.getZ());
-            Wife.start((ServerLevel) level(), pos);
+            Wife.start((ServerLevel) level(), this);
         }
     }
 
