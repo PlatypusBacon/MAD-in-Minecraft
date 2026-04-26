@@ -28,9 +28,7 @@ public class HallucinationEffect extends MobEffect {
         if (entity instanceof ServerPlayer player) {
             Madness.MadnessData madness = Madness.get(player);
 
-            for (int i = 0; i < 50; i++) {
-                madness.incrementCurrentMadness();
-            }
+            madness.incrementCurrentMadness();
             int newMadness = madness.getCurrentMadness();
             madness.setCurrentMadness(newMadness);
             player.sendSystemMessage(net.minecraft.network.chat.Component.literal(

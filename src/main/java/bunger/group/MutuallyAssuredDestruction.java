@@ -83,7 +83,16 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 						mana.incrementCurrentMana();
 						ServerPlayNetworking.send(player, new ManaPacket(mana.getCurrentMana(), mana.getMaxMana()));
 					}
-					madness.decrementCurrentMadness();
+
+					if ((!player.hasEffect(bunger.group.csmit863.item.ModItems.HALLUCINATION_EFFECT)) && (madness.getCurrentMadness() != 0) ) {
+						if (server.overworld().getRandom().nextInt(5) == 0) {  // ~20% chance per tick
+							madness.decrementCurrentMadness();
+							var newMadness = madness.getCurrentMadness();
+							player.sendSystemMessage(net.minecraft.network.chat.Component.literal(
+									"the voices are settling down... [madness: " + newMadness + "]"
+							));
+						}
+					}
 				}
 			}
 		});
