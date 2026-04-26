@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -37,11 +38,11 @@ public class WraithEntity extends Monster {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 20.0)
+                .add(Attributes.MAX_HEALTH, 30.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.25)
-                .add(Attributes.ATTACK_DAMAGE, 8.0)
-                .add(Attributes.FLYING_SPEED, 0.75)
-                .add(Attributes.FOLLOW_RANGE, 24.0);
+                .add(Attributes.ATTACK_DAMAGE, 10.0)
+                .add(Attributes.FLYING_SPEED, 1.0)
+                .add(Attributes.FOLLOW_RANGE, 32.0);
     }
 
     @Override
@@ -62,10 +63,28 @@ public class WraithEntity extends Monster {
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, false));
     }
 
+    // copied from mob
+    private boolean isSunBurnTick() {
+        if (!this.level().isClientSide() && (Boolean)this.level().environmentAttributes().getValue(EnvironmentAttributes.MONSTERS_BURN, this.position())) {
+            float br = this.getLightLevelDependentMagicValue();
+            BlockPos roundedPos = BlockPos.containing(this.getX(), this.getEyeY(), this.getZ());
+            boolean isInNonBurnableBlock = this.isInWaterOrRain() || this.isInPowderSnow || this.wasInPowderSnow;
+            if (br > 0.5F && this.random.nextFloat() * 30.0F < (br - 0.4F) * 2.0F && !isInNonBurnableBlock && this.level().canSeeSky(roundedPos)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     @Override
     public void tick() {
         super.tick();
         this.setNoGravity(true);
+
+        if (!this.level().isClientSide() && this.isSunBurnTick()) {
+            this.igniteForSeconds(8);
+        }
 
         // limit to 8 blocks above ground
         BlockPos below = this.blockPosition();
@@ -85,6 +104,12 @@ public class WraithEntity extends Monster {
                     Math.min(this.getDeltaMovement().y, -0.1),
                     this.getDeltaMovement().z
             );
+        } else if (this.getY() < groundY + 2) {
+            this.setDeltaMovement(
+                    this.getDeltaMovement().x,
+                    Math.max(this.getDeltaMovement().y, 0.02),
+                    this.getDeltaMovement().z
+            );
         }
     }
 
@@ -95,8 +120,6 @@ public class WraithEntity extends Monster {
 
     @Override
     public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
-        // immune to fire
-        if (source.is(DamageTypeTags.IS_FIRE)) return false;
         // immune to projectiles
         if (source.is(DamageTypeTags.IS_PROJECTILE)) return false;
         // half damage from players
@@ -108,5 +131,9 @@ public class WraithEntity extends Monster {
         return super.hurtServer(level, source, amount);
     }
 
+    @Override
+    public void knockback(double strength, double x, double z) {
+        super.knockback(strength * 0.5, x, z);
+    }
 
 }

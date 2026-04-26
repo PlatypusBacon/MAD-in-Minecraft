@@ -42,7 +42,7 @@ public class ModEntityTypes {
                 BiomeSelectors.foundInOverworld(),
                 MobCategory.MONSTER,
                 ModEntityTypes.WRAITH,
-                5, 1, 1
+                8, 1, 1
         );
     }
 }
