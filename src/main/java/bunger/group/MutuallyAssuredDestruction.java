@@ -13,6 +13,7 @@ import bunger.group.alex.menu.ModMenuType;
 import bunger.group.alex.menu.SpellDeskMenu;
 import bunger.group.csmit863.CustomSounds;
 import bunger.group.csmit863.Madness;
+import bunger.group.csmit863.biome.ModBiomes;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
@@ -53,9 +54,10 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		bunger.group.csmit863.entity.ModEntityTypes.registerAttributes();
 
 		// Biomes
-		// sounds here cuz why tf not
-		CustomSounds.initialize();
+		ModBiomes.initialise(); //csmit mod biomes
 
+		// Sounds
+		CustomSounds.initialize(); //csmit custom sounds
 
 		// Menus
 		ModMenuType.initialize();
@@ -87,10 +89,6 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 					if ((!player.hasEffect(bunger.group.csmit863.item.ModItems.HALLUCINATION_EFFECT)) && (madness.getCurrentMadness() != 0) ) {
 						if (server.overworld().getRandom().nextInt(5) == 0) {  // ~20% chance per tick
 							madness.decrementCurrentMadness();
-							var newMadness = madness.getCurrentMadness();
-							player.sendSystemMessage(net.minecraft.network.chat.Component.literal(
-									"the voices are settling down... [madness: " + newMadness + "]"
-							));
 						}
 					}
 				}

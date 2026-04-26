@@ -19,7 +19,10 @@
         },
         "provider": {
           "type": "minecraft:simple_state_provider",
-          "state": { "Name": "mutually-assured-destruction:hallucinite_block" }
+          "state": {
+            "Name": "mutually-assured-destruction:hallucinite_block",
+            "Properties": {}
+          }
         }
       }
     ]

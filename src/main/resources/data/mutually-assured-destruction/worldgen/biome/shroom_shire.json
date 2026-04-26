@@ -72,8 +72,7 @@
       "minecraft:red_mushroom_taiga",
       "minecraft:patch_sugar_cane",
       "minecraft:patch_firefly_bush_near_water",
-      "minecraft:trees_jungle",
-      "minecraft:vines",
+      "mutually-assured-destruction:shroom_shire_trees",
       "mutually-assured-destruction:hallucinite_spire"
     ],
     [
@@ -92,8 +91,7 @@
       }
     ],
     "axolotls": [],
-    "creature": [],
-    "misc": [
+    "creature": [
       {
         "type": "mutually-assured-destruction:shroomjak",
         "maxCount": 4,
@@ -101,6 +99,7 @@
         "weight": 8
       }
     ],
+    "misc": [],
     "monster": [
       {"type": "minecraft:witch", "minCount": 1, "maxCount": 3, "weight": 5},
       {"type": "minecraft:creeper", "minCount": 1, "maxCount": 3, "weight": 5},

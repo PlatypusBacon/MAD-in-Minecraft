@@ -1,7 +1,7 @@
 {
   "musictomyears": {
-    "subtitle": "sound.mutually-assured-destruction.musictomyears",
-    "sounds": ["mutually-assured-destruction:musictomyears"]
+    "subtitle": "sound.mutually-assured-destruction.musictomyearsno",
+    "sounds": ["mutually-assured-destruction:musictomyearsno"]
   },
   "shroomjak_angry1": {
     "subtitle": "sound.mutually-assured-destruction.shroomjak_angry1",
@@ -37,6 +37,11 @@
   },
   "the_alien": {
     "subtitle": "sound.mutually-assured-destruction.the_alien",
-    "sounds": ["mutually-assured-destruction:the_alien"]
+    "sounds": [
+      {
+        "name": "mutually-assured-destruction:the_alien",
+        "stream": true
+      }
+    ]
   }
 }

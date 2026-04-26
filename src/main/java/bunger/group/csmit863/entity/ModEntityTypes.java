@@ -14,7 +14,7 @@ import net.minecraft.world.entity.MobCategory;
 public class ModEntityTypes {
     public static final EntityType<ShroomjakEntity> SHROOMJAK = register(
             "shroomjak",
-            EntityType.Builder.<ShroomjakEntity>of(ShroomjakEntity::new, MobCategory.MISC)
+            EntityType.Builder.<ShroomjakEntity>of(ShroomjakEntity::new, MobCategory.CREATURE)
                     .sized(0.54f, 1.53f) // width, height
     );
 

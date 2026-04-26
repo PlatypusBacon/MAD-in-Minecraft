@@ -31,9 +31,6 @@ public class HallucinationEffect extends MobEffect {
             madness.incrementCurrentMadness();
             int newMadness = madness.getCurrentMadness();
             madness.setCurrentMadness(newMadness);
-            player.sendSystemMessage(net.minecraft.network.chat.Component.literal(
-                    "the voices are getting louder... [madness: " + newMadness + "]"
-            ));
         }
         return true;
     }

@@ -77,6 +77,7 @@ public class MutuallyAssuredDestructionClient implements ClientModInitializer {
 
 			if (nowInBiome && !inShroomShire) {
 				Music pick = Math.random() < 0.5 ? shroomShireMusic1 : shroomShireMusic2;
+				musicManager.stopPlaying();
 				musicManager.startPlaying(pick);
 			} else if (!nowInBiome && inShroomShire) {
 				musicManager.stopPlaying();

@@ -13,6 +13,6 @@ public class ModBiomes {
     );
 
     public static void initialise() {
-
+        MutuallyAssuredDestruction.LOGGER.info("Registering " + MutuallyAssuredDestruction.MOD_ID + " Biomes");
     }
 }
