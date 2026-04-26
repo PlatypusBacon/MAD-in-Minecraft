@@ -10,10 +10,12 @@
 
   "downfall": 1.0,
   "effects": {
+    "fog_color": 6619135,
+    "sky_color": 13217788,
     "water_color": 8716543,
+    "water_fog_color": 8716543,
     "grass_color": 4159204,
-    "foliage_color": 4159204,
-    "fog_color": 6619135
+    "foliage_color": 4159204
   },
   "features": [
     [

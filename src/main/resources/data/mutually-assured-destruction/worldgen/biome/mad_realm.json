@@ -1,0 +1,49 @@
+{
+  "attributes": {
+    "minecraft:gameplay/can_pillager_patrol_spawn": false
+  },
+  "carvers": [
+    "mutually-assured-destruction:mad_canyon"
+  ],
+  "downfall": 0.0,
+  "effects": {
+    "fog_color": 0,
+    "water_color": 0,
+    "water_fog_color": 0,
+    "mood_sound": {
+      "block_search_extent": 8,
+      "offset": 2.0,
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000
+    }
+  },
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [
+      "minecraft:basalt_pillar",
+      "minecraft:ore_blackstone"
+    ],
+    [],
+    [],
+    []
+  ],
+  "has_precipitation": false,
+  "spawn_costs": {},
+  "spawners": {
+    "ambient": [],
+    "axolotls": [],
+    "creature": [],
+    "misc": [],
+    "monster": [],
+    "underground_water_creature": [],
+    "water_ambient": [],
+    "water_creature": []
+  },
+  "temperature": 2.0
+}
