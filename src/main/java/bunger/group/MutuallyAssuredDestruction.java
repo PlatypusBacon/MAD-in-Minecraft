@@ -22,6 +22,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import org.slf4j.Logger;
@@ -89,6 +90,22 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 					if ((!player.hasEffect(bunger.group.csmit863.item.ModItems.HALLUCINATION_EFFECT)) && (madness.getCurrentMadness() != 0) ) {
 						if (server.overworld().getRandom().nextInt(5) == 0) {  // ~20% chance per tick
 							madness.decrementCurrentMadness();
+						}
+					}
+
+					// Teleport to mad realm at 100 madness
+					if (madness.getCurrentMadness() >= 100) {
+						ServerLevel madRealm = server.getLevel(ModBiomes.MAD_REALM);
+						if (madRealm != null && !player.level().dimension().equals(ModBiomes.MAD_REALM)) {
+							player.teleportTo(
+									madRealm,
+									0.0, 65.0, 0.0,
+									java.util.Set.of(),
+									player.getYRot(),
+									player.getXRot(),
+									true
+							);
+							madness.setCurrentMadness(0);
 						}
 					}
 				}
