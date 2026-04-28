@@ -6,6 +6,7 @@ import bunger.group.client.bryan.Bunger2;
 import bunger.group.client.csmit863.Bunger3;
 import bunger.group.client.ethan.Bunger4;
 import bunger.group.client.tyler.Bunger5;
+import bunger.group.client.lizz.Bunger6;
 
 public class MutuallyAssuredDestructionClient implements ClientModInitializer {
 	@Override

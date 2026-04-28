@@ -9,6 +9,7 @@ import bunger.group.bryan.Bunger2;
 import bunger.group.csmit863.Bunger3;
 import bunger.group.ethan.Bunger4;
 import bunger.group.tyler.Bunger5;
+import bunger.group.lizz.Bunger6;
 
 public class MutuallyAssuredDestruction implements ModInitializer {
 	public static final String MOD_ID = "mutually-assured-destruction";
