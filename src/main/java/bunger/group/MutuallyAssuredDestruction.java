@@ -5,7 +5,10 @@ import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import bunger.group.alex.Bunger1;
+
 import bunger.group.bryan.Bunger2;
+import bunger.group.bryan.TaxItem;
+
 import bunger.group.csmit863.Bunger3;
 import bunger.group.ethan.Bunger4;
 import bunger.group.tyler.Bunger5;
@@ -24,6 +27,9 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
 
+		//Bunger2.initialize();
+		System.out.println(net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(TaxItem.TAX_ITEM));
+		TaxItem.initialize();
 		LOGGER.info("Hello Fabric world!");
 	}
 }
