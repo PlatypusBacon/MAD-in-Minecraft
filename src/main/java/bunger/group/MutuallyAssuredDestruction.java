@@ -1,6 +1,8 @@
 package bunger.group;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 
 import java.sql.Blob;
@@ -17,7 +19,6 @@ import bunger.group.csmit863.Bunger3;
 import bunger.group.ethan.AltarFragmentBlock;
 import bunger.group.ethan.AltarBlock;
 import bunger.group.ethan.AltarEventHandler;
-import bunger.group.ethan.Bunger4;
 import bunger.group.tyler.Bunger5;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -31,10 +32,14 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.SpawnPlacementTypes;
+import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
 import bunger.group.ethan.ProphetEntity;
@@ -103,7 +108,28 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		// ----------Ethans registrations----------
 
 		ProphetEntity.initialize();
+
+		SpawnPlacements.register(
+			ModEntityTypes.PROPHET,
+			SpawnPlacementTypes.ON_GROUND,
+			Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+			(entityType, level, spawnReason, pos, random) -> {
+				return level.getMaxLocalRawBrightness(pos) <= 7;
+			}
+		);
+
+		BiomeModifications.
+			addSpawn(
+				BiomeSelectors.foundInOverworld(),
+				MobCategory.MONSTER,
+				ModEntityTypes.PROPHET,
+				10,
+				1,
+				1
+			);
+
 		VoremothEntity.initialize();
+
 		VoremothBossMechanic.register();
 		ModEntityTypes.registerModEntityTypes();
 		ModEntityTypes.registerAttributes();

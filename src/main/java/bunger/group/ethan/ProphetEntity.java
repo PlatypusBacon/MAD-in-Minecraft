@@ -11,6 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import java.util.Optional;
 
 import bunger.group.MutuallyAssuredDestruction;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.protocol.game.ClientboundSoundPacket;
 import net.minecraft.resources.Identifier;
@@ -18,11 +19,17 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.network.chat.Component;
 
@@ -82,18 +89,19 @@ public class ProphetEntity extends PathfinderMob {
                             this.level().getRandom().nextLong()
                         );
                         ((ServerPlayer) player).connection.send(packet);
-                    } else if(distance <= maxRange * 2) {
-                        ClientboundSoundPacket packet = new ClientboundSoundPacket(
-                            BuiltInRegistries.SOUND_EVENT.wrapAsHolder(ProphetEntity.HEARTBEAT),
-                            SoundSource.HOSTILE,
-                            this.getX(), this.getY(), this.getZ(),
-                            0.1F,
-                            1.0F,
-                            this.level().getRandom().nextLong()
-                        );
-                        ((ServerPlayer) player).connection.send(packet);
+                    } 
+                    // else if(distance <= maxRange * 2) {
+                    //     ClientboundSoundPacket packet = new ClientboundSoundPacket(
+                    //         BuiltInRegistries.SOUND_EVENT.wrapAsHolder(ProphetEntity.HEARTBEAT),
+                    //         SoundSource.HOSTILE,
+                    //         this.getX(), this.getY(), this.getZ(),
+                    //         0.1F,
+                    //         1.0F,
+                    //         this.level().getRandom().nextLong()
+                    //     );
+                    //     ((ServerPlayer) player).connection.send(packet);
 
-                    }
+                    // }
                     
                 }
             }
@@ -135,7 +143,7 @@ public class ProphetEntity extends PathfinderMob {
                 1200,
                 0
             ));
-            //MutuallyAssuredDestruction.RED_RAIN_PLAYERS.put(player.getUUID(), player.level().getGameTime() + 1200);
+            MutuallyAssuredDestruction.RED_RAIN_PLAYERS.put(player.getUUID(), player.level().getGameTime() + 1200);
             player.sendOverlayMessage(Component.literal("A Prophet of Vormoth is slain!"));
         }
     }
@@ -149,6 +157,10 @@ public class ProphetEntity extends PathfinderMob {
             new ItemStack(MutuallyAssuredDestruction.ALTAR_FRAGMENT)
         );
         level.addFreshEntity(drop);
+    }
+
+    public static boolean checkMobSpawnRules(final EntityType<? extends Mob> type, final LevelAccessor level, final EntitySpawnReason spawnReason, final BlockPos pos, final RandomSource random) {
+        return level.getMaxLocalRawBrightness(pos) <= 7 && level.getDifficulty() != Difficulty.PEACEFUL;
     }
 
     public static void initialize() {

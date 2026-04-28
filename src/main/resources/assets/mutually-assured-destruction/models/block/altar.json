@@ -1,7 +1,4 @@
 {
-	"format_version": "1.21.11",
-	"credit": "Made with Blockbench",
-	"texture_size": [64, 64],
 	"textures": {
 		"0": "mutually-assured-destruction:block/altar",
 		"particle": "mutually-assured-destruction:block/altar"
@@ -84,22 +81,6 @@
 				"up": {"uv": [3.25, 11.25, 2.75, 8.5], "texture": "#0"},
 				"down": {"uv": [3.75, 8.5, 3.25, 11.25], "texture": "#0"}
 			}
-		}
-	],
-	"groups": [
-		{
-			"name": "base",
-			"origin": [8, 8, 8],
-			"scope": 0,
-			"color": 0,
-			"children": [0, 1]
-		},
-		{
-			"name": "bowl",
-			"origin": [8, 8, 8],
-			"scope": 0,
-			"color": 0,
-			"children": [2, 3, 4, 5]
 		}
 	]
 }

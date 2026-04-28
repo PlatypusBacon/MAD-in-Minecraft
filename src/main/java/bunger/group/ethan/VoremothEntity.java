@@ -209,7 +209,7 @@ public void customServerAiStep(ServerLevel level) {
             MutuallyAssuredDestruction.VOREMOTH_HIT,
             SoundSource.AMBIENT,
             0.75F,
-            1.0F
+            0.5F
         );
     }
 
