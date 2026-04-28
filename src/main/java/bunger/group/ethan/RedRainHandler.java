@@ -5,7 +5,6 @@ import java.util.UUID;
 import bunger.group.MutuallyAssuredDestruction;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.TickTask;
@@ -32,7 +31,6 @@ public class RedRainHandler {
 
 						// particles
 						if (MutuallyAssuredDestruction.RED_RAIN_PLAYERS.containsKey(uuid)) {
-							// System.out.println("USERTEST: Tick: " + player.level().getGameTime());
 							long endTime = MutuallyAssuredDestruction.RED_RAIN_PLAYERS.get(uuid);
 							
 							if (player.level().getGameTime() >= endTime) {

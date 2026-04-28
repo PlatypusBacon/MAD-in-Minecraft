@@ -10,19 +10,12 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.Entity.RemovalReason;
-import net.minecraft.world.level.levelgen.placement.SurfaceWaterDepthFilter;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import java.util.HashMap;
 import java.util.Map;
 
-import bunger.group.MutuallyAssuredDestruction;
-import bunger.group.ethan.RedDarknessEffect;
-import bunger.group.ethan.VoremothEntity;
 
 // TODO: handle player death
 

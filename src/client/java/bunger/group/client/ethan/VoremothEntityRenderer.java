@@ -1,10 +1,7 @@
 package bunger.group.client.ethan;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import bunger.group.MutuallyAssuredDestruction;
 import bunger.group.ethan.VoremothEntity;
-import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.EyesLayer;

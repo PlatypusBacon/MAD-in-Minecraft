@@ -5,27 +5,14 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.animal.axolotl.Axolotl;
-import net.minecraft.world.entity.animal.squid.Squid;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.Guardian;
-import net.minecraft.world.entity.monster.illager.Pillager;
-import net.minecraft.world.entity.monster.Ghast.GhastMoveControl;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 
 import java.util.Optional;
 
 import bunger.group.MutuallyAssuredDestruction;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.game.ClientboundSoundPacket;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.Identifier;
@@ -38,18 +25,14 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.effect.MobEffects;
 import org.jspecify.annotations.Nullable;
 
 
-// TODO: add mob attacks
 // TODO: fix pathfinding
 
 
@@ -204,7 +187,6 @@ public void customServerAiStep(ServerLevel level) {
     public void playHurtSound(final DamageSource source) {
         this.level().playSound(
             null,
-            //new BlockPos(((int) Math.round(source.getSourcePosition().x)), (int) Math.round(source.getSourcePosition().y), (int) Math.round(source.getSourcePosition().z)),
             this.getX(), this.getY(), this.getZ(),
             MutuallyAssuredDestruction.VOREMOTH_HIT,
             SoundSource.AMBIENT,
@@ -263,7 +245,7 @@ public void customServerAiStep(ServerLevel level) {
            
         }
         System.out.println("VOREMOTHDAMAGE: Blocked damage from source " + source + " with amount " + amount);
-        return false; // block everything else
+        return false;
     }
 
     @Override

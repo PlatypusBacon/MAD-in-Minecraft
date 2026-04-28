@@ -5,9 +5,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.MoverType;
-import net.minecraft.world.phys.Vec3;
-import bunger.group.MutuallyAssuredDestruction;
 
 public class AltarEventHandler {
 
