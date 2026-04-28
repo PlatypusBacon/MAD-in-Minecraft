@@ -32,6 +32,7 @@ public class MagicMushroom extends BlockItem {
             player.addEffect(new MobEffectInstance(ModItems.HALLUCINATION_EFFECT, newDuration, newAmp));
             player.addEffect(new MobEffectInstance(MobEffects.LUCK, newDuration, newAmp));
             player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, newDuration, newAmp));
+            player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, newDuration, newAmp));
         }
         return super.finishUsingItem(stack, world, user);
     }

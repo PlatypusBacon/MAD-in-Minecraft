@@ -2,6 +2,7 @@ package bunger.group.client.mixin;
 
 import bunger.group.MutuallyAssuredDestruction;
 import bunger.group.client.mixin.accessor.GameRendererAccessor;
+import bunger.group.csmit863.biome.ModBiomes;
 import bunger.group.csmit863.item.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -50,6 +51,16 @@ public class HallucinationClientMixin {
             player.playSound(sound,
                     0.7f + player.getRandom().nextFloat() * 0.6f,
                     0.8f + player.getRandom().nextFloat() * 0.6f);
+        }
+
+        if (player.level().dimension().equals(ModBiomes.MAD_REALM)) {
+            if (player.getRandom().nextFloat() < 0.0005f) {
+                player.playSound(
+                        bunger.group.csmit863.CustomSounds.OVERSEER_HELLO,
+                        0.8f,
+                        1.0f
+                );
+            }
         }
     }
 

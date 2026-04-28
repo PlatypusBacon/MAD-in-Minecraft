@@ -195,6 +195,7 @@ public class ShroomjakEntity extends Animal {
         this.playSound(CustomSounds.SHROOM_TERROR, 0.3F, 0.9F);
     }
 
+
     @Override
     public void playHurtSound(DamageSource source) {
         this.playSound(CustomSounds.SHROOMJAK_ANGRY2, 0.3F, 0.9F);

@@ -10,6 +10,7 @@
     "fog_color": 0,
     "water_color": 0,
     "water_fog_color": 0,
+    "ambient_sound": "mutually-assured-destruction:ambient.overseer_hello",
     "mood_sound": {
       "block_search_extent": 8,
       "offset": 2.0,

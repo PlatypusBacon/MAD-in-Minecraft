@@ -23,6 +23,8 @@ public class CustomSounds {
     public static final SoundEvent SHROOM_NOISE = registerSound("shroom_noise");
     public static final SoundEvent SHROOM_TERROR = registerSound("shroom_terror");
     public static final SoundEvent THE_ALIEN = registerSound("the_alien");
+    public static final SoundEvent OVERSEER_HELLO = registerSound("overseer_hello");
+    public static final SoundEvent OVERSEER_HELLO2 = registerSound("overseer_hello2");
 
     // actual registration of all the custom SoundEvents
     private static SoundEvent registerSound(String id) {

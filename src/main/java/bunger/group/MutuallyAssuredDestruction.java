@@ -19,6 +19,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
@@ -105,8 +106,29 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 									player.getXRot(),
 									true
 							);
-							madness.setCurrentMadness(0);
 						}
+					}
+
+					// Send back to spawn at 0 madness
+					// Send back to spawn at 0 madness
+					if (madness.getCurrentMadness() <= 0 && player.level().dimension().equals(ModBiomes.MAD_REALM)) {
+						ServerLevel overworld = server.overworld();
+						BlockPos spawnPos;
+						if (player.getRespawnConfig() != null) {
+							spawnPos = player.getRespawnConfig().respawnData().pos();
+						} else {
+							spawnPos = overworld.getRespawnData().pos();
+						}
+						player.teleportTo(
+								overworld,
+								spawnPos.getX(),
+								spawnPos.getY(),
+								spawnPos.getZ(),
+								java.util.Set.of(),
+								player.getYRot(),
+								player.getXRot(),
+								true
+						);
 					}
 				}
 			}
