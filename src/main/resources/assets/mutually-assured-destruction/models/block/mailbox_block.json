@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "north": "mutually-assured-destruction:block/mailbox_side",
+    "south": "mutually-assured-destruction:block/mailbox_side",
+    "east":  "mutually-assured-destruction:block/mailbox_side",
+    "west":  "mutually-assured-destruction:block/mailbox_side",
+    "up":    "mutually-assured-destruction:block/mailbox_top",
+    "down":  "mutually-assured-destruction:block/mailbox_bottom"
+  }
+}

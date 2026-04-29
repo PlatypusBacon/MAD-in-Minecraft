@@ -1,4 +1,5 @@
 package bunger.group.bryan;
+import bunger.group.MutuallyAssuredDestruction;
 
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
@@ -7,13 +8,16 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-
 import java.util.function.Function;
-
-import bunger.group.MutuallyAssuredDestruction;
 import net.minecraft.resources.Identifier;
-
 import net.minecraft.world.item.WrittenBookItem;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.component.DataComponents;
+
 
 
 public class TaxItem extends WrittenBookItem {
@@ -34,9 +38,24 @@ public class TaxItem extends WrittenBookItem {
     
     public static final Item TAX_ITEM = register("tax_item", TaxItem::new, new Item.Properties());
 
-   public static void initialize() {
-        CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.INGREDIENTS).register((creativeTab) -> creativeTab.accept(TaxItem.TAX_ITEM));
+    public static void initialize() {
+            CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.INGREDIENTS).register((creativeTab) -> creativeTab.accept(TaxItem.TAX_ITEM));
     }
 
+    
+    @Override
+    public InteractionResult use(Level world, Player user, InteractionHand hand) {
+        ItemStack stack = user.getItemInHand(hand);
 
+        if (!world.isClientSide()) {
+
+            if (!stack.has(DataComponents.WRITTEN_BOOK_CONTENT)) {
+                TaxLogic.applyTaxBook(stack, user);
+            }
+
+            user.openItemGui(stack, hand);
+        }
+
+        return InteractionResult.SUCCESS;
+    }
 }
