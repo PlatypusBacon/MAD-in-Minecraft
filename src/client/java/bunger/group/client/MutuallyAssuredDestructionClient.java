@@ -2,16 +2,24 @@ package bunger.group.client;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
+import bunger.group.MutuallyAssuredDestruction;
 import bunger.group.client.alex.Bunger1;
 import bunger.group.client.bryan.Bunger2;
 import bunger.group.client.csmit863.Bunger3;
 import bunger.group.client.ethan.Bunger4;
 import bunger.group.client.ethan.ModEntityModelLayers;
 import bunger.group.client.ethan.ProphetEntityRenderer;
+import bunger.group.client.ethan.VoremothCrownClientHandler;
 import bunger.group.client.ethan.VoremothEntityRenderer;
 import bunger.group.client.tyler.Bunger5;
 import bunger.group.ethan.ModEntityTypes;
@@ -24,6 +32,9 @@ public class MutuallyAssuredDestructionClient implements ClientModInitializer {
 		ModEntityModelLayers.registerModelLayers();
 		EntityRenderers.register(ModEntityTypes.PROPHET, ProphetEntityRenderer::new);
 		EntityRenderers.register(ModEntityTypes.VOREMOTH, VoremothEntityRenderer::new);
+		VoremothCrownClientHandler.register();
+
+
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			if (client.level == null) return;
 			
@@ -50,5 +61,22 @@ public class MutuallyAssuredDestructionClient implements ClientModInitializer {
 				}
 			}
 		});
+
+
+	HudElementRegistry.attachElementBefore(
+		VanillaHudElements.MISC_OVERLAYS,
+		Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, "crown_tint"),
+		(graphics, tickCounter) -> {
+			Minecraft client = Minecraft.getInstance();
+			if (client.player == null) return;
+			
+			ItemStack helmet = client.player.getItemBySlot(EquipmentSlot.HEAD);
+			if (!(helmet.getItem() == MutuallyAssuredDestruction.VOREMOTH_CROWN)) return;
+			
+			int width = client.getWindow().getGuiScaledWidth();
+			int height = client.getWindow().getGuiScaledHeight();
+			graphics.fill(0, 0, width, height, 0x33FF0000);
+		}
+	);
 	}
 }

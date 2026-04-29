@@ -7,7 +7,9 @@ import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.Optional;
 
@@ -275,6 +277,17 @@ public void customServerAiStep(ServerLevel level) {
         return this.entityData.get(LASER_TARGET_ID);
     }
     
+
+    @Override
+    protected void dropCustomDeathLoot(ServerLevel level, DamageSource source, boolean recentlyHit) {
+        super.dropCustomDeathLoot(level, source, recentlyHit);
+        ItemEntity drop = new ItemEntity(
+            level,
+            this.getX(), this.getY(), this.getZ(),
+            new ItemStack(MutuallyAssuredDestruction.VOREMOTH_CROWN)
+        );
+        level.addFreshEntity(drop);
+    }
 
    
 

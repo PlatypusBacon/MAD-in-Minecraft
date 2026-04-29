@@ -24,16 +24,22 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.block.Block;
 import bunger.group.ethan.ProphetEntity;
 import bunger.group.ethan.VoremothEntity;
 import bunger.group.ethan.ModEntityTypes;
+import bunger.group.ethan.ModItems;
 import bunger.group.ethan.RedDarknessEffect;
 // import net.minecraft.resources.ResourceLocation;
 import bunger.group.ethan.RedRainHandler;
+import bunger.group.ethan.VoremothArmorMaterial;
 import bunger.group.ethan.VoremothBossMechanic;
+import bunger.group.ethan.VoremothCrownHandler;
+import bunger.group.ethan.VoremothCrownPacket;
 
 public class MutuallyAssuredDestruction implements ModInitializer {
 	public static final String MOD_ID = "mutually-assured-destruction";
@@ -56,6 +62,14 @@ public class MutuallyAssuredDestruction implements ModInitializer {
         BlockBehaviour.Properties.of().strength(4.0F),
         true
     );
+
+	public static final Item VOREMOTH_CROWN = ModItems.register(
+        "voremoth_crown",
+        Item::new,
+        new Item.Properties().humanoidArmor(VoremothArmorMaterial.INSTANCE, ArmorType.HELMET)
+                .durability(ArmorType.HELMET.getDurability(VoremothArmorMaterial.BASE_DURABILITY))
+    );
+
 
 	public static final SoundEvent ALTAR_FORM = SoundEvent.createVariableRangeEvent(
     	Identifier.fromNamespaceAndPath(MOD_ID, "altar_form")
@@ -133,6 +147,8 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 
 		RedRainHandler.register();
 		AltarEventHandler.register();
+		VoremothCrownHandler.register();
+		VoremothCrownPacket.registerPacket();
 		Registry.register(BuiltInRegistries.SOUND_EVENT,
     		Identifier.fromNamespaceAndPath(MOD_ID, "altar_form"),
     		ALTAR_FORM);
