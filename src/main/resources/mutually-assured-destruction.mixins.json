@@ -3,9 +3,6 @@
 	"package": "bunger.group.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"mixins": [
-		"BedSpawnMixin",
-		"ExplosionMixin",
-		"OffhandSlotMixin",
 		"LevelSetBlockMixin"
 	],
 	"injectors": {
