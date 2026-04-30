@@ -24,8 +24,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 
 
-// TODO: add item texture
-// TODO: add better in game name
 
 public class AltarFragmentBlock extends Block {
 

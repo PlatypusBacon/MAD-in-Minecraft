@@ -15,7 +15,6 @@ public class VoremothCrownClientHandler {
     private static final Map<Integer, int[]> PLAYER_TARGETS = new HashMap<>();
 
     public static void register() {
-        // receive packet from server
         ClientPlayNetworking.registerGlobalReceiver(VoremothCrownPacket.TYPE, (payload, context) -> {
             int targetId = payload.targetEntityId();
             int timer = payload.laserTimer();
@@ -28,31 +27,43 @@ public class VoremothCrownClientHandler {
             }
         });
 
-        ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            if (client.level == null) return;
+    ClientTickEvents.END_CLIENT_TICK.register(client -> {
+        if (client.level == null) return;
 
-            for (Map.Entry<Integer, int[]> entry : PLAYER_TARGETS.entrySet()) {
-                Entity player = client.level.getEntity(entry.getKey());
-                int targetId = entry.getValue()[0];
+        for (Map.Entry<Integer, int[]> entry : PLAYER_TARGETS.entrySet()) {
+            Entity player = client.level.getEntity(entry.getKey());
+            int targetId = entry.getValue()[0];
+            int timer = entry.getValue()[1];
 
-                if (player == null) continue;
+            if (player == null) continue;
 
-                Entity target = client.level.getEntity(targetId);
-                if (target == null) continue;
+            Entity target = client.level.getEntity(targetId);
+            if (target == null) continue;
 
-
-               Vec3 start = new Vec3(player.getEyePosition().x, player.getEyePosition().y + 1, player.getEyePosition().z);
+            if (timer < 0) {
+                // locking on phase
+                float progress = Math.abs(timer) / 40.0F;
+                for (int i = 0; i < 3; i++) {
+                    double angle = (client.level.getGameTime() * 0.2) + (i * Math.PI * 2 / 3);
+                    double radius = 1.5 * (1.0 - progress); // shrinks as lock-on completes
+                    double x = target.getX() + Math.cos(angle) * radius;
+                    double z = target.getZ() + Math.sin(angle) * radius;
+                    client.level.addParticle(ParticleTypes.FALLING_LAVA,
+                        x, target.getEyeY(), z, 0, 0.05, 0);
+                }
+            } else {
+                // charging phase
+                Vec3 start = new Vec3(player.getEyePosition().x, player.getEyePosition().y + 1, player.getEyePosition().z);
                 Vec3 end = target.getEyePosition();
                 Vec3 direction = end.subtract(start);
-                double length = direction.length();
                 Vec3 step = direction.normalize().scale(0.5);
-
-                int numParticles = (int)(length / 0.5);
+                int numParticles = (int)(direction.length() / 0.5);
                 for (int i = 0; i < numParticles; i++) {
                     Vec3 pos = start.add(step.scale(i));
                     client.level.addParticle(ParticleTypes.GLOW, pos.x, pos.y, pos.z, 0, 0, 0);
                 }
             }
-        });
+        }
+    });
     }
 }
