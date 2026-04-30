@@ -5,8 +5,13 @@
   "item.mutually-assured-destruction.squeather_head": "Head Squeather",
   "item.mutually-assured-destruction.squeather_chest": "Chest Squeather",
   "item.mutually-assured-destruction.squirrel_stapeler": "Squirrel Stapeler",
+  "item.mutually-assured-destruction.bear_boxers": "Bear Boxers",
+  "item.mutually-assured-destruction.squirrel_bear_claw": "Squirrel Bear Claw",
   "item.mutually-assured-destruction.long_stick": "Long Stick",
   "item.mutually-assured-destruction.thick_stick": "Thick Stick",
+  "block.mutually-assured-destruction.platform_track": "Platform Track",
+  "item.mutually-assured-destruction.platform": "Platform",
+  "item.mutually-assured-destruction.sticky_attachment": "Sticky Goo",
 
   "item.mutually-assured-destruction.thick_wooden_pickaxe": "Thick Wooden Pickaxe",
   "item.mutually-assured-destruction.thick_stone_pickaxe": "Thick Stone Pickaxe",
@@ -124,5 +129,6 @@
   "entity.mutually-assured-destruction.squirrel_wife": "Squirrel Wife",
   "enchantment.mutually-assured-destruction.stapled": "STAPLED",
   "itemGroup.mutually-assured-destruction.sticks_tab": "New Sticks",
-  "itemGroup.mutually-assured-destruction.squirrel_tab": "Squirrel Stapeler"
+  "itemGroup.mutually-assured-destruction.squirrel_tab": "Squirrel Stapeler",
+  "itemGroup.mutually-assured-destruction.sticky_tab": "Sticky Goop"
 }
