@@ -1,6 +1,5 @@
 package bunger.group;
 
-import bunger.group.tyler3.tools.ChunkAttachments;
 import net.fabricmc.api.ModInitializer;
 
 import org.slf4j.Logger;
@@ -23,22 +22,25 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		bunger.group.tyler2.event.Trip.register();
 		bunger.group.tyler.block.ModBlocks.registerModBlocks();
 		bunger.group.tyler.sound.ModSounds.initialize();
+		bunger.group.tyler3.sounds.ModSounds.initialize();
+
 		bunger.group.tyler.event.TickScheduler.register();
 		bunger.group.tyler.event.god.StructureManager.register();
 		bunger.group.tyler.event.SundownWatcher.register();
 		bunger.group.tyler.command.SetupStructureCommand.register();
 		bunger.group.tyler.item.ModItems.registerModItems();
 		bunger.group.tyler2.item.ModItems.registerModItems();
+		bunger.group.tyler3.item.ModItems.registerModItems();
 		bunger.group.tyler2.block.ModBlocks.registerModBlocks();
 		bunger.group.tyler.entity.ModEntities.registerModEntityTypes();
 		bunger.group.tyler.entity.ModEntities.registerAttributes();
+		bunger.group.tyler3.entity.ModEntities.registerModEntityTypes();
+		bunger.group.tyler3.entity.ModEntities.registerAttributes();
 		bunger.group.tyler2.item.ModCreativeTabs.registerCreativeTabs();
 		bunger.group.tyler.item.ModCreativeTabs.registerCreativeTabs();
+
 		bunger.group.tyler.ModCombatEvents.register();
 		bunger.group.tyler.net.PunchSidePacket.registerServer();
-		ChunkAttachments.initialize();
-		bunger.group.tyler3.block.ModBlocks.registerModBlocks();
-		bunger.group.tyler3.item.ModItems.registerModItems();
-		bunger.group.tyler3.entity.ModEntities.registerModEntityTypes();
+
 	}
 }

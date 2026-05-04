@@ -9,6 +9,16 @@
       { "name": "mutually-assured-destruction:gun_fire", "volume": 1.0 }
     ]
   },
+  "scar_reload": {
+    "sounds": [
+      { "name": "mutually-assured-destruction:scar_reload", "volume": 1.0 }
+    ]
+  },
+  "scar_shot": {
+    "sounds": [
+      { "name": "mutually-assured-destruction:scar_shot", "volume": 1.0 }
+    ]
+  },
   "bear_idle": {
     "sounds": [
       { "name": "mutually-assured-destruction:bear_idle", "volume": 1.0 }
@@ -45,6 +55,16 @@
         "volume": 1.0,
         "stream": true
       }
+    ]
+  },
+  "dude_idle": {
+    "sounds": [
+      { "name": "mutually-assured-destruction:t1", "volume": 1.0 },
+      { "name": "mutually-assured-destruction:t2", "volume": 1.0 },
+      { "name": "mutually-assured-destruction:t3", "volume": 1.0 },
+      { "name": "mutually-assured-destruction:t4", "volume": 1.0 },
+      { "name": "mutually-assured-destruction:t5", "volume": 1.0 },
+      { "name": "mutually-assured-destruction:t6", "volume": 1.0 }
     ]
   }
 }

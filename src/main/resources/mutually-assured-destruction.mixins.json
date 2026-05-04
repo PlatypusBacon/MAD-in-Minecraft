@@ -5,8 +5,7 @@
 	"mixins": [
 		"BedSpawnMixin",
 		"ExplosionMixin",
-		"OffhandSlotMixin",
-		"LevelSetBlockMixin"
+		"OffhandSlotMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
