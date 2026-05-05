@@ -179,7 +179,15 @@ public class GoldScarItem extends Item {
 
         return InteractionResult.CONSUME;
     }
-
+    public static void triggerReload(ItemStack stack, Player player, Level world) {
+        GoldScarItem item = (GoldScarItem) stack.getItem();
+        item.setLoaded(stack, true);
+        item.setClip(stack, MAX_CLIP);
+        player.getCooldowns().addCooldown(stack, RELOAD_TICKS);
+        player.sendSystemMessage(Component.literal("Reloading..."));
+        world.playSound(null, player.blockPosition(), ModSounds.SCAR_RELOAD,
+                SoundSource.PLAYERS, 1.0f, 0.9f + world.getRandom().nextFloat() * 0.2f);
+    }
     private void shoot(Level world, Player player) {
 
         world.playSound(

@@ -1,10 +1,12 @@
 package bunger.group.tyler3.entity;
 
 import bunger.group.tyler3.sounds.ModSounds;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -61,6 +63,13 @@ public class DudeEntity extends PathfinderMob implements Enemy {
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
 
+    public boolean checkSpawnRules(EntityType<DudeEntity> type, ServerLevelAccessor level,
+                                          EntitySpawnReason reason, BlockPos pos, RandomSource random) {
+        //return pos.getY() < 50
+        //        && level.getRawBrightness(pos, 0) == 0
+        //        && DudeEntity.checkMobSpawnRules(type, level, reason, pos, random);
+        return Mob.checkMobSpawnRules(type, level, reason, pos, random);
+    }
     @Override
     public float maxUpStep() {
         return 1.0F;
