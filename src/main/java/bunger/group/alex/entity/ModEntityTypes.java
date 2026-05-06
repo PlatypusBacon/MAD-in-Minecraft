@@ -9,7 +9,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -22,6 +21,12 @@ public class ModEntityTypes {
                     .sized(0.75f, 1.6f)
     );
 
+    public static final EntityType<GoblinGruntEntity> GOBLIN_GRUNT = register(
+            "goblin_grunt",
+            EntityType.Builder.<GoblinGruntEntity>of(GoblinGruntEntity::new, MobCategory.MONSTER)
+                    .sized(0.75f, 1.5f)
+    );
+
     private static <T extends Entity> EntityType<T> register(String name, EntityType.Builder<T> builder) {
         ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, name));
         return Registry.register(BuiltInRegistries.ENTITY_TYPE, key, builder.build(key));
@@ -32,7 +37,8 @@ public class ModEntityTypes {
     }
 
     public static void registerAttributes() {
-        FabricDefaultAttributeRegistry.register(WRAITH, WraithEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(GOBLIN_GRUNT, GoblinGruntEntity.createAttributes().build());
+        FabricDefaultAttributeRegistry.register(WRAITH, WraithEntity.createAttributes().build());
         registerSpawns();
     }
 
@@ -43,6 +49,13 @@ public class ModEntityTypes {
                 MobCategory.MONSTER,
                 ModEntityTypes.WRAITH,
                 8, 1, 1
+        );
+
+        BiomeModifications.addSpawn(
+                BiomeSelectors.foundInOverworld(),
+                MobCategory.MONSTER,
+                ModEntityTypes.GOBLIN_GRUNT,
+                5, 4, 10
         );
     }
 }

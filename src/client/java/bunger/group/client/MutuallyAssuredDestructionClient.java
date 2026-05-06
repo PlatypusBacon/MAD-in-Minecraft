@@ -32,7 +32,7 @@ public class MutuallyAssuredDestructionClient implements ClientModInitializer {
 		//Mobs
 
 		ModEntityModelLayers.registerModelLayers();
-		EntityRenderers.register(ModEntityTypes.WRAITH, WraithEntityRenderer::new);
+		ModEntityModelLayers.registerRenderers();
 
 		MenuScreens.register(ModMenuType.SPELL_DESK, SpellDeskScreen::new);
 

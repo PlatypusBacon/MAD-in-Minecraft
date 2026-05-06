@@ -111,6 +111,12 @@ public class ModItems {
             new BlankScroll.Properties()
     );
 
+    public static final Item BLANK_WATER_SCROLL = registerItem(
+            "blank_water_scroll",
+            (Item.Properties properties) -> new BlankScroll(properties, SpellTypes.WATER),
+            new BlankScroll.Properties()
+    );
+
     // Materials
     public static final Item PURE_MANA = registerItem(
             "eitr",
