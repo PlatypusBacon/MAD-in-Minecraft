@@ -1,6 +1,7 @@
 package bunger.group.client.tyler3.gui;
 
 import bunger.group.MutuallyAssuredDestruction;
+import bunger.group.tyler3.rego.RecipePageRegistry;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -8,9 +9,7 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Paint overlay UI.
@@ -29,6 +28,10 @@ import java.util.List;
  * - Brush selector: horizontal strip BELOW the canvas, right-aligned
  * - Erase page button: LEFT side, vertically centred on canvas
  * - Page flip arrows: embedded top-left and top-right of book texture
+ *
+ * Pages are either user-drawn ({@link TomePage.Drawn}) or recipe reference
+ * pages ({@link TomePage.Recipe}) unlocked via item pickup packets from the
+ * server. Recipe pages are read-only; drawing controls are hidden on them.
  */
 @Environment(EnvType.CLIENT)
 public class PaintOverlay {
@@ -50,11 +53,10 @@ public class PaintOverlay {
     private static final int CANVAS_OFF_X = 6;
     private static final int CANVAS_OFF_Y = 10;
     public static final int CANVAS_W = 148;
-    public static final int CANVAS_H = 60;  // leave room for brush strip below
+    public static final int CANVAS_H = 60;
 
     // ---------------------------------------------------------------
     // Palette — vertical strip to the RIGHT of the canvas
-    // Two columns of swatches so it doesn't get too tall
     // ---------------------------------------------------------------
     private static final int[] PALETTE = {
             0xFF000000, 0xFF444444,
@@ -66,28 +68,27 @@ public class PaintOverlay {
             0xFF8B4513, 0xFFFFAAAA,
             0xFF87CEEB, 0xFFFFA500
     };
-    private static final int SWATCH       = 9;   // swatch size in px
-    private static final int SWATCH_GAP   = 2;
-    private static final int PAL_COLS     = 2;   // two-column palette
-    private static final int PAL_ROWS     = PALETTE.length / PAL_COLS;
-    // Horizontal gap between canvas right edge and palette
-    private static final int PAL_OFF_X    = 20;
+    private static final int SWATCH     = 9;
+    private static final int SWATCH_GAP = 2;
+    private static final int PAL_COLS   = 2;
+    private static final int PAL_ROWS   = PALETTE.length / PAL_COLS;
+    private static final int PAL_OFF_X  = 20;
 
     // ---------------------------------------------------------------
     // Brush sizes — horizontal strip BELOW canvas, right-aligned
     // ---------------------------------------------------------------
     private static final int[] BRUSH_SIZES = {1, 2, 4, 7};
-    private static final int BRUSH_BTN_W  = 14;
-    private static final int BRUSH_BTN_H  = 10;
-    private static final int BRUSH_GAP    = 2;
-    private static final int BRUSH_OFF_Y  = -90; // gap between canvas bottom and buttons
+    private static final int BRUSH_BTN_W = 14;
+    private static final int BRUSH_BTN_H = 10;
+    private static final int BRUSH_GAP   = 2;
+    private static final int BRUSH_OFF_Y = -90;
 
     // ---------------------------------------------------------------
     // Erase-page button — left of canvas, vertically centred
     // ---------------------------------------------------------------
-    private static final int ERASE_W = 14;
-    private static final int ERASE_H = 14;
-    private static final int ERASE_OFF_X = -ERASE_W - 4; // left of canvas
+    private static final int ERASE_W   = 14;
+    private static final int ERASE_H   = 14;
+    private static final int ERASE_OFF_X = -ERASE_W - 4;
 
     // ---------------------------------------------------------------
     // Page flip buttons — top corners of the book texture
@@ -96,19 +97,16 @@ public class PaintOverlay {
     private static final int FLIP_BTN_H =  8;
 
     // ---------------------------------------------------------------
-    // Global persistent state
+    // Global persistent state (shared across all overlay instances)
     // ---------------------------------------------------------------
-    private static final List<int[]> SAVED_PAGES = new ArrayList<>();
-    private static int SAVED_PAGE_INDEX = 0;
-
-    static {
-        SAVED_PAGES.add(newBlankCanvas());
-    }
+    private static final List<TomePage>  PAGES          = new ArrayList<>();
+    private static final Set<String>     UNLOCKED       = new LinkedHashSet<>();
+    private static int                   SAVED_PAGE_INDEX = 0;
+    private static boolean               LOADED         = false;
 
     // ---------------------------------------------------------------
     // Instance state
     // ---------------------------------------------------------------
-    private int[]   pixels;
     private int     pageIndex;
     private int     selectedColor = 0xFF000000;
     private int     brushSize     = 1;
@@ -121,17 +119,97 @@ public class PaintOverlay {
     private int texX;
     private int texY;
 
+    // ---------------------------------------------------------------
+    // Static lifecycle — called from MixinBeGone
+    // ---------------------------------------------------------------
+
+    /**
+     * Load saved pages for the current world/server.
+     * Safe to call multiple times; only loads once per world session.
+     * Call from {@code ScreenEvents.AFTER_INIT} before creating overlays.
+     */
+    public static void loadForCurrentWorld() {
+        LOADED = false; // force reload (world may have changed)
+        TomePageStore.LoadResult result = TomePageStore.load(CANVAS_W, CANVAS_H, PaintOverlay::buildPage);
+        PAGES.clear();
+        PAGES.addAll(result.pages());
+        UNLOCKED.clear();
+        UNLOCKED.addAll(result.unlockedRecipes());
+        SAVED_PAGE_INDEX = result.startIndex();
+        LOADED = true;
+    }
+
+    /** Persist current state to disk. Call on screen close. */
+    public static void saveForCurrentWorld() {
+        if (LOADED) TomePageStore.save(PAGES);
+    }
+
+    // ---------------------------------------------------------------
+    // Recipe unlock (called from packet handler on client thread)
+    // ---------------------------------------------------------------
+
+    /**
+     * Unlocks a recipe page by ID. Inserts it into the page list in
+     * registration order (after other recipe pages, before drawn pages).
+     * No-op if already unlocked.
+     *
+     * @return true if a new page was added
+     */
+    public static boolean unlockRecipe(String recipeId) {
+        MutuallyAssuredDestruction.LOGGER.info("[Tome] unlockRecipe called with: {}, known recipes: {}", recipeId, RecipePageRegistry.allRecipeIds());
+        if (UNLOCKED.contains(recipeId)) return false;
+
+        // Validate it's a known recipe
+        if (!bunger.group.tyler3.rego.RecipePageRegistry.allRecipeIds().contains(recipeId)) {
+            MutuallyAssuredDestruction.LOGGER.warn(
+                    "[Tome] Received unlock for unknown recipe: {}", recipeId);
+            return false;
+        }
+
+        UNLOCKED.add(recipeId);
+
+        // Insert at correct position: after all existing recipe pages that
+        // appear before this one in registration order
+        List<String> order = bunger.group.tyler3.rego.RecipePageRegistry.allRecipeIds();
+        int insertAt = 0;
+        for (int i = 0; i < PAGES.size(); i++) {
+            if (PAGES.get(i) instanceof TomePage.Recipe r) {
+                int existingPos = order.indexOf(r.recipeId());
+                int newPos      = order.indexOf(recipeId);
+                if (existingPos < newPos) insertAt = i + 1;
+            }
+        }
+        PAGES.add(insertAt, buildPage(recipeId));
+
+        // Shift saved page index if we inserted before it
+        if (insertAt <= SAVED_PAGE_INDEX) SAVED_PAGE_INDEX++;
+
+        TomePageStore.save(PAGES);
+        return true;
+    }
+
+    // ---------------------------------------------------------------
+    // Constructor
+    // ---------------------------------------------------------------
+    /** Builds a TomePage.Recipe for the given ID. */
+    public static TomePage.Recipe buildPage(String recipeId) {
+        Identifier texture = Identifier.fromNamespaceAndPath(
+                MutuallyAssuredDestruction.MOD_ID,
+                "textures/gui/sprites/tome/recipes/" + recipeId + ".png"
+        );
+        return new TomePage.Recipe(recipeId, texture);
+    }
     public PaintOverlay() {
+        if (!LOADED) loadForCurrentWorld();
         this.pageIndex = SAVED_PAGE_INDEX;
-        this.pixels    = SAVED_PAGES.get(pageIndex);
     }
 
     // ---------------------------------------------------------------
     // Visibility
     // ---------------------------------------------------------------
-    public boolean isVisible()               { return visible; }
-    public void    setVisible(boolean v)     { this.visible = v; }
-    public void    toggleVisible()           { this.visible = !this.visible; }
+    public boolean isVisible()           { return visible; }
+    public void    setVisible(boolean v) { this.visible = v; }
+    public void    toggleVisible()       { this.visible = !this.visible; }
 
     // ---------------------------------------------------------------
     // Position (called every frame by the screen event)
@@ -146,30 +224,51 @@ public class PaintOverlay {
     private int canvasScreenY() { return texY + CANVAS_OFF_Y; }
 
     // ---------------------------------------------------------------
+    // Page helpers
+    // ---------------------------------------------------------------
+    private TomePage currentPage() {
+        return PAGES.get(pageIndex);
+    }
+
+    private boolean isRecipePage() {
+        return currentPage() instanceof TomePage.Recipe;
+    }
+
+    // ---------------------------------------------------------------
     // Page management
     // ---------------------------------------------------------------
-    private void saveCurrentPage() {
-        SAVED_PAGES.set(pageIndex, Arrays.copyOf(pixels, pixels.length));
+    private void saveCurrentDrawnPage() {
+        if (currentPage() instanceof TomePage.Drawn d) {
+            PAGES.set(pageIndex, new TomePage.Drawn(Arrays.copyOf(d.pixels(), d.pixels().length)));
+        }
     }
 
     private void goToPage(int index) {
-        saveCurrentPage();
-        if (index < 0) return;
-        while (SAVED_PAGES.size() <= index) SAVED_PAGES.add(newBlankCanvas());
+        if (index < 0 || index >= PAGES.size()) return;
+        saveCurrentDrawnPage();
         pageIndex        = index;
         SAVED_PAGE_INDEX = index;
-        pixels           = SAVED_PAGES.get(pageIndex);
     }
 
     private void erasePage() {
-        Arrays.fill(pixels, 0xFFFFFFFF);
-        saveCurrentPage();
+        if (isRecipePage()) return;
+        int[] blank = new int[CANVAS_W * CANVAS_H];
+        Arrays.fill(blank, 0xFFFFFFFF);
+        PAGES.set(pageIndex, new TomePage.Drawn(blank));
+        TomePageStore.save(PAGES);
     }
 
-    private static int[] newBlankCanvas() {
-        int[] p = new int[CANVAS_W * CANVAS_H];
-        Arrays.fill(p, 0xFFFFFFFF);
-        return p;
+    private void addNewDrawnPage() {
+        // Insert a new blank drawn page after the last drawn page (or at end)
+        int insertAt = PAGES.size();
+        for (int i = PAGES.size() - 1; i >= 0; i--) {
+            if (PAGES.get(i) instanceof TomePage.Drawn) {
+                insertAt = i + 1;
+                break;
+            }
+        }
+        PAGES.add(insertAt, TomePageStore.newBlankDrawn(CANVAS_W, CANVAS_H));
+        goToPage(insertAt);
     }
 
     // ---------------------------------------------------------------
@@ -186,22 +285,45 @@ public class PaintOverlay {
                 TEX_SRC_W, TEX_SRC_H
         );
 
-        // Canvas pixels
         int cx = canvasScreenX();
         int cy = canvasScreenY();
+
+        switch (currentPage()) {
+            case TomePage.Drawn d -> renderDrawnPage(graphics, d, cx, cy);
+            case TomePage.Recipe r -> renderRecipePage(graphics, r, cx, cy);
+        }
+
+        renderPageButtons(graphics);
+        renderPageNumber(graphics);
+
+        // Drawing controls are only shown on drawn pages
+        if (!isRecipePage()) {
+            renderPalette(graphics);
+            renderBrushButtons(graphics);
+            renderEraseButton(graphics);
+        }
+    }
+
+    private void renderDrawnPage(GuiGraphicsExtractor graphics, TomePage.Drawn d, int cx, int cy) {
+        int[] pixels = d.pixels();
         for (int py = 0; py < CANVAS_H; py++) {
             for (int px = 0; px < CANVAS_W; px++) {
                 int color = pixels[py * CANVAS_W + px];
-                if (color == 0xFFFFFFFF) continue; // transparent — show texture
+                if (color == 0xFFFFFFFF) continue;
                 graphics.fill(cx + px, cy + py, cx + px + 1, cy + py + 1, color);
             }
         }
+    }
 
-        renderPalette(graphics);
-        renderBrushButtons(graphics);
-        renderEraseButton(graphics);
-        renderPageButtons(graphics);
-        renderPageNumber(graphics);
+    private void renderRecipePage(GuiGraphicsExtractor graphics, TomePage.Recipe r, int cx, int cy) {
+        graphics.blit(
+                RenderPipelines.GUI_TEXTURED,
+                r.texture(),
+                cx, cy,
+                0f, 0f,
+                CANVAS_W, CANVAS_H,
+                CANVAS_W, CANVAS_H
+        );
     }
 
     /** Vertical two-column palette to the right of the canvas. */
@@ -217,7 +339,6 @@ public class PaintOverlay {
 
             boolean selected = PALETTE[i] == selectedColor;
             if (selected) {
-                // White outline then black border
                 graphics.fill(sx - 1, sy - 1, sx + SWATCH + 1, sy + SWATCH + 1, 0xFFFFFFFF);
                 graphics.fill(sx,     sy,     sx + SWATCH,     sy + SWATCH,     0xFF000000);
                 graphics.fill(sx + 1, sy + 1, sx + SWATCH - 1, sy + SWATCH - 1, PALETTE[i]);
@@ -229,21 +350,18 @@ public class PaintOverlay {
 
     /** Horizontal brush-size buttons below the canvas, right-aligned with palette. */
     private void renderBrushButtons(GuiGraphicsExtractor graphics) {
-        int totalW  = BRUSH_SIZES.length * (BRUSH_BTN_W + BRUSH_GAP) - BRUSH_GAP;
-        // Right-align with the right edge of the palette area
+        int totalW    = BRUSH_SIZES.length * (BRUSH_BTN_W + BRUSH_GAP) - BRUSH_GAP;
         int palRightX = canvasScreenX() + CANVAS_W + PAL_OFF_X
                 + PAL_COLS * (SWATCH + SWATCH_GAP) - SWATCH_GAP;
-        int startX  = palRightX - totalW;
-        int startY  = canvasScreenY() + CANVAS_H + BRUSH_OFF_Y;
+        int startX = palRightX - totalW;
+        int startY = canvasScreenY() + CANVAS_H + BRUSH_OFF_Y;
 
         for (int i = 0; i < BRUSH_SIZES.length; i++) {
             int bx  = startX + i * (BRUSH_BTN_W + BRUSH_GAP);
             boolean sel = BRUSH_SIZES[i] == brushSize;
 
-            // Button background
             graphics.fill(bx, startY, bx + BRUSH_BTN_W, startY + BRUSH_BTN_H,
                     sel ? 0xFFDDDDCC : 0xFF888877);
-            // Dot preview — scales with brush size, clamped to button interior
             int d   = Math.min(BRUSH_SIZES[i] * 2 - 1, BRUSH_BTN_W - 2);
             int off = (BRUSH_BTN_W - d) / 2;
             graphics.fill(bx + off, startY + (BRUSH_BTN_H - d) / 2,
@@ -252,50 +370,46 @@ public class PaintOverlay {
         }
     }
 
-    /** Small "erase page" button to the left of the canvas, vertically centred. */
+    /** Small "erase page" button to the left of the canvas. */
     private void renderEraseButton(GuiGraphicsExtractor graphics) {
         int ex = canvasScreenX() + ERASE_OFF_X;
         int ey = canvasScreenY() + (CANVAS_H - ERASE_H) / 2;
-        // Background
         graphics.fill(ex, ey, ex + ERASE_W, ey + ERASE_H, 0xFFAA6644);
-        // Simple X icon (two crossing bars)
         int m = 3;
-        graphics.fill(ex + m,           ey + m,           ex + ERASE_W - m, ey + m + 2,           0xFFFFFFFF);
-        graphics.fill(ex + m,           ey + ERASE_H - m - 2, ex + ERASE_W - m, ey + ERASE_H - m, 0xFFFFFFFF);
-        graphics.fill(ex + m,           ey + m,           ex + m + 2,       ey + ERASE_H - m,     0xFFFFFFFF);
-        graphics.fill(ex + ERASE_W - m - 2, ey + m, ex + ERASE_W - m, ey + ERASE_H - m,          0xFFFFFFFF);
+        graphics.fill(ex + m,               ey + m,               ex + ERASE_W - m, ey + m + 2,           0xFFFFFFFF);
+        graphics.fill(ex + m,               ey + ERASE_H - m - 2, ex + ERASE_W - m, ey + ERASE_H - m,     0xFFFFFFFF);
+        graphics.fill(ex + m,               ey + m,               ex + m + 2,       ey + ERASE_H - m,     0xFFFFFFFF);
+        graphics.fill(ex + ERASE_W - m - 2, ey + m,               ex + ERASE_W - m, ey + ERASE_H - m,     0xFFFFFFFF);
     }
 
     private void renderPageNumber(GuiGraphicsExtractor graphics) {
-        String text = ""+(pageIndex + 1);
-        // Centred horizontally across the book texture
-        int textW = text.length() * 6; // vanilla font is ~6px per char
+        // Show page number and a small "R" indicator for recipe pages
+        String pageNum  = "" + (pageIndex + 1);
+        String label    = isRecipePage() ? pageNum + "R" : pageNum;
+        int textW = label.length() * 6;
         int tx = texX + (TEX_W - textW) / 2;
         int ty = texY + 2;
-        graphics.text(Minecraft.getInstance().font, text, tx, ty, 0xFF000000, false);
+        graphics.text(Minecraft.getInstance().font, label, tx, ty, 0xFF000000, false);
     }
-    /** Left/right page-flip arrows at the top corners of the book texture. */
+
+    /** Left/right page-flip arrows. Right arrow also creates a new page if at the last drawn page. */
     private void renderPageButtons(GuiGraphicsExtractor graphics) {
         // Previous — top-left
-        int prevX = texX + 2;
-        int prevY = texY + 2;
+        int prevX = texX + 2, prevY = texY + 2;
         graphics.fill(prevX, prevY, prevX + FLIP_BTN_W, prevY + FLIP_BTN_H,
                 pageIndex > 0 ? 0xFFAA9977 : 0xFF555544);
-        // < arrow (simple filled triangle approximation)
-        graphics.fill(prevX + 4, prevY + 2, prevX + 7, prevY + FLIP_BTN_H - 2, 0xFF000000);
+        graphics.fill(prevX + 4, prevY + 2,             prevX + 7, prevY + FLIP_BTN_H - 2, 0xFF000000);
         graphics.fill(prevX + 2, prevY + FLIP_BTN_H / 2 - 1, prevX + 5, prevY + FLIP_BTN_H / 2 + 1, 0xFF000000);
 
-        // Next — top-right
-        int nextX = texX + TEX_W - FLIP_BTN_W - 2;
-        int nextY = texY + 2;
+        // Next — top-right (always active; creates new page if at end)
+        int nextX = texX + TEX_W - FLIP_BTN_W - 2, nextY = texY + 2;
         graphics.fill(nextX, nextY, nextX + FLIP_BTN_W, nextY + FLIP_BTN_H, 0xFFAA9977);
-        // > arrow
-        graphics.fill(nextX + 3, nextY + 2, nextX + 6, nextY + FLIP_BTN_H - 2, 0xFF000000);
+        graphics.fill(nextX + 3, nextY + 2,             nextX + 6, nextY + FLIP_BTN_H - 2, 0xFF000000);
         graphics.fill(nextX + 5, nextY + FLIP_BTN_H / 2 - 1, nextX + 8, nextY + FLIP_BTN_H / 2 + 1, 0xFF000000);
     }
 
     // ---------------------------------------------------------------
-    // Mouse handling (called from PaintOverlayScreenHandler)
+    // Mouse handling
     // ---------------------------------------------------------------
     public boolean mouseClicked(double mx, double my, int button) {
         if (button != 0) return false;
@@ -313,7 +427,8 @@ public class PaintOverlay {
             drawing    = false;
             lastPaintX = -1;
             lastPaintY = -1;
-            saveCurrentPage();
+            saveCurrentDrawnPage();
+            TomePageStore.save(PAGES);
             return true;
         }
         return false;
@@ -331,58 +446,66 @@ public class PaintOverlay {
         }
         int nextX = texX + TEX_W - FLIP_BTN_W - 2, nextY = texY + 2;
         if (inBox(mx, my, nextX, nextY, FLIP_BTN_W, FLIP_BTN_H)) {
-            goToPage(pageIndex + 1);
+            if (pageIndex < PAGES.size() - 1) {
+                goToPage(pageIndex + 1);
+            } else {
+                addNewDrawnPage();
+            }
             return true;
         }
 
-        // Erase button
-        int ex = canvasScreenX() + ERASE_OFF_X;
-        int ey = canvasScreenY() + (CANVAS_H - ERASE_H) / 2;
-        if (inBox(mx, my, ex, ey, ERASE_W, ERASE_H)) {
-            erasePage();
-            return true;
-        }
-
-        // Palette
-        int palX = canvasScreenX() + CANVAS_W + PAL_OFF_X;
-        int palY = canvasScreenY() - SWATCH + SWATCH_GAP;
-        for (int i = 0; i < PALETTE.length; i++) {
-            int col = i % PAL_COLS, row = i / PAL_COLS;
-            int sx  = palX + col * (SWATCH + SWATCH_GAP);
-            int sy  = palY + row * (SWATCH + SWATCH_GAP);
-            if (inBox(mx, my, sx, sy, SWATCH, SWATCH)) {
-                selectedColor = PALETTE[i];
+        // Controls below are only active on drawn pages
+        if (!isRecipePage()) {
+            // Erase button
+            int ex = canvasScreenX() + ERASE_OFF_X;
+            int ey = canvasScreenY() + (CANVAS_H - ERASE_H) / 2;
+            if (inBox(mx, my, ex, ey, ERASE_W, ERASE_H)) {
+                erasePage();
                 return true;
             }
-        }
 
-        // Brush size buttons
-        int palRightX = palX + PAL_COLS * (SWATCH + SWATCH_GAP) - SWATCH_GAP;
-        int totalW    = BRUSH_SIZES.length * (BRUSH_BTN_W + BRUSH_GAP) - BRUSH_GAP;
-        int brushStartX = palRightX - totalW;
-        int brushStartY = canvasScreenY() + CANVAS_H + BRUSH_OFF_Y;
-        for (int i = 0; i < BRUSH_SIZES.length; i++) {
-            int bx = brushStartX + i * (BRUSH_BTN_W + BRUSH_GAP);
-            if (inBox(mx, my, bx, brushStartY, BRUSH_BTN_W, BRUSH_BTN_H)) {
-                brushSize = BRUSH_SIZES[i];
+            // Palette
+            int palX = canvasScreenX() + CANVAS_W + PAL_OFF_X;
+            int palY = canvasScreenY() - SWATCH + SWATCH_GAP;
+            for (int i = 0; i < PALETTE.length; i++) {
+                int col = i % PAL_COLS, row = i / PAL_COLS;
+                int sx  = palX + col * (SWATCH + SWATCH_GAP);
+                int sy  = palY + row * (SWATCH + SWATCH_GAP);
+                if (inBox(mx, my, sx, sy, SWATCH, SWATCH)) {
+                    selectedColor = PALETTE[i];
+                    return true;
+                }
+            }
+
+            // Brush size buttons
+            int palRightX   = canvasScreenX() + CANVAS_W + PAL_OFF_X
+                    + PAL_COLS * (SWATCH + SWATCH_GAP) - SWATCH_GAP;
+            int totalW      = BRUSH_SIZES.length * (BRUSH_BTN_W + BRUSH_GAP) - BRUSH_GAP;
+            int brushStartX = palRightX - totalW;
+            int brushStartY = canvasScreenY() + CANVAS_H + BRUSH_OFF_Y;
+            for (int i = 0; i < BRUSH_SIZES.length; i++) {
+                int bx = brushStartX + i * (BRUSH_BTN_W + BRUSH_GAP);
+                if (inBox(mx, my, bx, brushStartY, BRUSH_BTN_W, BRUSH_BTN_H)) {
+                    brushSize = BRUSH_SIZES[i];
+                    return true;
+                }
+            }
+
+            // Canvas
+            if (isOnCanvas(mx, my)) {
+                drawing    = true;
+                lastPaintX = mx;
+                lastPaintY = my;
+                paintAt(mx, my);
                 return true;
             }
-        }
-
-        // Canvas
-        if (isOnCanvas(mx, my)) {
-            drawing    = true;
-            lastPaintX = mx;
-            lastPaintY = my;
-            paintAt(mx, my);
-            return true;
         }
 
         return false;
     }
 
     private boolean handleDrag(double mx, double my, double deltaX, double deltaY) {
-        if (!drawing) return false;
+        if (!drawing || isRecipePage()) return false;
         if (lastPaintX >= 0) {
             double dist  = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
             int    steps = Math.max(1, (int) Math.ceil(dist));
@@ -409,9 +532,11 @@ public class PaintOverlay {
     }
 
     private void paintAt(double mx, double my) {
+        if (!(currentPage() instanceof TomePage.Drawn d)) return;
         int px   = (int)(mx - canvasScreenX());
         int py   = (int)(my - canvasScreenY());
         int half = brushSize / 2;
+        int[] pixels = d.pixels();
         for (int dy = -half; dy <= half; dy++) {
             for (int dx = -half; dx <= half; dx++) {
                 int nx = px + dx, ny = py + dy;

@@ -18,7 +18,7 @@ public class RegisterSpawns {
         Predicate<BiomeSelectionContext> selector = BiomeSelectors.foundInOverworld()
                 .or(BiomeSelectors.foundInTheNether());
 
-        BiomeModifications.addSpawn(selector, MobCategory.MONSTER, ModEntities.DUDE, 5, 1, 2);
+        BiomeModifications.addSpawn(selector, MobCategory.MONSTER, ModEntities.DUDE, 5, 1, 1);
         SpawnPlacements.register(
                 ModEntities.DUDE,
                 SpawnPlacementTypes.ON_GROUND,

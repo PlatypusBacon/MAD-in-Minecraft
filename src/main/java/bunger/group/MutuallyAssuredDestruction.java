@@ -1,19 +1,12 @@
 package bunger.group;
 
+import bunger.group.tyler.item.ModItems;
 import bunger.group.tyler3.RegisterSpawns;
-import bunger.group.tyler3.entity.DudeEntity;
-import bunger.group.tyler3.entity.ModEntities;
-import bunger.group.tyler3.item.GoldScarItem;
-import bunger.group.tyler3.network.ReloadPacket;
+import bunger.group.tyler3.network.UnlockRecipePagePayload;
+import bunger.group.tyler3.rego.RecipePageRegistry;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.world.entity.SpawnPlacementTypes;
-import net.minecraft.world.entity.SpawnPlacements;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.levelgen.Heightmap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,10 +43,14 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		bunger.group.tyler3.entity.ModEntities.registerAttributes();
 		bunger.group.tyler2.item.ModCreativeTabs.registerCreativeTabs();
 		bunger.group.tyler.item.ModCreativeTabs.registerCreativeTabs();
-
 		bunger.group.tyler.ModCombatEvents.register();
 		bunger.group.tyler.net.PunchSidePacket.registerServer();
 		bunger.group.tyler3.network.ModNet.register();
 		RegisterSpawns.register();
+		PayloadTypeRegistry.clientboundPlay().register(
+				UnlockRecipePagePayload.TYPE,
+				UnlockRecipePagePayload.CODEC
+		);
+		RecipePageRegistry.register(ModItems.SQUIRREL_STAPELER, "bear_boxers");
 	}
 }

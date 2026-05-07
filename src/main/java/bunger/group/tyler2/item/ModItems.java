@@ -22,6 +22,7 @@ public class ModItems {
     // --- Sticks ---
     public static final Item THICK_STICK = register("thick_stick", Item::new, new Item.Properties());
     public static final Item LONG_STICK  = register("long_stick",  Item::new, new Item.Properties());
+    public static final Item BIG_PLANK = register("big_plank", Item::new, new Item.Properties());
 
     // --- Torches ---
     // StandingAndWallBlockItem(block, wallBlock, attachmentDirection, properties)
@@ -169,5 +170,6 @@ public class ModItems {
         var ls = LONG_STICK;
         var tt = THICK_TORCH;
         var lt = LONG_TORCH;
+        var bp = BIG_PLANK;
     }
 }
