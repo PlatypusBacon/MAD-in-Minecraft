@@ -27,6 +27,12 @@ public class ModEntityTypes {
                     .sized(0.75f, 1.5f)
     );
 
+    public static final EntityType<GoblinMageEntity> GOBLIN_MAGE = register(
+            "goblin_mage",
+            EntityType.Builder.<GoblinMageEntity>of(GoblinMageEntity::new, MobCategory.MONSTER)
+                    .sized(0.75f, 1.5f)
+    );
+
     private static <T extends Entity> EntityType<T> register(String name, EntityType.Builder<T> builder) {
         ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, name));
         return Registry.register(BuiltInRegistries.ENTITY_TYPE, key, builder.build(key));
@@ -38,6 +44,7 @@ public class ModEntityTypes {
 
     public static void registerAttributes() {
         FabricDefaultAttributeRegistry.register(GOBLIN_GRUNT, GoblinGruntEntity.createAttributes().build());
+        FabricDefaultAttributeRegistry.register(GOBLIN_MAGE, GoblinMageEntity.createAttributes().build());
         FabricDefaultAttributeRegistry.register(WRAITH, WraithEntity.createAttributes().build());
         registerSpawns();
     }

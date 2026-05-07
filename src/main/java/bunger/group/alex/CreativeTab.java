@@ -31,6 +31,7 @@ public class CreativeTab {
                 output.accept(ModItems.ICE_SHIELD);
                 output.accept(ModItems.AGARTHAN_THUNDER);
                 output.accept(ModItems.ZAP);
+                output.accept(ModItems.LIGHTNING);
                 output.accept(ModItems.CHANNEL_STORM);
                 output.accept(ModItems.AGARTHAN_ICE_DOME);
                 output.accept(ModItems.IGNITION);

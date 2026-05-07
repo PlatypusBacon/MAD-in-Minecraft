@@ -37,6 +37,12 @@ public class ModItems {
             new Zap.Properties()
     );
 
+    public static final Item LIGHTNING = registerItem(
+            "spell_lightning_lightning",
+            Lightning::new,
+            new Lightning.Properties()
+    );
+
     public static final Item CHANNEL_STORM = registerItem(
             "spell_lightning_channel_storm",
             ChannelStorm::new,

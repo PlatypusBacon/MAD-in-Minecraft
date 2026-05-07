@@ -47,5 +47,31 @@ public class ModEntityLootTableProvider extends FabricEntityLootSubProvider {
                                 .randomChanceAndLootingBoost(registries, 1f, 0.20f))
                 )
         );
+
+        add(ModEntityTypes.GOBLIN_GRUNT, LootTable.lootTable()
+
+                // ── Roll 1: Pure Mana (25% chance, +5% per looting level)  2 Rolls ─────────────
+                .withPool(LootPool.lootPool()
+                        .setRolls(ConstantValue.exactly(2.0f))
+                        .add(LootItem.lootTableItem(ModItems.PURE_MANA)
+                                .apply(SetItemCountFunction.setCount(
+                                        UniformGenerator.between(1.0f, 1.0f))))
+                        .when(LootItemRandomChanceWithEnchantedBonusCondition
+                                .randomChanceAndLootingBoost(registries, 0.25f, 0.05f))
+                )
+        );
+
+        add(ModEntityTypes.GOBLIN_MAGE, LootTable.lootTable()
+
+                // ── Roll 1: Pure Mana (50% chance, +10% per looting level)  3 Rolls ─────────────
+                .withPool(LootPool.lootPool()
+                        .setRolls(ConstantValue.exactly(3.0f))
+                        .add(LootItem.lootTableItem(ModItems.PURE_MANA)
+                                .apply(SetItemCountFunction.setCount(
+                                        UniformGenerator.between(1.0f, 1.0f))))
+                        .when(LootItemRandomChanceWithEnchantedBonusCondition
+                                .randomChanceAndLootingBoost(registries, 0.50f, 0.10f))
+                )
+        );
     }
 }
