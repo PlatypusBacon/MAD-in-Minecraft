@@ -37,7 +37,7 @@ public class ModEntityLootTableProvider extends FabricEntityLootSubProvider {
                                 .randomChanceAndLootingBoost(registries, 0.33f, 0.07f))
                 )
 
-                // Roll 3: Drop a 1-2 gunpower always
+                // Roll 2: Drop a 1-2 gunpower always
                 .withPool(LootPool.lootPool()
                         .setRolls(ConstantValue.exactly(1.0f))
                         .add(LootItem.lootTableItem(Items.GUNPOWDER)
@@ -71,6 +71,29 @@ public class ModEntityLootTableProvider extends FabricEntityLootSubProvider {
                                         UniformGenerator.between(1.0f, 1.0f))))
                         .when(LootItemRandomChanceWithEnchantedBonusCondition
                                 .randomChanceAndLootingBoost(registries, 0.50f, 0.10f))
+                )
+        );
+
+        add(ModEntityTypes.GOBLIN_RANGER, LootTable.lootTable()
+
+                // ── Roll 1: Pure Mana (25% chance, +5% per looting level)  2 Rolls ─────────────
+                .withPool(LootPool.lootPool()
+                        .setRolls(ConstantValue.exactly(2.0f))
+                        .add(LootItem.lootTableItem(ModItems.PURE_MANA)
+                                .apply(SetItemCountFunction.setCount(
+                                        UniformGenerator.between(1.0f, 1.0f))))
+                        .when(LootItemRandomChanceWithEnchantedBonusCondition
+                                .randomChanceAndLootingBoost(registries, 0.25f, 0.05f))
+                )
+
+                // Roll 2: Drop a 0-2 Arrows always
+                .withPool(LootPool.lootPool()
+                        .setRolls(ConstantValue.exactly(1.0f))
+                        .add(LootItem.lootTableItem(Items.ARROW)
+                                .apply(SetItemCountFunction.setCount(
+                                        UniformGenerator.between(0f, 2.0f))))
+                        .when(LootItemRandomChanceWithEnchantedBonusCondition
+                                .randomChanceAndLootingBoost(registries, 1f, 0.20f))
                 )
         );
     }

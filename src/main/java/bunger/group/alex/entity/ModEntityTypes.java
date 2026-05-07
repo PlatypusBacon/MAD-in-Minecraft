@@ -33,6 +33,12 @@ public class ModEntityTypes {
                     .sized(0.75f, 1.5f)
     );
 
+    public static final EntityType<GoblinRangerEntity> GOBLIN_RANGER = register(
+            "goblin_ranger",
+            EntityType.Builder.<GoblinRangerEntity>of(GoblinRangerEntity::new, MobCategory.MONSTER)
+                    .sized(0.75f, 1.5f)
+    );
+
     private static <T extends Entity> EntityType<T> register(String name, EntityType.Builder<T> builder) {
         ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, name));
         return Registry.register(BuiltInRegistries.ENTITY_TYPE, key, builder.build(key));
@@ -45,6 +51,7 @@ public class ModEntityTypes {
     public static void registerAttributes() {
         FabricDefaultAttributeRegistry.register(GOBLIN_GRUNT, GoblinGruntEntity.createAttributes().build());
         FabricDefaultAttributeRegistry.register(GOBLIN_MAGE, GoblinMageEntity.createAttributes().build());
+        FabricDefaultAttributeRegistry.register(GOBLIN_RANGER, GoblinRangerEntity.createAttributes().build());
         FabricDefaultAttributeRegistry.register(WRAITH, WraithEntity.createAttributes().build());
         registerSpawns();
     }
@@ -58,11 +65,18 @@ public class ModEntityTypes {
                 8, 1, 1
         );
 
-        BiomeModifications.addSpawn(
+        BiomeModifications.addSpawn( // random few grunts
                 BiomeSelectors.foundInOverworld(),
                 MobCategory.MONSTER,
                 ModEntityTypes.GOBLIN_GRUNT,
-                5, 4, 10
+                10, 1, 2
+        );
+
+        BiomeModifications.addSpawn( // random few rangers
+                BiomeSelectors.foundInOverworld(),
+                MobCategory.MONSTER,
+                ModEntityTypes.GOBLIN_RANGER,
+                10, 1, 2
         );
     }
 }
