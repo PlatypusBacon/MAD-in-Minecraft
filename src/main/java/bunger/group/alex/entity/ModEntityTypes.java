@@ -1,6 +1,9 @@
 package bunger.group.alex.entity;
 
 import bunger.group.MutuallyAssuredDestruction;
+import bunger.group.alex.entity.goblin.GoblinGruntEntity;
+import bunger.group.alex.entity.goblin.GoblinMageEntity;
+import bunger.group.alex.entity.goblin.GoblinRangerEntity;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;

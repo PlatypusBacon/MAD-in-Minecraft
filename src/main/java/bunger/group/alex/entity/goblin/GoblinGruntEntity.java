@@ -1,6 +1,5 @@
-package bunger.group.alex.entity;
+package bunger.group.alex.entity.goblin;
 
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -15,7 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
 
-public class GoblinGruntEntity extends Monster {
+public class GoblinGruntEntity extends Monster implements GoblinFaction {
 
     public static final float SPEAR_CHANCE = 0.33f;
     public static final float AXE_CHANCE   = 0.33f;
@@ -31,7 +30,7 @@ public class GoblinGruntEntity extends Monster {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 15.0)
+                .add(Attributes.MAX_HEALTH, 16.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.28)
                 .add(Attributes.ATTACK_DAMAGE, 2.0)
                 .add(Attributes.FOLLOW_RANGE, 50.0);
@@ -79,5 +78,31 @@ public class GoblinGruntEntity extends Monster {
                                                   EntitySpawnReason spawnReason, @Nullable SpawnGroupData groupData) {
         this.populateDefaultEquipmentSlots(level.getRandom(), difficulty);
         return super.finalizeSpawn(level, difficulty, spawnReason, groupData);
+    }
+
+    @Override
+    public boolean canBeAffected(net.minecraft.world.effect.MobEffectInstance effect) {
+        if (effect.getEffect().is(net.minecraft.world.effect.MobEffects.POISON)) {
+            return false;
+        }
+        return super.canBeAffected(effect);
+    }
+
+    @Override
+    public boolean hurtServer(net.minecraft.server.level.ServerLevel level,
+                              net.minecraft.world.damagesource.DamageSource source,
+                              float amount) {
+
+        var direct = source.getDirectEntity();
+
+        if (direct instanceof net.minecraft.world.entity.projectile.arrow.AbstractArrow arrow) {
+            var owner = arrow.getOwner();
+
+            if (owner instanceof GoblinFaction && this instanceof GoblinFaction) {
+                return false; // no friendly fire
+            }
+        }
+
+        return super.hurtServer(level, source, amount);
     }
 }

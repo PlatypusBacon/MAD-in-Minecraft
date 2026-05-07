@@ -1,7 +1,6 @@
 package bunger.group.alex.item;
 
 import bunger.group.alex.Mana;
-import bunger.group.alex.entity.GoblinMageEntity;
 import bunger.group.alex.entity.MageMob;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;

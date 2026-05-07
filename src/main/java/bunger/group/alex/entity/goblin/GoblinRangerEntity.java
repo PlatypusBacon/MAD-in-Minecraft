@@ -1,6 +1,5 @@
-package bunger.group.alex.entity;
+package bunger.group.alex.entity.goblin;
 
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
@@ -11,7 +10,6 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
@@ -20,7 +18,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
 
-public class GoblinRangerEntity extends Monster implements RangedAttackMob {
+public class GoblinRangerEntity extends Monster implements RangedAttackMob, GoblinFaction {
 
     private static final int ATTACK_INTERVAL_NORMAL = 40;
 
@@ -32,9 +30,9 @@ public class GoblinRangerEntity extends Monster implements RangedAttackMob {
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, 12.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.30)
+                .add(Attributes.MOVEMENT_SPEED, 0.28)
                 .add(Attributes.ATTACK_DAMAGE, 2.0)
-                .add(Attributes.FOLLOW_RANGE, 64.0);
+                .add(Attributes.FOLLOW_RANGE, 50.0);
     }
 
     @Override
@@ -63,19 +61,43 @@ public class GoblinRangerEntity extends Monster implements RangedAttackMob {
 
     @Override
     public void performRangedAttack(LivingEntity target, float power) {
-        ItemStack bowItem = this.getItemInHand(ProjectileUtil.getWeaponHoldingHand(this, Items.BOW));
+        ItemStack bowItem = this.getItemInHand(
+                ProjectileUtil.getWeaponHoldingHand(this, Items.BOW)
+        );
+
         ItemStack projectile = this.getProjectile(bowItem);
 
-        AbstractArrow arrow = ProjectileUtil.getMobArrow(this, projectile, power, bowItem);
+        AbstractArrow arrow =
+                ProjectileUtil.getMobArrow(this, projectile, power, bowItem);
+
+        arrow.setOwner(this);
+
+        // Spawn at eye level
+        arrow.setPos(
+                this.getX(),
+                this.getEyeY() - 0.1D,
+                this.getZ()
+        );
 
         double dx = target.getX() - this.getX();
-        double dy = target.getEyeY() - arrow.getY();
         double dz = target.getZ() - this.getZ();
 
-        double dist = Math.sqrt(dx * dx + dz * dz);
+        double horizontalDist = Math.sqrt(dx * dx + dz * dz);
 
-        arrow.shoot(dx, dy + dist * 0.2F, dz, 1.6F,
-                (float)(14 - this.level().getDifficulty().getId() * 4));
+        // Aim roughly at chest height
+        double dy = target.getY(0.35D) - arrow.getY();
+
+        // Arc compensation
+        // Increase with distance so long shots don't fall short
+        double arc = horizontalDist * 0.13D;
+
+        arrow.shoot(
+                dx,
+                dy + arc,
+                dz,
+                1.8F, // slightly faster projectile
+                8.0F  // lower inaccuracy
+        );
 
         this.level().addFreshEntity(arrow);
 
@@ -84,5 +106,31 @@ public class GoblinRangerEntity extends Monster implements RangedAttackMob {
                 1.0F,
                 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F)
         );
+    }
+
+    @Override
+    public boolean canBeAffected(net.minecraft.world.effect.MobEffectInstance effect) {
+        if (effect.getEffect().is(net.minecraft.world.effect.MobEffects.POISON)) {
+            return false;
+        }
+        return super.canBeAffected(effect);
+    }
+
+    @Override
+    public boolean hurtServer(net.minecraft.server.level.ServerLevel level,
+                              net.minecraft.world.damagesource.DamageSource source,
+                              float amount) {
+
+        var direct = source.getDirectEntity();
+
+        if (direct instanceof net.minecraft.world.entity.projectile.arrow.AbstractArrow arrow) {
+            var owner = arrow.getOwner();
+
+            if (owner instanceof GoblinFaction && this instanceof GoblinFaction) {
+                return false; // no friendly fire
+            }
+        }
+
+        return super.hurtServer(level, source, amount);
     }
 }
