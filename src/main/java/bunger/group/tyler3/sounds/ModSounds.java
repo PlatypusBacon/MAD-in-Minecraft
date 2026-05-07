@@ -16,6 +16,7 @@ public class ModSounds {
     public static final SoundEvent DUDE_IDLE = registerSound("dude_idle");
     public static final SoundEvent SCAR_SHOT = registerSound("scar_shot");
     public static final SoundEvent SCAR_RELOAD = registerSound("scar_reload");
+    public static final SoundEvent VINE_BOOM = registerSound("vine_boom");
     // actual registration of all the custom SoundEvents
     private static SoundEvent registerSound(String id) {
         Identifier identifier = Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, id);

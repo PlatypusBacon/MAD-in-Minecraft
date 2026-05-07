@@ -9,6 +9,11 @@
       { "name": "mutually-assured-destruction:gun_fire", "volume": 1.0 }
     ]
   },
+  "vine_boom": {
+    "sounds": [
+      { "name": "mutually-assured-destruction:vine_boom", "volume": 1.0 }
+    ]
+  },
   "scar_reload": {
     "sounds": [
       { "name": "mutually-assured-destruction:scar_reload", "volume": 1.0 }

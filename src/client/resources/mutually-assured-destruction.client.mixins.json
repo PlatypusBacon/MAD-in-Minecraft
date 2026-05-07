@@ -6,7 +6,9 @@
 		"ExampleClientMixin",
 		"AttackSwingMixin",
 		"HandRendererMixin",
-		"LivingEntitySwingMixin"
+		"LivingEntitySwingMixin",
+		"AbstractContainerScreenAccessor",
+		"ImageButtonAccessor"
 	],
 	"injectors": {
 		"defaultRequire": 1

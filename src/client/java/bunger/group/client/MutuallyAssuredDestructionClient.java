@@ -1,6 +1,10 @@
 package bunger.group.client;
 
 import bunger.group.MutuallyAssuredDestruction;
+import bunger.group.client.tyler3.MixinBeGone;
+import bunger.group.client.tyler3.gui.GuiUtils;
+import bunger.group.client.tyler3.gui.PaintOverlay;
+import bunger.group.client.mixin.AbstractContainerScreenAccessor;
 import bunger.group.client.tyler.god.GodEntityRenderer;
 import bunger.group.client.tyler.squirrel_bear.SquirrelBearEntityRenderer;
 import bunger.group.client.tyler.squirrel_wife.SquirrelWifeEntityRenderer;
@@ -15,20 +19,34 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
+import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
+import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.ImageButton;
+import net.minecraft.client.gui.components.WidgetSprites;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import bunger.group.client.tyler.squirrel.SquirrelEntityRenderer;
 import net.minecraft.client.renderer.item.properties.conditional.ConditionalItemModelProperties;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.component.CustomData;
 import bunger.group.client.tyler.AliciaKeys;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MutuallyAssuredDestructionClient implements ClientModInitializer {
 	public static KeyMapping RELOAD_KEY;
+
+	// One overlay instance per open screen — cleaned up on screen close
+	private static final Map<Screen, PaintOverlay> OVERLAYS = new HashMap<>();
+
 	@Override
 	public void onInitializeClient() {
+
 		RELOAD_KEY = KeyMappingHelper.registerKeyMapping(
 				new KeyMapping(
 						"key.mutually-assured-destruction.reload",
@@ -37,10 +55,12 @@ public class MutuallyAssuredDestructionClient implements ClientModInitializer {
 						KeyMapping.Category.GAMEPLAY
 				)
 		);
+
 		ConditionalItemModelProperties.ID_MAPPER.put(
 				Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, "firing"),
 				IsFiring.MAP_CODEC
 		);
+
 		bunger.group.client.tyler.ModEntityModelLayers.registerModelLayers();
 		EntityRenderers.register(bunger.group.tyler.entity.ModEntities.SQUIRREL, SquirrelEntityRenderer::new);
 		EntityRenderers.register(bunger.group.tyler.entity.ModEntities.SQUIRREL_BEAR, SquirrelBearEntityRenderer::new);
@@ -49,14 +69,15 @@ public class MutuallyAssuredDestructionClient implements ClientModInitializer {
 		bunger.group.client.tyler.SleepScreenOverlay.register();
 		EntityRenderers.register(bunger.group.tyler3.entity.ModEntities.DUDE, DudeRenderer::new);
 		EntityRenderers.register(ModEntities.SHOPPING_CART, ShoppingCartRenderer::new);
-		   // must be before world loads
 		bunger.group.client.tyler.bear_boxers.BearBoxersRenderer.register();
 		bunger.group.client.tyler.net.PunchSidePacketClient.registerClient();
+		bunger.group.client.tyler3.TheNotoriousBeej.register();
+
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			while (RELOAD_KEY.consumeClick()) {
 				ClientPlayNetworking.send(new ReloadPacket());
 			}
 		});
-		// This entrypoint is suitable for setting up client-specific logic, such as rendering.
+		MixinBeGone.register();
 	}
 }
