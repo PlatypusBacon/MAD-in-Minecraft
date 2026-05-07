@@ -5,6 +5,7 @@ import bunger.group.alex.ManaPacket;
 import bunger.group.alex.menu.ModMenuType;
 import bunger.group.client.alex.rendering.screens.inventory.SpellDeskScreen;
 import bunger.group.client.csmit863.entity.ModEntityModelLayers;
+import bunger.group.client.csmit863.entity.OverseerEntityRenderer;
 import bunger.group.client.csmit863.entity.ShroomjakEntityRenderer;
 import bunger.group.csmit863.CustomSounds;
 import bunger.group.csmit863.entity.ModEntityTypes;
@@ -53,6 +54,7 @@ public class MutuallyAssuredDestructionClient implements ClientModInitializer {
 
 		ModEntityModelLayers.registerModelLayers();
 		EntityRenderers.register(ModEntityTypes.SHROOMJAK, ShroomjakEntityRenderer::new);
+		EntityRenderers.register(ModEntityTypes.OVERSEER, OverseerEntityRenderer::new);
 
 		// Biome music — defined here so CustomSounds is already initialized
 		ResourceKey<Biome> SHROOM_SHIRE = ResourceKey.create(

@@ -18,6 +18,13 @@ public class ModEntityTypes {
                     .sized(0.54f, 1.53f) // width, height
     );
 
+    public static final EntityType<OverseerEntity> OVERSEER = register(
+            "overseer",
+            EntityType.Builder.<OverseerEntity>of(OverseerEntity::new, MobCategory.MONSTER)
+                    .sized(4.0f, 4.0f)
+                    .noSave()
+    );
+
     private static <T extends Entity> EntityType<T> register(String name, EntityType.Builder<T> builder) {
         ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, name));
         return Registry.register(BuiltInRegistries.ENTITY_TYPE, key, builder.build(key));
@@ -29,5 +36,6 @@ public class ModEntityTypes {
 
     public static void registerAttributes() {
         FabricDefaultAttributeRegistry.register(SHROOMJAK, ShroomjakEntity.createCubeAttributes());
+        FabricDefaultAttributeRegistry.register(OVERSEER, OverseerEntity.createAttributes());
     }
 }
