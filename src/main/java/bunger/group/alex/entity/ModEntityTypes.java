@@ -3,7 +3,9 @@ package bunger.group.alex.entity;
 import bunger.group.MutuallyAssuredDestruction;
 import bunger.group.alex.entity.goblin.*;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
+import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -14,6 +16,8 @@ import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+
+import java.util.function.Predicate;
 
 public class ModEntityTypes {
 
@@ -66,8 +70,17 @@ public class ModEntityTypes {
     }
 
     public static void registerSpawns() {
+
+        final Predicate<BiomeSelectionContext> LAND_OVERWORLD =
+                BiomeSelectors.foundInOverworld()
+                        .and(BiomeSelectors.tag(BiomeTags.IS_OCEAN).negate())
+                        .and(BiomeSelectors.tag(BiomeTags.IS_DEEP_OCEAN).negate())
+                        .and(BiomeSelectors.tag(BiomeTags.IS_BEACH).negate())
+                        .and(BiomeSelectors.tag(BiomeTags.IS_RIVER).negate());
+
+
         BiomeModifications.addSpawn(
-                BiomeSelectors.foundInOverworld(),
+                LAND_OVERWORLD,
                 MobCategory.MONSTER,
                 ModEntityTypes.WRAITH,
                 6, 1, 1
@@ -87,12 +100,11 @@ public class ModEntityTypes {
                 10, 1, 2
         );
 
-        // Spawns the patrol
         BiomeModifications.addSpawn(
-                BiomeSelectors.foundInOverworld(),
+                LAND_OVERWORLD,
                 MobCategory.MONSTER,
                 ModEntityTypes.GOBLIN_CHIEF,
-                1, 1, 1
+                1, 1, 2
         );
     }
 }

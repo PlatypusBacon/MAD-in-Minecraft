@@ -4,7 +4,6 @@ import bunger.group.alex.entity.MageMob;
 import bunger.group.alex.entity.goal.GoblinPatrolGoal;
 import bunger.group.alex.entity.goal.MediumCastGoal;
 import bunger.group.alex.item.ModItems;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -43,6 +42,7 @@ public class GoblinMageEntity extends MageMob implements GoblinFaction, GoblinPa
 
     @Override
     protected void registerGoals() {
+        this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new MediumCastGoal(this));
         this.goalSelector.addGoal(2, new GoblinPatrolGoal<>(this, 1.0));
         this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0));
@@ -93,9 +93,7 @@ public class GoblinMageEntity extends MageMob implements GoblinFaction, GoblinPa
         super.readAdditionalSaveData(input);
         long most  = input.getLongOr("PatrolUUIDMost", 0L);
         long least = input.getLongOr("PatrolUUIDLeast", 0L);
-        if (most != 0L || least != 0L) {
-            patrolUUID = new java.util.UUID(most, least);
-        }
+        if (most != 0L || least != 0L) patrolUUID = new UUID(most, least);
     }
 
     @Override
@@ -113,7 +111,6 @@ public class GoblinMageEntity extends MageMob implements GoblinFaction, GoblinPa
         }
         return super.hurtServer(level, source, amount);
     }
-
     @Override
     protected void dropCustomDeathLoot(net.minecraft.server.level.ServerLevel level,
                                        net.minecraft.world.damagesource.DamageSource source, boolean recentlyHit) {
@@ -122,6 +119,7 @@ public class GoblinMageEntity extends MageMob implements GoblinFaction, GoblinPa
 
     @Override
     public boolean removeWhenFarAway(double distanceToClosestPlayer) {
-        return distanceToClosestPlayer > 200 * 200;
+        return patrol == null || !patrol.isAlive();
     }
+
 }

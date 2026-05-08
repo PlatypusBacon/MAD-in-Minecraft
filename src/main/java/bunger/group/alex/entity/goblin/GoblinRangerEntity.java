@@ -1,7 +1,6 @@
 package bunger.group.alex.entity.goblin;
 
 import bunger.group.alex.entity.goal.GoblinPatrolGoal;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
@@ -47,6 +46,7 @@ public class GoblinRangerEntity extends Monster implements RangedAttackMob, Gobl
 
     @Override
     protected void registerGoals() {
+        this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new RangedBowAttackGoal<>(this, 1.1, ATTACK_INTERVAL_NORMAL, 15.0F));
         this.goalSelector.addGoal(2, new GoblinPatrolGoal<>(this, 1.0));
         this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0));
@@ -117,11 +117,8 @@ public class GoblinRangerEntity extends Monster implements RangedAttackMob, Gobl
         super.readAdditionalSaveData(input);
         long most  = input.getLongOr("PatrolUUIDMost", 0L);
         long least = input.getLongOr("PatrolUUIDLeast", 0L);
-        if (most != 0L || least != 0L) {
-            patrolUUID = new java.util.UUID(most, least);
-        }
+        if (most != 0L || least != 0L) patrolUUID = new UUID(most, least);
     }
-
 
     @Override
     public boolean canBeAffected(net.minecraft.world.effect.MobEffectInstance effect) {
@@ -141,6 +138,6 @@ public class GoblinRangerEntity extends Monster implements RangedAttackMob, Gobl
 
     @Override
     public boolean removeWhenFarAway(double distanceToClosestPlayer) {
-        return distanceToClosestPlayer > 200 * 200;
+        return patrol == null || !patrol.isAlive();
     }
 }
