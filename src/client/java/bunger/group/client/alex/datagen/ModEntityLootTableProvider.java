@@ -152,7 +152,7 @@ public class ModEntityLootTableProvider extends FabricEntityLootSubProvider {
                 // Roll 3: Goblin crown ~5% of the time
                 .withPool(LootPool.lootPool()
                         .setRolls(ConstantValue.exactly(1.0f))
-                        .add(LootItem.lootTableItem(Items.DIAMOND_HELMET)
+                        .add(LootItem.lootTableItem(ModItems.GOBLIN_CROWN)
                                 .apply(SetItemCountFunction.setCount(
                                         UniformGenerator.between(0f, 2.0f))))
                         .when(LootItemRandomChanceWithEnchantedBonusCondition

@@ -17,10 +17,12 @@
   "item.mutually-assured-destruction.cloth_chestplate": "Cloth Tunic",
   "item.mutually-assured-destruction.cloth_leggings": "Cloth Pants",
   "item.mutually-assured-destruction.cloth_boots": "Cloth Shoes",
+  "item.mutually-assured-destruction.goblin_crown": "Goblin Crown",
   "block.mutually-assured-destruction.spell_desk": "Spell Table",
   "entity.mutually-assured-destruction.wraith": "Wraith",
   "entity.mutually-assured-destruction.goblin_grunt": "Goblin Warrior",
   "entity.mutually-assured-destruction.goblin_mage": "Goblin Mage",
   "entity.mutually-assured-destruction.goblin_ranger": "Goblin Ranger",
+  "entity.mutually-assured-destruction.goblin_chief": "Goblin Chief",
   "creativeTab.wizardry-tab": "Wizardry"
 }

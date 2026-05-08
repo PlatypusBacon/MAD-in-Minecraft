@@ -2,6 +2,7 @@ package bunger.group.alex.item;
 
 import bunger.group.MutuallyAssuredDestruction;
 import bunger.group.alex.item.armor.ClothArmorMaterial;
+import bunger.group.alex.item.armor.GoblinCrown;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -136,8 +137,6 @@ public class ModItems {
             new Item.Properties()
     );
 
-
-
     // Armour
     public static final Item CLOTH_HELMET = registerItem(
             "cloth_helmet",
@@ -170,6 +169,14 @@ public class ModItems {
             new Item.Properties().humanoidArmor(ClothArmorMaterial.INSTANCE, ArmorType.BOOTS)
                     .durability(ArmorType.BOOTS.getDurability(ClothArmorMaterial.BASE_DURABILITY))
     );
+
+    public static final Item GOBLIN_CROWN = registerItem(
+            "goblin_crown",
+            GoblinCrown::new,
+            new GoblinCrown.Properties()
+    );
+
+
 
     public static <T extends Item> T registerItem(
             String name,
