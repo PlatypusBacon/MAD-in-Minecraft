@@ -159,7 +159,7 @@ public class GoblinChiefEntity extends Monster implements GoblinFaction, GoblinP
                     this.getX(), this.getY(), this.getZ(),
                     SoundEvents.GOAT_HORN_SOUND_VARIANTS.get(2).value(),
                     this.getSoundSource(),
-                    20.0f,
+                    16.0f,
                     1.0f
             );
             hasAlerted = true;
