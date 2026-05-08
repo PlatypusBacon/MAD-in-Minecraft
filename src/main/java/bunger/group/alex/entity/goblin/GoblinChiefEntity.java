@@ -2,6 +2,7 @@ package bunger.group.alex.entity.goblin;
 
 import bunger.group.alex.entity.goal.GoblinPatrolGoal;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
@@ -30,6 +31,7 @@ public class GoblinChiefEntity extends Monster implements GoblinFaction, GoblinP
     @Nullable private UUID patrolUUID = null;
     private boolean enraged = false;
     private int tickCounter = 0;
+    private boolean hasAlerted = false;
 
     public GoblinChiefEntity(EntityType<? extends GoblinChiefEntity> entityType, Level world) {
         super(entityType, world);
@@ -48,7 +50,6 @@ public class GoblinChiefEntity extends Monster implements GoblinFaction, GoblinP
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.4, false));
         this.goalSelector.addGoal(2, new GoblinPatrolGoal<>(this, 1.0));
         this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0));
@@ -90,6 +91,7 @@ public class GoblinChiefEntity extends Monster implements GoblinFaction, GoblinP
             output.putLong("PatrolUUIDMost", patrolUUID.getMostSignificantBits());
             output.putLong("PatrolUUIDLeast", patrolUUID.getLeastSignificantBits());
         }
+        output.putBoolean("HasAlerted", hasAlerted);
     }
 
     @Override
@@ -100,6 +102,7 @@ public class GoblinChiefEntity extends Monster implements GoblinFaction, GoblinP
         if (most != 0L || least != 0L) {
             patrolUUID = new UUID(most, least);
         }
+        hasAlerted = input.getBooleanOr("HasAlerted", false);
     }
 
     @Override
@@ -146,4 +149,26 @@ public class GoblinChiefEntity extends Monster implements GoblinFaction, GoblinP
             );
         }
     }
+
+    @Override
+    public void setTarget(@Nullable net.minecraft.world.entity.LivingEntity target) {
+        super.setTarget(target);
+        if (target instanceof Player && !hasAlerted && !this.level().isClientSide()) {
+            this.level().playSound(
+                    null,
+                    this.getX(), this.getY(), this.getZ(),
+                    SoundEvents.GOAT_HORN_SOUND_VARIANTS.get(2).value(),
+                    this.getSoundSource(),
+                    20.0f,
+                    1.0f
+            );
+            hasAlerted = true;
+        }
+    }
+
+    @Override
+    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+        return distanceToClosestPlayer > 200 * 200;
+    }
+
 }

@@ -40,12 +40,11 @@ public class GoblinGruntEntity extends Monster implements GoblinFaction, GoblinP
                 .add(Attributes.MOVEMENT_SPEED, 0.28)
                 .add(Attributes.ATTACK_DAMAGE, 2.0)
                 .add(Attributes.FOLLOW_RANGE, 25.0)
-                .add(Attributes.ARMOR, 4.0);
+                .add(Attributes.ARMOR, 6.0);
     }
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.4, false));
         this.goalSelector.addGoal(2, new GoblinPatrolGoal<>(this, 1.0));
         this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0));
@@ -126,5 +125,10 @@ public class GoblinGruntEntity extends Monster implements GoblinFaction, GoblinP
             if (arrow.getOwner() instanceof GoblinFaction) return false;
         }
         return super.hurtServer(level, source, amount);
+    }
+
+    @Override
+    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+        return distanceToClosestPlayer > 200 * 200;
     }
 }

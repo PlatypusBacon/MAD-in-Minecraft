@@ -43,7 +43,6 @@ public class GoblinMageEntity extends MageMob implements GoblinFaction, GoblinPa
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new MediumCastGoal(this));
         this.goalSelector.addGoal(2, new GoblinPatrolGoal<>(this, 1.0));
         this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0));
@@ -113,5 +112,16 @@ public class GoblinMageEntity extends MageMob implements GoblinFaction, GoblinPa
             if (arrow.getOwner() instanceof GoblinFaction) return false;
         }
         return super.hurtServer(level, source, amount);
+    }
+
+    @Override
+    protected void dropCustomDeathLoot(net.minecraft.server.level.ServerLevel level,
+                                       net.minecraft.world.damagesource.DamageSource source, boolean recentlyHit) {
+        // no drops
+    }
+
+    @Override
+    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+        return distanceToClosestPlayer > 200 * 200;
     }
 }

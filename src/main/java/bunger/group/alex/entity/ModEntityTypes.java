@@ -10,6 +10,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -69,25 +70,24 @@ public class ModEntityTypes {
                 BiomeSelectors.foundInOverworld(),
                 MobCategory.MONSTER,
                 ModEntityTypes.WRAITH,
-                8, 1, 1
+                6, 1, 1
         );
 
-        // Solo/pair spawns — unchanged
         BiomeModifications.addSpawn(
-                BiomeSelectors.foundInOverworld(),
+                BiomeSelectors.tag(BiomeTags.SPAWNS_WARM_VARIANT_FARM_ANIMALS),
                 MobCategory.MONSTER,
                 ModEntityTypes.GOBLIN_GRUNT,
                 10, 1, 2
         );
 
         BiomeModifications.addSpawn(
-                BiomeSelectors.foundInOverworld(),
+                BiomeSelectors.tag(BiomeTags.SPAWNS_WARM_VARIANT_FARM_ANIMALS),
                 MobCategory.MONSTER,
                 ModEntityTypes.GOBLIN_RANGER,
                 10, 1, 2
         );
 
-        // Each patrol spawns 4-10 grunts, 2-6 rangers, 1-2 mages
+        // Spawns the patrol
         BiomeModifications.addSpawn(
                 BiomeSelectors.foundInOverworld(),
                 MobCategory.MONSTER,

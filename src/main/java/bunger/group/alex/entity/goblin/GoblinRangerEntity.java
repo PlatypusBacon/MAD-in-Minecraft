@@ -47,7 +47,6 @@ public class GoblinRangerEntity extends Monster implements RangedAttackMob, Gobl
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new RangedBowAttackGoal<>(this, 1.1, ATTACK_INTERVAL_NORMAL, 15.0F));
         this.goalSelector.addGoal(2, new GoblinPatrolGoal<>(this, 1.0));
         this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0));
@@ -138,5 +137,10 @@ public class GoblinRangerEntity extends Monster implements RangedAttackMob, Gobl
             if (arrow.getOwner() instanceof GoblinFaction) return false;
         }
         return super.hurtServer(level, source, amount);
+    }
+
+    @Override
+    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+        return distanceToClosestPlayer > 200 * 200;
     }
 }
