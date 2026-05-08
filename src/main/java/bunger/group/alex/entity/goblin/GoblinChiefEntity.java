@@ -118,7 +118,7 @@ public class GoblinChiefEntity extends Monster implements GoblinFaction, GoblinP
             ServerLevel serverLevel = (ServerLevel) this.level();
             serverLevel.getEntitiesOfClass(
                     Monster.class,
-                    this.getBoundingBox().inflate(60.0),
+                    this.getBoundingBox().inflate(100.0),
                     e -> e instanceof GoblinPatrolMember m && m.getPatrol() == this
             ).forEach(e -> e.setTarget(target));
         }
