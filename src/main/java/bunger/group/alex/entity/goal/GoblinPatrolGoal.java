@@ -13,6 +13,7 @@ public class GoblinPatrolGoal<T extends PathfinderMob & GoblinPatrolMember> exte
     private static final double FOLLOW_DIST_SQ = 20.0 * 20.0;
     private static final double ARRIVE_DIST_SQ  = 4.0 * 4.0;
     private static final double WANDER_RADIUS   = 6.0;
+    private static final double CATCHUP_DIST_SQ = 40.0 * 40.0; // sprint to catch up beyond this
 
     private final T mob;
     private final double speed;
@@ -46,9 +47,21 @@ public class GoblinPatrolGoal<T extends PathfinderMob & GoblinPatrolMember> exte
 
     @Override
     public void tick() {
-        // Re-path every 40 ticks toward a random spot near the chief
-        if (mob.tickCount % 40 == 0) {
-            moveToNearChief();
+        GoblinChiefEntity patrol = mob.getPatrol();
+        if (patrol == null) return;
+
+        double distSq = mob.distanceToSqr(patrol);
+
+        if (distSq > CATCHUP_DIST_SQ) {
+            // Very far — path directly to chief at higher speed, re-path every 10 ticks
+            if (mob.tickCount % 10 == 0) {
+                mob.getNavigation().moveTo(patrol, speed * 1.6);
+            }
+        } else {
+            // Normal range — mill around near chief
+            if (mob.tickCount % 40 == 0) {
+                moveToNearChief();
+            }
         }
     }
 

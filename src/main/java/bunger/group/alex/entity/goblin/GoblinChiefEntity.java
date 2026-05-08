@@ -112,6 +112,16 @@ public class GoblinChiefEntity extends Monster implements GoblinFaction, GoblinP
                     1, 0, 0, 0, 0.01
             );
         }
+        // Share aggro with patrol members every 10 ticks
+        if (!this.level().isClientSide() && tickCounter % 10 == 0 && this.getTarget() != null) {
+            LivingEntity target = this.getTarget();
+            ServerLevel serverLevel = (ServerLevel) this.level();
+            serverLevel.getEntitiesOfClass(
+                    Monster.class,
+                    this.getBoundingBox().inflate(60.0),
+                    e -> e instanceof GoblinPatrolMember m && m.getPatrol() == this
+            ).forEach(e -> e.setTarget(target));
+        }
     }
 
     private void spawnParty(ServerLevel level, DifficultyInstance difficulty) {
