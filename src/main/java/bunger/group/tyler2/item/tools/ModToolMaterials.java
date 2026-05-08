@@ -1,5 +1,6 @@
 package bunger.group.tyler2.item.tools;
 
+import bunger.group.tyler2.ModTags;
 import bunger.group.tyler2.item.ModItems;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
@@ -121,5 +122,31 @@ public class ModToolMaterials {
             1.0f,
             13,
             ItemTags.COPPER_TOOL_MATERIALS
+    );
+    public static final ToolMaterial ANTLER = new ToolMaterial(
+            ModTags.INCORRECT_FOR_ANTLER_TOOL,
+            60,     // similar to wood
+            2.0f,   // speed
+            0.0f,   // attack damage bonus
+            15,     // enchantability
+            ModTags.ANTLER_TOOL_MATERIALS
+    );
+
+    public static final ToolMaterial THICK_ANTLER = new ToolMaterial(
+            ModTags.INCORRECT_FOR_ANTLER_TOOL,
+            147,
+            2.0f,
+            0.0f,
+            15,
+            ModTags.ANTLER_TOOL_MATERIALS
+    );
+
+    public static final ToolMaterial LONG_ANTLER = new ToolMaterial(
+            ModTags.INCORRECT_FOR_ANTLER_TOOL,
+            2,
+            2.0f,
+            0.0f,
+            15,
+            ModTags.ANTLER_TOOL_MATERIALS
     );
 }

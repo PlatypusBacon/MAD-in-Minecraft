@@ -2,15 +2,18 @@ package bunger.group.tyler2.item;
 
 import bunger.group.MutuallyAssuredDestruction;
 import bunger.group.tyler2.block.ModBlocks;
+import bunger.group.tyler2.block.SmoothPlankBlock;
 import bunger.group.tyler2.item.tools.*;
 import bunger.group.tyler2.item.tools.llong.*;
 import bunger.group.tyler2.item.tools.thick.*;
+import bunger.group.tyler3.item.AntlerPickaxe;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.level.block.Block;
@@ -22,7 +25,10 @@ public class ModItems {
     // --- Sticks ---
     public static final Item THICK_STICK = register("thick_stick", Item::new, new Item.Properties());
     public static final Item LONG_STICK  = register("long_stick",  Item::new, new Item.Properties());
-    public static final Item BIG_PLANK = register("big_plank", Item::new, new Item.Properties());
+    public static final Item ANTLER  = register("antler",  Item::new, new Item.Properties());
+    public static final Item SMOOTH_PLANK = registerPlaceable("smooth_plank", ModBlocks.SMOOTH_PLANK);
+    public static final Item SMOOTH_SLAB = registerPlaceable("smooth_slab", ModBlocks.SMOOTH_SLAB);
+
 
     // --- Torches ---
     // StandingAndWallBlockItem(block, wallBlock, attachmentDirection, properties)
@@ -136,6 +142,13 @@ public class ModItems {
     public static final Item LONG_NETHERITE_SPEAR    = register("long_netherite_spear",    p -> new LongSpear(ModToolMaterials.LONG_NETHERITE, p),      new Item.Properties());
     public static final Item LONG_COPPER_SPEAR       = register("long_copper_spear",       p -> new LongSpear(ModToolMaterials.LONG_COPPER, p),         new Item.Properties());
 
+
+    public static final Item ANTLER_PICKAXE = register("antler_pickaxe",
+            p -> new AntlerPickaxe(ModToolMaterials.ANTLER, p), new Item.Properties());
+    public static final Item THICK_ANTLER_PICKAXE = register("thick_antler_pickaxe",
+            p -> new ThickPickaxe(ModToolMaterials.THICK_ANTLER, p), new Item.Properties());
+    public static final Item LONG_ANTLER_PICKAXE = register("long_antler_pickaxe",
+            p -> new LongPickaxe(ModToolMaterials.LONG_ANTLER, p), new Item.Properties());
     // ── Registration helpers ──────────────────────────────────────────────────
 
     private static <T extends Item> T register(String name,
@@ -163,6 +176,14 @@ public class ModItems {
         return Registry.register(BuiltInRegistries.ITEM, key, item);
     }
 
+    private static Item registerPlaceable(String name, Block block) {
+        ResourceKey<Item> key = ResourceKey.create(
+                Registries.ITEM,
+                Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, name));
+        Item.Properties props = new Item.Properties().setId(key).useBlockDescriptionPrefix();
+        BlockItem item = new BlockItem(block, props);
+        return Registry.register(BuiltInRegistries.ITEM, key, item);
+    }
     public static void registerModItems() {
         MutuallyAssuredDestruction.LOGGER.debug(
                 "Registering Mod Items for " + MutuallyAssuredDestruction.MOD_ID);
@@ -170,6 +191,8 @@ public class ModItems {
         var ls = LONG_STICK;
         var tt = THICK_TORCH;
         var lt = LONG_TORCH;
-        var bp = BIG_PLANK;
+        var bp = SMOOTH_PLANK;
+        var ss = SMOOTH_SLAB;
+        var a = ANTLER;
     }
 }

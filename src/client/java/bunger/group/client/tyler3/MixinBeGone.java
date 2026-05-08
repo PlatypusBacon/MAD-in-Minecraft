@@ -54,9 +54,9 @@ public final class MixinBeGone {
                         ImageButton original = (ImageButton) w;
                         WidgetSprites tomeSprites = new WidgetSprites(
                                 Identifier.fromNamespaceAndPath(
-                                        MutuallyAssuredDestruction.MOD_ID, "tome/button"),
+                                        MutuallyAssuredDestruction.MOD_ID, "button"),
                                 Identifier.fromNamespaceAndPath(
-                                        MutuallyAssuredDestruction.MOD_ID, "tome/button_highlighted")
+                                        MutuallyAssuredDestruction.MOD_ID, "button_highlighted")
                         );
                         ImageButton replacement = new ImageButton(
                                 original.getX(), original.getY(),

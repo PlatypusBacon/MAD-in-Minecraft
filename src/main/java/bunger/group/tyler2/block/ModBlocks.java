@@ -20,10 +20,16 @@ import net.minecraft.world.level.material.PushReaction;
 import java.util.function.Function;
 
 public class ModBlocks {
-    public static final BigPlankBlock BIG_PLANK = registerBlock(
-            "big_plank",
-            props -> new BigPlankBlock(props),
+    public static final SmoothPlankBlock SMOOTH_PLANK = registerBlock(
+            "smooth_plank",
+            SmoothPlankBlock::new,
             BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS),
+            false
+    );
+    public static final Block SMOOTH_SLAB = registerBlock(
+            "smooth_slab",
+            Block::new,
+            BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB),
             false
     );
     // ── Thick Torch ──────────────────────────────────────────────────────────

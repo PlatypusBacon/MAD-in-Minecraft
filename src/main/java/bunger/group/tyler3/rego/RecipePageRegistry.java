@@ -11,7 +11,7 @@ import java.util.*;
  * and recipe page IDs → TomePage.Recipe instances.
  *
  * Add new recipes here. The texture should live at:
- *   assets/<modid>/textures/gui/sprites/tome/recipes/<recipeId>.png
+ *   assets/<modid>/textures/gui/tome/recipes/<recipeId>.png
  * and must be exactly PaintOverlay.CANVAS_W × PaintOverlay.CANVAS_H pixels (148×60).
  */
 public final class RecipePageRegistry {

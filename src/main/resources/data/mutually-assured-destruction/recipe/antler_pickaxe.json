@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": "mutually-assured-destruction:antler",
+    "x": "minecraft:stick"
+  },
+  "pattern": [
+    "##",
+    "x "
+  ],
+  "result": {
+    "id": "mutually-assured-destruction:antler_pickaxe"
+  },
+  "show_notification": false
+}

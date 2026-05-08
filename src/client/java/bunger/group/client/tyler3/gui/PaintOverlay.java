@@ -40,7 +40,7 @@ public class PaintOverlay {
     // Texture
     // ---------------------------------------------------------------
     private static final Identifier PAINT_TEXTURE = Identifier.fromNamespaceAndPath(
-            MutuallyAssuredDestruction.MOD_ID, "textures/gui/sprites/paint.png"
+            MutuallyAssuredDestruction.MOD_ID, "textures/gui/tome/paint.png"
     );
     private static final int TEX_SRC_W = 175;
     private static final int TEX_SRC_H = 80;
@@ -195,7 +195,7 @@ public class PaintOverlay {
     public static TomePage.Recipe buildPage(String recipeId) {
         Identifier texture = Identifier.fromNamespaceAndPath(
                 MutuallyAssuredDestruction.MOD_ID,
-                "textures/gui/sprites/tome/recipes/" + recipeId + ".png"
+                "textures/gui/tome/recipes/" + recipeId + ".png"
         );
         return new TomePage.Recipe(recipeId, texture);
     }

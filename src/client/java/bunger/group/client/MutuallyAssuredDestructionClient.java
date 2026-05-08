@@ -3,6 +3,7 @@ package bunger.group.client;
 import bunger.group.MutuallyAssuredDestruction;
 import bunger.group.client.tyler.TomeClientNetworking;
 import bunger.group.client.tyler3.MixinBeGone;
+import bunger.group.client.tyler3.deer.DeerEntityRenderer;
 import bunger.group.client.tyler3.gui.PaintOverlay;
 import bunger.group.client.tyler.god.GodEntityRenderer;
 import bunger.group.client.tyler.squirrel_bear.SquirrelBearEntityRenderer;
@@ -62,6 +63,8 @@ public class MutuallyAssuredDestructionClient implements ClientModInitializer {
 		EntityRenderers.register(bunger.group.tyler.entity.ModEntities.SQUIRREL_BEAR, SquirrelBearEntityRenderer::new);
 		EntityRenderers.register(bunger.group.tyler.entity.ModEntities.GOD, GodEntityRenderer::new);
 		EntityRenderers.register(bunger.group.tyler.entity.ModEntities.SQUIRREL_WIFE, SquirrelWifeEntityRenderer::new);
+		EntityRenderers.register(bunger.group.tyler3.entity.ModEntities.DEER, DeerEntityRenderer::new);
+
 		bunger.group.client.tyler.SleepScreenOverlay.register();
 		EntityRenderers.register(bunger.group.tyler3.entity.ModEntities.DUDE, DudeRenderer::new);
 		EntityRenderers.register(ModEntities.SHOPPING_CART, ShoppingCartRenderer::new);

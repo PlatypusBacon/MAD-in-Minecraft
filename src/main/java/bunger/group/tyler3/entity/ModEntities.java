@@ -21,6 +21,11 @@ public class ModEntities {
             EntityType.Builder.<ShoppingCartEntity>of(ShoppingCartEntity::new, EntityType.MINECART.getCategory())
                     .sized(1.5f, 0.9f)
     );
+    public static final EntityType<DeerEntity> DEER = register(
+            "deer",
+            EntityType.Builder.of(DeerEntity::new, MobCategory.CREATURE)
+
+    );
 
     private static <T extends Entity> EntityType<T> register(String name, EntityType.Builder<T> builder) {
         ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, name));
@@ -30,9 +35,11 @@ public class ModEntities {
         MutuallyAssuredDestruction.LOGGER.info("Registering EntityTypes for " + MutuallyAssuredDestruction.MOD_ID);
         // Ensure the entity types are loaded
         var squirrel = DUDE;
+        var deer = DEER;
     }
 
     public static void registerAttributes() {
         FabricDefaultAttributeRegistry.register(DUDE, DudeEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(DEER, DeerEntity.createAttributes());
     }
 }
