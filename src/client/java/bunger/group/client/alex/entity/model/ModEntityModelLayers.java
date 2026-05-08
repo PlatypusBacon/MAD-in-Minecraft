@@ -2,12 +2,10 @@ package bunger.group.client.alex.entity.model;
 
 import bunger.group.MutuallyAssuredDestruction;
 import bunger.group.alex.entity.ModEntityTypes;
-import bunger.group.client.alex.entity.renderer.GoblinGruntEntityRenderer;
-import bunger.group.client.alex.entity.renderer.GoblinMageEntityRenderer;
-import bunger.group.client.alex.entity.renderer.GoblinRangerEntityRenderer;
-import bunger.group.client.alex.entity.renderer.WraithEntityRenderer;
+import bunger.group.client.alex.entity.renderer.*;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.resources.Identifier;
 import net.fabricmc.fabric.api.client.rendering.v1.ModelLayerRegistry;
 
@@ -17,6 +15,8 @@ public class ModEntityModelLayers {
     public static final ModelLayerLocation GOBLIN_GRUNT = createMain("goblin_grunt");
     public static final ModelLayerLocation GOBLIN_MAGE = createMain("goblin_mage");
     public static final ModelLayerLocation GOBLIN_RANGER = createMain("goblin_ranger");
+    public static final ModelLayerLocation GOBLIN_CHIEF = createMain("goblin_chief");
+
 
     private static ModelLayerLocation createMain(String name) {
         return new ModelLayerLocation(Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, name), "main");
@@ -27,6 +27,7 @@ public class ModEntityModelLayers {
         ModelLayerRegistry.registerModelLayer(ModEntityModelLayers.GOBLIN_GRUNT, GoblinGruntEntityModel::createBodyLayer);
         ModelLayerRegistry.registerModelLayer(ModEntityModelLayers.GOBLIN_MAGE, GoblinMageEntityModel::createBodyLayer);
         ModelLayerRegistry.registerModelLayer(ModEntityModelLayers.GOBLIN_RANGER, GoblinRangerEntityModel::createBodyLayer);
+        ModelLayerRegistry.registerModelLayer(ModEntityModelLayers.GOBLIN_CHIEF, GoblinChiefEntityModel::createBodyLayer);
     }
 
     public static void registerRenderers() {
@@ -34,5 +35,7 @@ public class ModEntityModelLayers {
         EntityRenderers.register(ModEntityTypes.GOBLIN_GRUNT, GoblinGruntEntityRenderer::new);
         EntityRenderers.register(ModEntityTypes.GOBLIN_MAGE, GoblinMageEntityRenderer::new);
         EntityRenderers.register(ModEntityTypes.GOBLIN_RANGER, GoblinRangerEntityRenderer::new);
+        EntityRenderers.register(ModEntityTypes.GOBLIN_CHIEF, GoblinChiefEntityRenderer::new);
+
     }
 }

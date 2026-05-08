@@ -1,50 +1,55 @@
 package bunger.group.alex.entity.goblin;
 
-import bunger.group.alex.entity.MageMob;
 import bunger.group.alex.entity.goal.GoblinPatrolGoal;
-import bunger.group.alex.entity.goal.MediumCastGoal;
-import bunger.group.alex.item.ModItems;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
 import java.util.UUID;
 
-public class GoblinMageEntity extends MageMob implements GoblinFaction, GoblinPatrolMember {
-
-    public static final float SPELL_A_CHANCE = 0.50f;
+public class GoblinChiefEntity extends Monster implements GoblinFaction, GoblinPatrolMember {
 
     @Nullable private GoblinChiefEntity patrol = null;
     @Nullable private UUID patrolUUID = null;
+    private boolean enraged = false;
+    private int tickCounter = 0;
 
-    public GoblinMageEntity(EntityType<? extends GoblinMageEntity> entityType, Level world) {
+    public GoblinChiefEntity(EntityType<? extends GoblinChiefEntity> entityType, Level world) {
         super(entityType, world);
-        this.xpReward = 20;
+        this.xpReward = 100;
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 15.0)
+        return Monster.createMonsterAttributes()
+                .add(Attributes.MAX_HEALTH, 50.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.28)
-                .add(Attributes.ATTACK_DAMAGE, 2.0)
-                .add(Attributes.FOLLOW_RANGE, 25.0);
+                .add(Attributes.ATTACK_DAMAGE, 5.0)
+                .add(Attributes.FOLLOW_RANGE, 100.0)
+                .add(Attributes.ARMOR, 10.0)
+                .add(Attributes.ARMOR_TOUGHNESS, 4.0);
     }
 
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new MediumCastGoal(this));
+        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.4, false));
         this.goalSelector.addGoal(2, new GoblinPatrolGoal<>(this, 1.0));
         this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
@@ -67,10 +72,8 @@ public class GoblinMageEntity extends MageMob implements GoblinFaction, GoblinPa
 
     @Override
     protected void populateDefaultEquipmentSlots(net.minecraft.util.RandomSource random, DifficultyInstance difficulty) {
-        ItemStack spell = random.nextFloat() < SPELL_A_CHANCE
-                ? new ItemStack(ModItems.IMPALE)
-                : new ItemStack(ModItems.LIGHTNING);
-        this.setItemSlot(EquipmentSlot.MAINHAND, spell);
+        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.DIAMOND_AXE));
+        this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.DIAMOND_AXE));
     }
 
     @Override
@@ -95,7 +98,7 @@ public class GoblinMageEntity extends MageMob implements GoblinFaction, GoblinPa
         long most  = input.getLongOr("PatrolUUIDMost", 0L);
         long least = input.getLongOr("PatrolUUIDLeast", 0L);
         if (most != 0L || least != 0L) {
-            patrolUUID = new java.util.UUID(most, least);
+            patrolUUID = new UUID(most, least);
         }
     }
 
@@ -112,6 +115,35 @@ public class GoblinMageEntity extends MageMob implements GoblinFaction, GoblinPa
         if (direct instanceof net.minecraft.world.entity.projectile.arrow.AbstractArrow arrow) {
             if (arrow.getOwner() instanceof GoblinFaction) return false;
         }
-        return super.hurtServer(level, source, amount);
+
+        boolean result = super.hurtServer(level, source, amount);
+
+        if (result && !enraged && this.getHealth() < this.getMaxHealth() * 0.5f) {
+            Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(0.32);
+            Objects.requireNonNull(this.getAttribute(Attributes.ATTACK_DAMAGE)).setBaseValue(8.0);
+            this.level().broadcastEntityEvent(this, (byte) 4);
+            this.enraged = true;
+        }
+
+        return result;
+    }
+
+
+    @Override
+    public void tick() {
+        super.tick();
+        tickCounter++;
+        if (enraged && !this.level().isClientSide() && (tickCounter % 4 == 0)) {
+            ServerLevel serverLevel = (ServerLevel) this.level();
+            serverLevel.sendParticles(
+                    net.minecraft.core.particles.ParticleTypes.ANGRY_VILLAGER,
+                    this.getX() + (this.random.nextDouble() - 0.5) * 0.8,
+                    this.getY() + this.getBbHeight() + 0.2,
+                    this.getZ() + (this.random.nextDouble() - 0.5) * 0.8,
+                    1,    // count
+                    0, 0, 0, // offset
+                    0.01  // speed
+            );
+        }
     }
 }

@@ -1,9 +1,7 @@
 package bunger.group.alex.entity;
 
 import bunger.group.MutuallyAssuredDestruction;
-import bunger.group.alex.entity.goblin.GoblinGruntEntity;
-import bunger.group.alex.entity.goblin.GoblinMageEntity;
-import bunger.group.alex.entity.goblin.GoblinRangerEntity;
+import bunger.group.alex.entity.goblin.*;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
@@ -42,6 +40,12 @@ public class ModEntityTypes {
                     .sized(0.75f, 1.5f)
     );
 
+    public static final EntityType<GoblinChiefEntity> GOBLIN_CHIEF = register(
+            "goblin_chief",
+            EntityType.Builder.<GoblinChiefEntity>of(GoblinChiefEntity::new, MobCategory.MONSTER)
+                    .sized(0.75f, 1.5f)
+    );
+
     private static <T extends Entity> EntityType<T> register(String name, EntityType.Builder<T> builder) {
         ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, name));
         return Registry.register(BuiltInRegistries.ENTITY_TYPE, key, builder.build(key));
@@ -52,15 +56,15 @@ public class ModEntityTypes {
     }
 
     public static void registerAttributes() {
-        FabricDefaultAttributeRegistry.register(GOBLIN_GRUNT, GoblinGruntEntity.createAttributes().build());
-        FabricDefaultAttributeRegistry.register(GOBLIN_MAGE, GoblinMageEntity.createAttributes().build());
+        FabricDefaultAttributeRegistry.register(GOBLIN_GRUNT,  GoblinGruntEntity.createAttributes().build());
+        FabricDefaultAttributeRegistry.register(GOBLIN_MAGE,   GoblinMageEntity.createAttributes().build());
         FabricDefaultAttributeRegistry.register(GOBLIN_RANGER, GoblinRangerEntity.createAttributes().build());
-        FabricDefaultAttributeRegistry.register(WRAITH, WraithEntity.createAttributes().build());
+        FabricDefaultAttributeRegistry.register(GOBLIN_CHIEF,  GoblinChiefEntity.createAttributes().build());
+        FabricDefaultAttributeRegistry.register(WRAITH,        WraithEntity.createAttributes().build());
         registerSpawns();
     }
 
     public static void registerSpawns() {
-        // Modify spawning
         BiomeModifications.addSpawn(
                 BiomeSelectors.foundInOverworld(),
                 MobCategory.MONSTER,
@@ -68,18 +72,27 @@ public class ModEntityTypes {
                 8, 1, 1
         );
 
-        BiomeModifications.addSpawn( // random few grunts
+        // Solo/pair spawns — unchanged
+        BiomeModifications.addSpawn(
                 BiomeSelectors.foundInOverworld(),
                 MobCategory.MONSTER,
                 ModEntityTypes.GOBLIN_GRUNT,
                 10, 1, 2
         );
 
-        BiomeModifications.addSpawn( // random few rangers
+        BiomeModifications.addSpawn(
                 BiomeSelectors.foundInOverworld(),
                 MobCategory.MONSTER,
                 ModEntityTypes.GOBLIN_RANGER,
                 10, 1, 2
+        );
+
+        // Each patrol spawns 4-10 grunts, 2-6 rangers, 1-2 mages
+        BiomeModifications.addSpawn(
+                BiomeSelectors.foundInOverworld(),
+                MobCategory.MONSTER,
+                ModEntityTypes.GOBLIN_CHIEF,
+                1, 1, 1
         );
     }
 }
