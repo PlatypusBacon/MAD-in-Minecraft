@@ -37,7 +37,7 @@ public class GoblinMageEntity extends MageMob implements GoblinFaction, GoblinPa
                 .add(Attributes.MAX_HEALTH, 15.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.28)
                 .add(Attributes.ATTACK_DAMAGE, 2.0)
-                .add(Attributes.FOLLOW_RANGE, 25.0);
+                .add(Attributes.FOLLOW_RANGE, 30.0);
     }
 
     @Override

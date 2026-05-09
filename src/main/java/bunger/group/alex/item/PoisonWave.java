@@ -95,7 +95,7 @@ public class PoisonWave extends SpellTemplate {
                     entity.addEffect(new MobEffectInstance(
                             MobEffects.POISON,
                             200,
-                            2
+                            1
                     ), entity);
                     DamageSource source = level.damageSources().indirectMagic(entity, user);
                     entity.hurtServer((ServerLevel) level, source, 0.5f);
