@@ -130,9 +130,11 @@ public class GoblinRangerEntity extends Monster implements RangedAttackMob, Gobl
     public boolean hurtServer(net.minecraft.server.level.ServerLevel level,
                               net.minecraft.world.damagesource.DamageSource source, float amount) {
         var direct = source.getDirectEntity();
-        if (direct instanceof AbstractArrow arrow) {
+        if (direct instanceof net.minecraft.world.entity.projectile.arrow.AbstractArrow arrow) {
             if (arrow.getOwner() instanceof GoblinFaction) return false;
         }
+        if (direct instanceof GoblinFaction) return false;
+        if (source.getEntity() instanceof GoblinFaction) return false;
         return super.hurtServer(level, source, amount);
     }
 

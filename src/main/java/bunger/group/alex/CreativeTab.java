@@ -39,6 +39,7 @@ public class CreativeTab {
                 output.accept(ModItems.FOREST_OF_SPIKES);
                 output.accept(ModItems.SUMMON_WATER);
                 output.accept(ModItems.INVOKE_RAIN);
+                output.accept(ModItems.POISON_WAVE);
                 output.accept(ModItems.STAFF_OF_TELEPORTATION);
                 output.accept(ModItems.BLANK_LIGHTNING_SCROLL);
                 output.accept(ModItems.BLANK_FIRE_SCROLL);

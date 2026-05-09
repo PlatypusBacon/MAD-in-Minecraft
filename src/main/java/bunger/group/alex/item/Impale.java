@@ -25,7 +25,6 @@ public class Impale extends SpellTemplate {
         super(properties, 20, 10,  SpellTypes.EARTH);
     }
 
-    //TODO Remove pillar after its at max one at a time?
     @Override
     public void cast(Level level, LivingEntity user, ItemStack stack) {
         if (level.isClientSide()) {

@@ -67,8 +67,8 @@ public class GoblinMageEntity extends MageMob implements GoblinFaction, GoblinPa
     @Override
     protected void populateDefaultEquipmentSlots(net.minecraft.util.RandomSource random, DifficultyInstance difficulty) {
         ItemStack spell = random.nextFloat() < SPELL_A_CHANCE
-                ? new ItemStack(ModItems.IMPALE)
-                : new ItemStack(ModItems.LIGHTNING);
+                ? new ItemStack(ModItems.POISON_WAVE)
+                : new ItemStack(ModItems.POISON_WAVE);
         this.setItemSlot(EquipmentSlot.MAINHAND, spell);
     }
 
@@ -109,8 +109,11 @@ public class GoblinMageEntity extends MageMob implements GoblinFaction, GoblinPa
         if (direct instanceof net.minecraft.world.entity.projectile.arrow.AbstractArrow arrow) {
             if (arrow.getOwner() instanceof GoblinFaction) return false;
         }
+        if (direct instanceof GoblinFaction) return false;
+        if (source.getEntity() instanceof GoblinFaction) return false;
         return super.hurtServer(level, source, amount);
     }
+
     @Override
     protected void dropCustomDeathLoot(net.minecraft.server.level.ServerLevel level,
                                        net.minecraft.world.damagesource.DamageSource source, boolean recentlyHit) {

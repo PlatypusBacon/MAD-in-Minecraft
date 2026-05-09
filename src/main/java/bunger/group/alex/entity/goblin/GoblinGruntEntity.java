@@ -122,6 +122,8 @@ public class GoblinGruntEntity extends Monster implements GoblinFaction, GoblinP
         if (direct instanceof net.minecraft.world.entity.projectile.arrow.AbstractArrow arrow) {
             if (arrow.getOwner() instanceof GoblinFaction) return false;
         }
+        if (direct instanceof GoblinFaction) return false;
+        if (source.getEntity() instanceof GoblinFaction) return false;
         return super.hurtServer(level, source, amount);
     }
 

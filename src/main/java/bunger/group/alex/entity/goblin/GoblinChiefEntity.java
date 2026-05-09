@@ -193,6 +193,9 @@ public class GoblinChiefEntity extends Monster implements GoblinFaction, GoblinP
             if (arrow.getOwner() instanceof GoblinFaction) return false;
         }
 
+        if (direct instanceof GoblinFaction) return false;
+        if (source.getEntity() instanceof GoblinFaction) return false;
+
         boolean result = super.hurtServer(level, source, amount);
 
         if (result && !enraged && this.getHealth() < this.getMaxHealth() * 0.5f) {

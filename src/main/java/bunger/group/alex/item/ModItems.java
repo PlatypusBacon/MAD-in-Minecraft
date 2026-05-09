@@ -86,6 +86,12 @@ public class ModItems {
             new InvokeRain.Properties()
     );
 
+    public static final Item POISON_WAVE = registerItem(
+            "spell_poison_wave",
+            PoisonWave::new,
+            new PoisonWave.Properties()
+    );
+
     public static final Item STAFF_OF_TELEPORTATION = registerItem(
             "spell_staff_of_teleportation",
             StaffOfTeleportation::new,

@@ -56,7 +56,7 @@ public class Zap extends SpellTemplate {
 
         if (entityHit != null) {
             Entity entity = entityHit.getEntity();
-            DamageSource source = level.damageSources().mace(user);
+            DamageSource source = level.damageSources().indirectMagic(entity, user);
             entity.hurtServer((ServerLevel) level, source, 1.5f);
 
             if (entity instanceof LivingEntity living) {
