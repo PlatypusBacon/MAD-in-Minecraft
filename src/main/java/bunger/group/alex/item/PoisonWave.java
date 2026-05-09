@@ -66,9 +66,13 @@ public class PoisonWave extends SpellTemplate {
 
     private void particle_pillar(Level level, Vec3 pos, int delay, LivingEntity user)
     {
-        // Cast to floor
-        int y = level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING, (int) pos.x, (int) pos.z);
+        // Cast to floor below eyes
+        Vec3 rayStart = new Vec3(pos.x, pos.y+1, pos.z);
+        Vec3 rayEnd = new Vec3(pos.x, pos.y - 10, pos.z);
+        BlockHitResult hit = level.clip(new ClipContext(rayStart, rayEnd, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, user));
+        double y = (hit.getType() == HitResult.Type.BLOCK) ? hit.getLocation().y : pos.y;
         Vec3 newPos = new Vec3(pos.x, y, pos.z);
+
 
         delay *= 3;
         // Particles
@@ -92,13 +96,15 @@ public class PoisonWave extends SpellTemplate {
                 );
 
                 for (LivingEntity entity : nearby) {
-                    entity.addEffect(new MobEffectInstance(
-                            MobEffects.POISON,
-                            200,
-                            1
-                    ), entity);
-                    DamageSource source = level.damageSources().indirectMagic(entity, user);
-                    entity.hurtServer((ServerLevel) level, source, 0.5f);
+                    if (!entity.equals(user)) {
+                        entity.addEffect(new MobEffectInstance(
+                                MobEffects.POISON,
+                                200,
+                                1
+                        ), entity);
+                        DamageSource source = level.damageSources().indirectMagic(entity, user);
+                        entity.hurtServer((ServerLevel) level, source, 0.5f);
+                    }
                 }
             });
         }

@@ -21,7 +21,7 @@ import java.util.function.Consumer;
 public class SpellTemplate extends Item {
 
     int MANA_USE;
-    int RANGE;
+    public int RANGE;
     SpellTypes TYPE;
 
     public SpellTemplate(Properties properties, int manaUse, int range, SpellTypes type) {

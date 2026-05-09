@@ -32,7 +32,12 @@ public class MediumCastGoal extends Goal {
         target = mage.getTarget();
         if (target == null || !target.isAlive()) return false;
         if (mage.tickCount < nextCastTick) return false;
-        return mage.getItemBySlot(EquipmentSlot.MAINHAND).getItem() instanceof SpellTemplate;
+
+        ItemStack held = mage.getItemBySlot(EquipmentSlot.MAINHAND);
+        if (!(held.getItem() instanceof SpellTemplate spell)) return false;
+
+        double dist = mage.distanceTo(target);
+        return dist <= spell.RANGE;
     }
 
     @Override
