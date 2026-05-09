@@ -2,6 +2,7 @@ package bunger.group.tyler2.item;
 
 
 import bunger.group.MutuallyAssuredDestruction;
+import bunger.group.tyler2.block.ModBlocks;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -136,6 +137,16 @@ public class ModCreativeTabs {
                         output.accept(ModItems.LONG_DIAMOND_SPEAR);
                         output.accept(ModItems.LONG_NETHERITE_SPEAR);
                         output.accept(ModItems.LONG_COPPER_SPEAR);
+
+                        // knifes
+                        output.accept(ModItems.FLINT_KNIFE);
+                        output.accept(ModItems.THICK_FLINT_KNIFE);
+                        output.accept(ModItems.LONG_FLINT_KNIFE);
+
+                        // Dumb shit
+                        output.accept(ModBlocks.ROCK.asItem());
+                        output.accept(ModItems.SLING);
+
                     })
                     .build()
     );

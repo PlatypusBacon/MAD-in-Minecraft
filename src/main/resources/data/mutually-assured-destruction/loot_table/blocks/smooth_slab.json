@@ -11,7 +11,7 @@
               "add": false,
               "conditions": [
                 {
-                  "block": "mutually-assured-destruction:block/smooth_slab",
+                  "block": "mutually-assured-destruction:smooth_slab",
                   "condition": "minecraft:block_state_property",
                   "properties": {
                     "type": "double"
@@ -25,11 +25,11 @@
               "function": "minecraft:explosion_decay"
             }
           ],
-          "name": "mutually-assured-destruction:block/smooth_slab"
+          "name": "mutually-assured-destruction:smooth_slab"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "mutually-assured-destruction:block/smooth_slab"
+  "random_sequence": "mutually-assured-destruction:smooth_slab"
 }

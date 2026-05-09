@@ -26,7 +26,13 @@ public class ModEntities {
             EntityType.Builder.of(DeerEntity::new, MobCategory.CREATURE)
 
     );
-
+    public static final EntityType<RockProjectileEntity> ROCK_PROJECTILE = register(
+            "rock_projectile",
+            EntityType.Builder.<RockProjectileEntity>of(RockProjectileEntity::new, MobCategory.MISC)
+                    .sized(0.25f, 0.25f)
+                    .clientTrackingRange(4)
+                    .updateInterval(10)
+    );
     private static <T extends Entity> EntityType<T> register(String name, EntityType.Builder<T> builder) {
         ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, name));
         return Registry.register(BuiltInRegistries.ENTITY_TYPE, key, builder.build(key));

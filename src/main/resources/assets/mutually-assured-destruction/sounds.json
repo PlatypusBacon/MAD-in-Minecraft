@@ -9,6 +9,16 @@
       { "name": "mutually-assured-destruction:gun_fire", "volume": 1.0 }
     ]
   },
+  "sling_charge": {
+    "sounds": [
+      { "name": "mutually-assured-destruction:sling_charge", "volume": 1.0 }
+    ]
+  },
+  "sling_shot": {
+    "sounds": [
+      { "name": "mutually-assured-destruction:sling_shot", "volume": 1.0 }
+    ]
+  },
   "vine_boom": {
     "sounds": [
       { "name": "mutually-assured-destruction:vine_boom", "volume": 1.0 }

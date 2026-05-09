@@ -10,7 +10,7 @@ public class ThickPickaxe extends Item {
     public ThickPickaxe(ToolMaterial material, Item.Properties properties) {
         super(properties
                 .pickaxe(material, 1.0f, -2.8f)
-                .attributes(ReachToolHelper.buildThickModifiers(material, 1.0f, -2.8f, true))
+                .attributes(ReachToolHelper.buildThickPickaxeModifiers(material, 1.0f, -2.8f, true))
         );
     }
 }

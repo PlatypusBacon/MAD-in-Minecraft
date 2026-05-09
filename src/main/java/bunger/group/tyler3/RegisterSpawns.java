@@ -9,6 +9,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.levelgen.Heightmap;
 
 import java.util.function.Predicate;
@@ -18,12 +19,21 @@ public class RegisterSpawns {
         Predicate<BiomeSelectionContext> selector = BiomeSelectors.foundInOverworld()
                 .or(BiomeSelectors.foundInTheNether());
 
-        BiomeModifications.addSpawn(selector, MobCategory.MONSTER, ModEntities.DUDE, 5, 1, 1);
+        BiomeModifications.addSpawn(selector, MobCategory.MONSTER, ModEntities.DUDE, 2, 1, 1);
         SpawnPlacements.register(
                 ModEntities.DUDE,
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 Mob::checkMobSpawnRules
+        );
+
+        Predicate<BiomeSelectionContext> deerSelector = BiomeSelectors.foundInOverworld();
+        BiomeModifications.addSpawn(deerSelector, MobCategory.CREATURE, ModEntities.DEER, 10, 1, 4);
+        SpawnPlacements.register(
+                ModEntities.DEER,
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Animal::checkAnimalSpawnRules
         );
     }
 }

@@ -16,6 +16,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.StandingAndWallBlockItem;
+import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.level.block.Block;
 
 import java.util.function.Function;
@@ -28,7 +29,10 @@ public class ModItems {
     public static final Item ANTLER  = register("antler",  Item::new, new Item.Properties());
     public static final Item SMOOTH_PLANK = registerPlaceable("smooth_plank", ModBlocks.SMOOTH_PLANK);
     public static final Item SMOOTH_SLAB = registerPlaceable("smooth_slab", ModBlocks.SMOOTH_SLAB);
-
+    public static final Item SLING = register("sling", SlingItem::new, new Item.Properties());
+    public static final Item FLINT_KNIFE    = register("flint_knife",    p -> new FlintKnifeItem(ToolMaterial.WOOD, p),       new Item.Properties());
+    public static final Item LONG_FLINT_KNIFE    = register("long_flint_knife",    p -> new LongFlintKnife(ModToolMaterials.LONG_WOOD, p),       new Item.Properties());
+    public static final Item THICK_FLINT_KNIFE    = register("thick_flint_knife",    p -> new ThickFlintKnife(ModToolMaterials.THICK_WOOD, p),       new Item.Properties());
 
     // --- Torches ---
     // StandingAndWallBlockItem(block, wallBlock, attachmentDirection, properties)

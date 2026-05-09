@@ -49,7 +49,8 @@ public class DeerEntity extends Animal
         return Animal.createAnimalAttributes()
                 .add(Attributes.MAX_HEALTH, 8.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.25f)
-        .add(Attributes.FOLLOW_RANGE, 36.0);
+        .add(Attributes.FOLLOW_RANGE, 36.0)
+          .add(Attributes.ATTACK_DAMAGE, 2.0);
     }
 
     public DeerEntity(EntityType<? extends Animal> entityType, Level world)
@@ -62,9 +63,12 @@ public class DeerEntity extends Animal
     {
         goalSelector.addGoal(0, new FloatGoal(this));
         goalSelector.addGoal(0, new ClimbOnTopOfPowderSnowGoal(this, level()));
-        goalSelector.addGoal(1, new PanicGoal(this, 2.0));
+        this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, Player.class, 20f, 1.8, 2.6));
+
+        //goalSelector.addGoal(1, new PanicGoal(this, 2.0));
         goalSelector.addGoal(2, new BreedGoal(this, 1.0));
         targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.2, true));
         /*
         goalSelector.addGoal(3, new TemptGoal(
                 this, 1.25,

@@ -18,7 +18,6 @@ public class ModItems {
                     Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, "gold_scar")));
     public static final Item MEDIUM_AMMO = register("medium_ammo", MediumAmmoItem::new, new MediumAmmoItem.Properties());
 
-
     private static <T extends Item> T register(String name,
                                                Function<Item.Properties, T> factory,
                                                Item.Properties props) {

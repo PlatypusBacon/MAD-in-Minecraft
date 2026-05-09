@@ -32,6 +32,12 @@ public class ModBlocks {
             BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB),
             false
     );
+    public static final Block ROCK = registerBlock(
+            "rock",
+            RockBlock::new,
+            BlockBehaviour.Properties.ofFullCopy(Blocks.LEAF_LITTER),
+            true
+    );
     // ── Thick Torch ──────────────────────────────────────────────────────────
     // Horizontal bias: floor = 14 always, wall = 14 (horizontal is strong axis).
 

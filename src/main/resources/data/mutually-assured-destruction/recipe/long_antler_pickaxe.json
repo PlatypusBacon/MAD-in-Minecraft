@@ -3,13 +3,13 @@
   "category": "equipment",
   "key": {
     "#": "mutually-assured-destruction:antler",
-    "x": "minecraft:stick"
+    "x": "mutually-assured-destruction:long_stick"
   },
   "pattern": [
     "##",
     "x "
   ],
   "result": {
-    "id": "mutually-assured-destruction:antler_pickaxe"
+    "id": "mutually-assured-destruction:long_antler_pickaxe"
   }
 }

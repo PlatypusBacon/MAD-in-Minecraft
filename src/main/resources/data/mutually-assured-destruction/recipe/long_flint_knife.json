@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": "minecraft:flint",
+    "x": "mutually-assured-destruction:long_stick",
+    "y": "#mutually-assured-destruction:wrapping"
+  },
+  "pattern": [
+    "y#",
+    "xy"
+  ],
+  "result": {
+    "id": "mutually-assured-destruction:long_flint_knife"
+  }
+}

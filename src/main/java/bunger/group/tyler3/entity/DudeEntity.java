@@ -29,7 +29,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class DudeEntity extends PathfinderMob implements Enemy {
 
-    private static final double AGGRO_RANGE = 16.0;
+    private static final double BASE_FOLLOW_RANGE  = 6.0;
+    private static final double AGGRO_FOLLOW_RANGE = 256.0;
     private int attackCooldown = 0;
 
     public DudeEntity(EntityType<? extends PathfinderMob> type, Level level) {
@@ -44,6 +45,15 @@ public class DudeEntity extends PathfinderMob implements Enemy {
                 .add(Attributes.FOLLOW_RANGE, 6.0)
                 .add(Attributes.STEP_HEIGHT, 1.0);
     }
+    @Override
+    public void setTarget(@Nullable LivingEntity target) {
+        super.setTarget(target);
+        var followRange = this.getAttribute(Attributes.FOLLOW_RANGE);
+        if (followRange != null) {
+            followRange.setBaseValue(target != null ? AGGRO_FOLLOW_RANGE : BASE_FOLLOW_RANGE);
+        }
+    }
+
     @Override
     protected PathNavigation createNavigation(Level level) {
         GroundPathNavigation nav = new GroundPathNavigation(this, level);

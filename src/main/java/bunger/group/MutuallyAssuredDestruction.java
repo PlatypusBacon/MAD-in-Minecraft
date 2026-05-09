@@ -6,7 +6,14 @@ import bunger.group.tyler3.network.UnlockRecipePagePayload;
 import bunger.group.tyler3.rego.RecipePageRegistry;
 import net.fabricmc.api.ModInitializer;
 
+import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.levelgen.GenerationStep;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +35,14 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		bunger.group.tyler.block.ModBlocks.registerModBlocks();
 		bunger.group.tyler.sound.ModSounds.initialize();
 		bunger.group.tyler3.sounds.ModSounds.initialize();
-
+		BiomeModifications.addFeature(
+				BiomeSelectors.foundInOverworld(),
+				GenerationStep.Decoration.VEGETAL_DECORATION,
+				ResourceKey.create(
+						Registries.PLACED_FEATURE,
+						Identifier.fromNamespaceAndPath(MOD_ID, "rock")
+				)
+		);
 		bunger.group.tyler.event.TickScheduler.register();
 		bunger.group.tyler.event.god.StructureManager.register();
 		bunger.group.tyler.event.SundownWatcher.register();
@@ -52,5 +66,6 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 				UnlockRecipePagePayload.CODEC
 		);
 		RecipePageRegistry.register(ModItems.SQUIRREL_STAPELER, "bear_boxers");
+		RecipePageRegistry.register(Items.LEATHER, "sling");
 	}
 }

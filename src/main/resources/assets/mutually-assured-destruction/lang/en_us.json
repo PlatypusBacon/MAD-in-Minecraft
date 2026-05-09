@@ -9,7 +9,6 @@
   "item.mutually-assured-destruction.squirrel_bear_claw": "Squirrel Bear Claw",
   "item.mutually-assured-destruction.long_stick": "Long Stick",
   "item.mutually-assured-destruction.thick_stick": "Thick Stick",
-  "item.mutually-assured-destruction.smooth_plank": "Smooth Plank",
   "block.mutually-assured-destruction.platform_track": "Platform Track",
   "item.mutually-assured-destruction.platform": "Platform",
   "item.mutually-assured-destruction.sticky_attachment": "Sticky Goo",
@@ -136,5 +135,18 @@
   "enchantment.mutually-assured-destruction.stapled": "STAPLED",
   "itemGroup.mutually-assured-destruction.sticks_tab": "New Sticks",
   "itemGroup.mutually-assured-destruction.squirrel_tab": "Squirrel Stapeler",
-  "itemGroup.mutually-assured-destruction.sticky_tab": "Sticky Goop"
+  "itemGroup.mutually-assured-destruction.sticky_tab": "Sticky Goop",
+
+
+  "item.mutually-assured-destruction.antler": "Antler",
+  "item.mutually-assured-destruction.antler_pickaxe": "Antler Pickaxe",
+  "item.mutually-assured-destruction.long_antler_pickaxe": "Long Antler Pickaxe",
+  "item.mutually-assured-destruction.thick_antler_pickaxe": "Thick Antler Pickaxe",
+  "block.mutually-assured-destruction.smooth_slab": "Smooth Slab",
+  "block.mutually-assured-destruction.smooth_plank": "Smooth Plank",
+  "block.mutually-assured-destruction.rock": "Rock",
+  "item.mutually-assured-destruction.sling": "Sling",
+  "item.mutually-assured-destruction.long_flint_knife": "Long Flint Knife",
+  "item.mutually-assured-destruction.thick_flint_knife": "Thick Flint Knife",
+  "item.mutually-assured-destruction.flint_knife": "Flint Knife"
 }
