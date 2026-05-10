@@ -33,17 +33,25 @@ public class TaxLogic {
 
         Map<Item, Integer> taxMap = new LinkedHashMap<>();
 
-        TagKey<Item> BUILDING = ItemTags.PLANKS;
-        TagKey<Item> REDSTONE = ItemTags.ARMOR_ENCHANTABLE;
-        TagKey<Item> FOOD = ItemTags.MEAT;
-        TagKey<Item> COMBAT = ItemTags.SWORDS;
-        TagKey<Item> ORES = ItemTags.COAL_ORES;
+        /*
+        1x type of wood or wood item (1-64)
+        1x pickaxe obtainable stone (1-64)
+        1x food item or farming item (1-64)
+        1x ore (1-32) (current pickaxe?)
+        1x random (1-16)
+        */
+        
+        TagKey<Item> WOOD = MutuallyAssuredDestruction.WOOD_TAXES;
+        TagKey<Item> STONE = MutuallyAssuredDestruction.STONE_TAXES;
+        TagKey<Item> FOOD = MutuallyAssuredDestruction.FOOD_TAXES;
+        TagKey<Item> ORE = MutuallyAssuredDestruction.ORE_TAXES;
+        TagKey<Item> RANDOM = ItemTags.ANVIL;
 
-        taxMap.put(getRandomFromTag(BUILDING, random), random.nextInt(3) + 1);
-        taxMap.put(getRandomFromTag(REDSTONE, random), random.nextInt(3) + 1);
-        taxMap.put(getRandomFromTag(COMBAT, random), random.nextInt(3) + 1);
-        taxMap.put(getRandomFromTag(FOOD, random), random.nextInt(3) + 1);
-        taxMap.put(getRandomFromTag(ORES, random), random.nextInt(3) + 1);
+        taxMap.put(getRandomFromTag(WOOD, random), random.nextInt(64) + 1);
+        taxMap.put(getRandomFromTag(STONE, random), random.nextInt(64) + 1);
+        taxMap.put(getRandomFromTag(FOOD, random), random.nextInt(64) + 1);
+        taxMap.put(getRandomFromTag(ORE, random), random.nextInt(32) + 1);
+        taxMap.put(getRandomFromTag(RANDOM, random), random.nextInt(16) + 1);
 
         StringBuilder text = new StringBuilder();
 
@@ -79,7 +87,7 @@ public class TaxLogic {
 
 
         long currentDay = user.level().getGameTime() / 24000L;
-        long dueDay = currentDay + 5;
+        long dueDay = currentDay+1;
 
         PLAYER_TAXES.put(
             user.getUUID(),
@@ -92,37 +100,34 @@ public class TaxLogic {
     }
 
 
-    private static Item getRandomFromTag(TagKey<Item> tag, Random random) {
-        List<Item> items = new ArrayList<>();
+    public static Item getRandomFromTag(TagKey<Item> tag, Random random) {
 
-        BuiltInRegistries.ITEM.forEach(item -> {
-            if (item.builtInRegistryHolder().is(tag)) {
-                items.add(item);
-            }
-        });
-
-        if (items.isEmpty()){
-            return null;
-        }
+        List<Item> items = BuiltInRegistries.ITEM.stream()
+            .filter(item -> item.builtInRegistryHolder().is(tag))
+            .toList();
 
         return items.get(random.nextInt(items.size()));
     }
 
 
     public static void checkTaxes(ServerPlayer player) {
-    
+
+        player.sendSystemMessage(Component.literal("Checking taxes..."));
+
         TaxData data = PLAYER_TAXES.get(player.getUUID());
 
-        if (data == null)
+        if (data == null){
             return;
+        }
 
-        long currentDay =
-            player.level().getGameTime() / 24000L;
+        long currentDay = player.level().getGameTime() / 24000L;
 
-        if (!data.paid && currentDay > data.dueDay) {
-
+        if (currentDay > data.dueDay) {
+            if(data.paid){
+                player.sendSystemMessage(Component.literal(player.getName()+" paid their taxes"));
+            }
+            player.sendSystemMessage(Component.literal(player.getName()+" failed to pay their taxes... "));
             punishPlayer(player);
-
             data.paid = true;
         }
     }

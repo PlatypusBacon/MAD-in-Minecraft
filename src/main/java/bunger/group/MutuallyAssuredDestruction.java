@@ -13,14 +13,18 @@ import bunger.group.bryan.MailboxBlock;
 import java.util.List;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import com.mojang.serialization.Codec;
 // import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.TagKey;
 import net.minecraft.core.Registry;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.server.level.ServerPlayer;
@@ -77,6 +81,38 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 				.build()
     );
 
+	public static final TagKey<Item> FOOD_TAXES = TagKey.create(
+		Registries.ITEM,
+		Identifier.fromNamespaceAndPath(
+			MutuallyAssuredDestruction.MOD_ID,
+			"food_taxes"
+		)
+	);
+
+	public static final TagKey<Item> STONE_TAXES = TagKey.create(
+		Registries.ITEM,
+		Identifier.fromNamespaceAndPath(
+			MutuallyAssuredDestruction.MOD_ID,
+			"stone_taxes"
+		)
+	);
+
+	public static final TagKey<Item> WOOD_TAXES = TagKey.create(
+		Registries.ITEM,
+		Identifier.fromNamespaceAndPath(
+			MutuallyAssuredDestruction.MOD_ID,
+			"wood_taxes"
+		)
+	);
+
+	public static final TagKey<Item> ORE_TAXES = TagKey.create(
+		Registries.ITEM,
+		Identifier.fromNamespaceAndPath(
+			MutuallyAssuredDestruction.MOD_ID,
+			"ore_taxes"
+		)
+	);
+
 
 
 
@@ -94,6 +130,30 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		//Bunger2.initialize();
 
 		TaxItem.initialize();
+
+		// ============ GIVE PLAYERS TAXES =============
+		ServerTickEvents.END_SERVER_TICK.register(server -> {
+
+			long day = server.overworld().getGameTime() % 24000L;
+
+			// run once per day
+			if (day == 0) {
+
+				for (ServerPlayer player : server.getPlayerList().getPlayers()) {
+
+					// create tax slip
+					ItemStack taxSlip =
+						new ItemStack(TaxItem.TAX_ITEM);
+
+					// generate taxes/book text
+					TaxLogic.applyTaxBook(taxSlip, player);
+
+					// give to player
+					player.getInventory().add(taxSlip);
+				}
+			}
+		});
+		// ================ CHECK TAXES ================
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
 
 			long day = server.overworld().getGameTime() % 24000L;
@@ -106,6 +166,7 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 				}
 			}
 		});
+
 
       	CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.BUILDING_BLOCKS).register((creativeTab) -> creativeTab.accept(MAILBOX_BLOCK));
 		//CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.INGREDIENTS).register((creativeTab) -> creativeTab.accept(TaxItem.TAX_ITEM));
