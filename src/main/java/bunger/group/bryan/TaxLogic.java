@@ -1,19 +1,27 @@
 package bunger.group.bryan;
 import bunger.group.MutuallyAssuredDestruction;
+import bunger.group.bryan.TaxData;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.network.Filterable;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.WrittenBookContent;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.player.Player;
-
+import net.minecraft.tags.ItemTags;
+import net.minecraft.server.level.ServerPlayer;
 import java.util.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
+
 
 public class TaxLogic {
+
+    public static final Map<UUID, TaxData> PLAYER_TAXES = new HashMap<>();
 
     public static void applyTaxBook(ItemStack itemStack, Player user) {
         List<Item> allItems = new ArrayList<>();
@@ -21,13 +29,40 @@ public class TaxLogic {
 
         Collections.shuffle(allItems);
 
-        List<Item> selected = allItems.subList(0, 5);
+        Random random = new Random();
 
-        StringBuilder text = new StringBuilder("");
+        Map<Item, Integer> taxMap = new LinkedHashMap<>();
 
-        for (Item item : selected) {
-            String name = item.getName(item.getDefaultInstance()).getString();
-            text.append("- ").append(name).append("\n");
+        TagKey<Item> BUILDING = ItemTags.PLANKS;
+        TagKey<Item> REDSTONE = ItemTags.ARMOR_ENCHANTABLE;
+        TagKey<Item> FOOD = ItemTags.MEAT;
+        TagKey<Item> COMBAT = ItemTags.SWORDS;
+        TagKey<Item> ORES = ItemTags.COAL_ORES;
+
+        taxMap.put(getRandomFromTag(BUILDING, random), random.nextInt(3) + 1);
+        taxMap.put(getRandomFromTag(REDSTONE, random), random.nextInt(3) + 1);
+        taxMap.put(getRandomFromTag(COMBAT, random), random.nextInt(3) + 1);
+        taxMap.put(getRandomFromTag(FOOD, random), random.nextInt(3) + 1);
+        taxMap.put(getRandomFromTag(ORES, random), random.nextInt(3) + 1);
+
+        StringBuilder text = new StringBuilder();
+
+
+        Map<String, Integer> requiredItems = new HashMap<>();
+
+        for (Map.Entry<Item, Integer> entry : taxMap.entrySet()) {
+
+            String itemId = BuiltInRegistries.ITEM.getKey(entry.getKey()).toString();
+
+            requiredItems.put(itemId, entry.getValue());
+            System.out.println("!!!!!!!!!!"+entry.getValue());
+        }
+
+        for (Map.Entry<Item, Integer> entry : taxMap.entrySet()) {
+            String name = entry.getKey().getName(entry.getKey().getDefaultInstance()).getString();
+            int count = entry.getValue();
+
+            text.append("- ").append(count).append("x ").append(name).append("\n");
         }
 
         WrittenBookContent content = new WrittenBookContent(
@@ -42,19 +77,93 @@ public class TaxLogic {
             false
         );
 
-        String data = selected.stream()
-            .map(item -> BuiltInRegistries.ITEM.getKey(item).toString())
-            .reduce((a, b) -> a + "," + b)
-            .orElse("");
 
-        itemStack.set(MutuallyAssuredDestruction.TAX_ITEMS, data);
+        long currentDay = user.level().getGameTime() / 24000L;
+        long dueDay = currentDay + 5;
 
-        // List<String> itemIds = selected.stream()
-        //     .map(item -> BuiltInRegistries.ITEM.getKey(item).toString())
-        //     .toList();
-
-        // itemStack.set(MutuallyAssuredDestruction.TAX_ITEMS, itemIds);    
+        PLAYER_TAXES.put(
+            user.getUUID(),
+            new TaxData(requiredItems, dueDay)
+        );
 
         itemStack.set(DataComponents.WRITTEN_BOOK_CONTENT, content);
+
+        System.out.println(requiredItems+"!!!!!!!!!!");
     }
+
+
+    private static Item getRandomFromTag(TagKey<Item> tag, Random random) {
+        List<Item> items = new ArrayList<>();
+
+        BuiltInRegistries.ITEM.forEach(item -> {
+            if (item.builtInRegistryHolder().is(tag)) {
+                items.add(item);
+            }
+        });
+
+        if (items.isEmpty()){
+            return null;
+        }
+
+        return items.get(random.nextInt(items.size()));
+    }
+
+
+    public static void checkTaxes(ServerPlayer player) {
+    
+        TaxData data = PLAYER_TAXES.get(player.getUUID());
+
+        if (data == null)
+            return;
+
+        long currentDay =
+            player.level().getGameTime() / 24000L;
+
+        if (!data.paid && currentDay > data.dueDay) {
+
+            punishPlayer(player);
+
+            data.paid = true;
+        }
+    }
+
+    public static void punishPlayer(ServerPlayer player) {
+
+        BlockPos playerPos = player.blockPosition();
+
+        for (int x = -20; x <= 20; x++) {
+            for (int y = -5; y <= 5; y++) {
+                for (int z = -20; z <= 20; z++) {
+
+                    BlockPos pos = playerPos.offset(x, y, z);
+                    BlockEntity be = player.level().getBlockEntity(pos);
+
+                    if (be instanceof ChestBlockEntity chest) {
+                        removeItemsFromChest(chest, 3);
+                    }
+                }
+            }
+        }
+    }
+
+
+
+
+    public static void removeItemsFromChest(ChestBlockEntity chest, int amount) {
+
+        Random random = new Random();
+
+        for (int i = 0; i < amount; i++) {
+
+            int slot = random.nextInt(chest.getContainerSize());
+
+            ItemStack stack = chest.getItem(slot);
+
+            if (!stack.isEmpty()) {
+                stack.shrink(1);
+                chest.setChanged();
+            }
+        }
+    }
+
 }

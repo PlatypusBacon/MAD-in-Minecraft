@@ -17,26 +17,15 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.core.Direction;
-// import net.minecraft.world.item.CreativeModeTabs;
-// import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
-// import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.network.chat.Component;
 
-import net.minecraft.world.item.Item;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-
-
-
-// TODO: add item texture
 // TODO: add better in game name
 
 public class MailboxBlock extends Block {
@@ -50,8 +39,6 @@ public class MailboxBlock extends Block {
     }
 
 
-
-
     public static Block registerBlock(String name, Function<BlockBehaviour.Properties, Block> factory, BlockBehaviour.Properties properties, boolean registerItem) {
         ResourceKey<Block> blockKey = ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, name));
         Block block = factory.apply(properties.setId(blockKey));
@@ -63,12 +50,10 @@ public class MailboxBlock extends Block {
     }
 
 
-
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING);
     }
-
 
 
     @Override
@@ -76,50 +61,54 @@ public class MailboxBlock extends Block {
         return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
 
+
     @Override
-    protected InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos,
-                                            Player player, BlockHitResult hit) {
+    protected InteractionResult useItemOn(ItemStack held,
+                                          BlockState state,
+                                          Level world,
+                                          BlockPos pos,
+                                          Player player,
+                                          InteractionHand hand,
+                                          BlockHitResult hit) {
 
-        // Find tax book in inventory
-        ItemStack taxBook = ItemStack.EMPTY;
-        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
-            ItemStack stack = player.getInventory().getItem(i);
-            if (stack.has(MutuallyAssuredDestruction.TAX_ITEMS)) {
-                taxBook = stack;
-                break;
-            }
+        if (world.isClientSide()) {
+            System.out.println("IS CLIENTSIDE !!!!!!!!!!!");
+            return InteractionResult.SUCCESS;
+        } else {
+            System.out.println("IS SERVERSIDE !!!!!!!!!!!");
         }
 
-        if (taxBook.isEmpty()){
+        TaxData data = TaxLogic.PLAYER_TAXES.get(player.getUUID());
+
+        if (data == null) {
             return InteractionResult.PASS;
         }
 
-        String data = taxBook.get(MutuallyAssuredDestruction.TAX_ITEMS);
-        if (data == null || data.isEmpty()){ 
+        if (held.isEmpty()) {
             return InteractionResult.PASS;
         }
-
-        List<String> required = new ArrayList<>(Arrays.asList(data.split(",")));
-        
-        // Get held item
-        ItemStack held = player.getMainHandItem();
-        if (held.isEmpty()) return InteractionResult.PASS;
 
         String heldId = BuiltInRegistries.ITEM.getKey(held.getItem()).toString();
 
-        // Check if it's required
-        if (required.contains(heldId)) {
+        if (data.requiredItems.containsKey(heldId)) {
 
-            held.shrink(1); // delete item
+            int remaining = data.requiredItems.get(heldId) - 1;
+            System.out.println("Remaining = " + remaining + "!!!!!!!!!!!!!!!!!");
 
-            required.remove(heldId);
+            held.shrink(1);
 
-            String newData = String.join(",", required);
-            taxBook.set(MutuallyAssuredDestruction.TAX_ITEMS, newData);
+            if (remaining <= 0) {
+                data.requiredItems.remove(heldId);
+            } else {
+                data.requiredItems.put(heldId, remaining);
+            }
 
+            if (data.requiredItems.isEmpty()) {
+                data.paid = true;
+                player.sendSystemMessage(Component.literal("Taxes paid."));
+            }
             return InteractionResult.SUCCESS;
         }
-
         return InteractionResult.PASS;
     }
 }

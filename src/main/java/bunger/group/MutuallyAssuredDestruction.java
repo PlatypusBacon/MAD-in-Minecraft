@@ -8,6 +8,7 @@ import bunger.group.alex.Bunger1;
 
 import bunger.group.bryan.Bunger2;
 import bunger.group.bryan.TaxItem;
+import bunger.group.bryan.TaxLogic;
 import bunger.group.bryan.MailboxBlock;
 import java.util.List;
 import net.minecraft.core.component.DataComponentType;
@@ -19,7 +20,13 @@ import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import com.mojang.serialization.Codec;
 // import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.core.Registry;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.minecraft.server.level.ServerPlayer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import java.util.*;
+import net.minecraft.world.level.Level; 
 
 
 import bunger.group.csmit863.Bunger3;
@@ -34,6 +41,8 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
+
+	// ================ START OF BRYAN'S INITIALIZATION SECTION ================
 
 	public static final Block MAILBOX_BLOCK = MailboxBlock.registerBlock("mailbox_block",
 		MailboxBlock::new,
@@ -50,6 +59,32 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 				.build()
     	);
 
+	public static final DataComponentType<Long> TAX_DUE_DAY =
+    	Registry.register(
+			BuiltInRegistries.DATA_COMPONENT_TYPE,
+			Identifier.fromNamespaceAndPath(MOD_ID, "tax_due_day"),
+			DataComponentType.<Long>builder()
+				.persistent(Codec.LONG)
+				.build()
+    );
+
+	public static final DataComponentType<Boolean> TAX_PAID =
+		Registry.register(
+			BuiltInRegistries.DATA_COMPONENT_TYPE,
+			Identifier.fromNamespaceAndPath(MOD_ID, "tax_paid"),
+			DataComponentType.<Boolean>builder()
+				.persistent(Codec.BOOL)
+				.build()
+    );
+
+
+
+
+
+
+	// ================ END OF BRYAN'S INITIALIZATION SECTION ================
+
+
 	@Override
 	public void onInitialize() {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
@@ -59,6 +94,18 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		//Bunger2.initialize();
 
 		TaxItem.initialize();
+		ServerTickEvents.END_SERVER_TICK.register(server -> {
+
+			long day = server.overworld().getGameTime() % 24000L;
+
+			// run once per day
+			if (day == 0) {
+
+				for (ServerPlayer player : server.getPlayerList().getPlayers()) {
+					TaxLogic.checkTaxes(player);
+				}
+			}
+		});
 
       	CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.BUILDING_BLOCKS).register((creativeTab) -> creativeTab.accept(MAILBOX_BLOCK));
 		//CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.INGREDIENTS).register((creativeTab) -> creativeTab.accept(TaxItem.TAX_ITEM));
