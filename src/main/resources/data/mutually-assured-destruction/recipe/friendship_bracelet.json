@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#D#",
+    "D D",
+    "#o#"
+  ],
+  "key": {
+    "#": "minecraft:string",
+    "D": "#minecraft:dyes",
+    "o": "minecraft:emerald"
+  },
+  "result": {
+    "id": "mutually-assured-destruction:friendship_bracelet"
+  }
+
+}
