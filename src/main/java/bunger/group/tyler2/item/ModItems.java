@@ -1,6 +1,7 @@
 package bunger.group.tyler2.item;
 
 import bunger.group.MutuallyAssuredDestruction;
+import bunger.group.tyler2.ModFoods;
 import bunger.group.tyler2.block.ModBlocks;
 import bunger.group.tyler2.block.SmoothPlankBlock;
 import bunger.group.tyler2.item.tools.*;
@@ -28,14 +29,26 @@ public class ModItems {
     public static final Item LONG_STICK  = register("long_stick",  Item::new, new Item.Properties());
     public static final Item ANTLER  = register("antler",  Item::new, new Item.Properties());
     public static final Item SMOOTH_PLANK = registerPlaceable("smooth_plank", ModBlocks.SMOOTH_PLANK);
+    public static final Item HOT_PLATE = registerPlaceable("hot_plate", ModBlocks.HOT_PLATE);
+    public static final Item TANNING_RACK = registerPlaceable("tanning_rack", ModBlocks.TANNING_RACK);
     public static final Item SMOOTH_SLAB = registerPlaceable("smooth_slab", ModBlocks.SMOOTH_SLAB);
     public static final Item SLING = register("sling", SlingItem::new, new Item.Properties());
     public static final Item FLINT_KNIFE    = register("flint_knife",    p -> new FlintKnifeItem(ToolMaterial.WOOD, p),       new Item.Properties());
     public static final Item LONG_FLINT_KNIFE    = register("long_flint_knife",    p -> new LongFlintKnife(ModToolMaterials.LONG_WOOD, p),       new Item.Properties());
     public static final Item THICK_FLINT_KNIFE    = register("thick_flint_knife",    p -> new ThickFlintKnife(ModToolMaterials.THICK_WOOD, p),       new Item.Properties());
+    public static final Item VENISON    = register("venison", Item::new, new Item.Properties().food(ModFoods.VENISON));
+    public static final Item COOKED_VENISON = register("cooked_venison", Item::new, new Item.Properties().food(ModFoods.COOKED_VENISON));
+    public static final Item DEER_JERKY = register("deer_jerky", Item::new, new Item.Properties().food(ModFoods.DEER_JERKY));    // StandingAndWallBlockItem(block, wallBlock, attachmentDirection, properties)
+    public static final Item BEEF_JERKY = register("beef_jerky", Item::new, new Item.Properties().food(ModFoods.BEEF_JERKY));    // StandingAndWallBlockItem(block, wallBlock, attachmentDirection, properties)
+    public static final Item PORK_JERKY = register("pork_jerky", Item::new, new Item.Properties().food(ModFoods.PORK_JERKY));    // StandingAndWallBlockItem(block, wallBlock, attachmentDirection, properties)
+    public static final Item CHICKEN_JERKY = register("chicken_jerky", Item::new, new Item.Properties().food(ModFoods.CHICKEN_JERKY));    // StandingAndWallBlockItem(block, wallBlock, attachmentDirection, properties)
+    public static final Item DRIED_COD = register("dried_cod", Item::new, new Item.Properties().food(ModFoods.DRIED_COD));    // StandingAndWallBlockItem(block, wallBlock, attachmentDirection, properties)
+    public static final Item DRIED_SALMON = register("dried_salmon", Item::new, new Item.Properties().food(ModFoods.DRIED_SALMON));    // StandingAndWallBlockItem(block, wallBlock, attachmentDirection, properties)
+    public static final Item SHEEP_JERKY = register("sheep_jerky", Item::new, new Item.Properties().food(ModFoods.SHEEP_JERKY));    // StandingAndWallBlockItem(block, wallBlock, attachmentDirection, properties)
 
-    // --- Torches ---
-    // StandingAndWallBlockItem(block, wallBlock, attachmentDirection, properties)
+    public static final Item ANIMAL_SKIN = register("animal_skin", Item::new, new Item.Properties().food(ModFoods.CHICKEN_JERKY));    // StandingAndWallBlockItem(block, wallBlock, attachmentDirection, properties)
+
+
     // Direction.DOWN = cannot be placed on ceilings.
     public static final Item THICK_TORCH = registerTorchItem(
             "thick_torch",

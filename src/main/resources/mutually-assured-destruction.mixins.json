@@ -6,7 +6,8 @@
 		"BedSpawnMixin",
 		"ExplosionMixin",
 		"OffhandSlotMixin",
-		"ItemEntityPickupMixin"
+		"ItemEntityPickupMixin",
+		"StructureTemplatePoolMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

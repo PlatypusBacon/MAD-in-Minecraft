@@ -34,6 +34,19 @@ public final class TomePageStore {
     // World ID
     // ---------------------------------------------------------------
 
+
+    private static String cachedWorldId = null;
+
+    public static void setCurrentWorld() {
+        cachedWorldId = currentWorldId();
+    }
+
+    private static Path getSavePath() {
+        String id = cachedWorldId != null ? cachedWorldId : currentWorldId();
+        return Minecraft.getInstance().gameDirectory.toPath()
+                .resolve("tome_pages")
+                .resolve(id + ".json");
+    }
     /**
      * Returns a filesystem-safe identifier for the current world/server.
      * Used as the save file name.
@@ -51,12 +64,6 @@ public final class TomePageStore {
 
     private static String sanitize(String raw) {
         return raw.replaceAll("[^a-zA-Z0-9._\\-]", "_");
-    }
-
-    private static Path getSavePath() {
-        return Minecraft.getInstance().gameDirectory.toPath()
-                .resolve("tome_pages")
-                .resolve(currentWorldId() + ".json");
     }
 
     // ---------------------------------------------------------------

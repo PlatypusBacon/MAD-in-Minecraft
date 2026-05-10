@@ -148,5 +148,19 @@
   "item.mutually-assured-destruction.sling": "Sling",
   "item.mutually-assured-destruction.long_flint_knife": "Long Flint Knife",
   "item.mutually-assured-destruction.thick_flint_knife": "Thick Flint Knife",
-  "item.mutually-assured-destruction.flint_knife": "Flint Knife"
+  "item.mutually-assured-destruction.flint_knife": "Flint Knife",
+  "item.mutually-assured-destruction.tanning_rack": "Tanning Rack",
+  "block.mutually-assured-destruction.tanning_rack": "Tanning Rack",
+  "item.mutually-assured-destruction.hot_plate": "Hot Plate",
+  "block.mutually-assured-destruction.hot_plate": "Hot Plate",
+
+  "item.mutually-assured-destruction.deer_jerky": "Deer Jerky",
+  "item.mutually-assured-destruction.beef_jerky": "Beef Jerky",
+  "item.mutually-assured-destruction.pork_jerky": "Pork Jerky",
+  "item.mutually-assured-destruction.chicken_jerky": "Chicken Jerky",
+  "item.mutually-assured-destruction.dried_cod": "Dried Cod",
+  "item.mutually-assured-destruction.dried_salmon": "Dried Salmon",
+  "item.mutually-assured-destruction.venison": "Venison",
+  "item.mutually-assured-destruction.cooked_venison": "Cooked Venison",
+  "item.mutually-assured-destruction.animal_skin": "Animal Skin"
 }

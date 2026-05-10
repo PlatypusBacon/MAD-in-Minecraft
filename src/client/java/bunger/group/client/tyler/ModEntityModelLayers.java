@@ -23,6 +23,7 @@ public class ModEntityModelLayers {
     public static final ModelLayerLocation SHOPPING_CART = createMain("shopping_cart");
     public static final ModelLayerLocation DEER = createMain("deer");
 
+
     private static ModelLayerLocation createMain(String name) {
 
         return new ModelLayerLocation(Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, name), "main");

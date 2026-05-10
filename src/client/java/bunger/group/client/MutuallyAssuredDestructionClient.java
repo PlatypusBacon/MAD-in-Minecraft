@@ -11,6 +11,9 @@ import bunger.group.client.tyler.squirrel_bear.SquirrelBearEntityRenderer;
 import bunger.group.client.tyler.squirrel_wife.SquirrelWifeEntityRenderer;
 import bunger.group.client.tyler3.IsFiring;
 import bunger.group.client.tyler3.dude.DudeRenderer;
+import bunger.group.client.tyler3.hot_plate.HotPlateBlockEntityRenderer;
+import bunger.group.client.tyler3.tanning_rack.TanningRackBlockEntityRenderer;
+import bunger.group.tyler2.block.ModBlockEntities;
 import bunger.group.tyler2.item.SlingItem;
 import bunger.group.tyler3.rego.RecipePageRegistry;
 import bunger.group.client.tyler3.shopping_cart.ShoppingCartRenderer;
@@ -22,11 +25,13 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import bunger.group.client.tyler.squirrel.SquirrelEntityRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
@@ -63,6 +68,19 @@ public class MutuallyAssuredDestructionClient implements ClientModInitializer {
 				bunger.group.tyler3.entity.ModEntities.ROCK_PROJECTILE,
 				ThrownItemRenderer::new
 		);
+		BlockEntityRenderers.register(
+				ModBlockEntities.HOT_PLATE_BE,
+				HotPlateBlockEntityRenderer::new
+		);
+		BlockEntityRenderers.register(
+				ModBlockEntities.TANNING_RACK_BE,
+				TanningRackBlockEntityRenderer::new
+		);
+		RecipePageRegistry.register("sling");
+		RecipePageRegistry.register("flint_knife");
+		ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
+			PaintOverlay.loadForCurrentWorld();
+		});
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			if (client.player == null) return;
 			if (client.player.isUsingItem()

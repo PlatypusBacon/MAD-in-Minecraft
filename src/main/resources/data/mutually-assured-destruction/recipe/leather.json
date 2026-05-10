@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 400,
+  "experience": 0.35,
+  "ingredient": "mutually-assured-destruction:animal_skin",
+  "result": {
+    "id": "minecraft:leather"
+  }
+}

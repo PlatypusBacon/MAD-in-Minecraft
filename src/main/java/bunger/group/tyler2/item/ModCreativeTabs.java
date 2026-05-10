@@ -146,6 +146,10 @@ public class ModCreativeTabs {
                         // Dumb shit
                         output.accept(ModBlocks.ROCK.asItem());
                         output.accept(ModItems.SLING);
+                        output.accept(ModItems.HOT_PLATE);
+                        output.accept(ModItems.TANNING_RACK);
+                        output.accept(ModItems.VENISON);
+                        output.accept(ModItems.COOKED_VENISON);
 
                     })
                     .build()

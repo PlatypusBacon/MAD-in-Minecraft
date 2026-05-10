@@ -32,6 +32,25 @@ public class ModBlocks {
             BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB),
             false
     );
+    public static final Block HOT_PLATE = registerBlock(
+            "hot_plate",
+            HotPlateBlock::new,
+            BlockBehaviour.Properties.of()
+                    .strength(2.0f)
+                    .sound(SoundType.STONE)
+                    .noOcclusion()
+                    .requiresCorrectToolForDrops(),
+            false
+    );
+    public static final Block TANNING_RACK = registerBlock(
+            "tanning_rack",
+            TanningRackBlock::new,
+            BlockBehaviour.Properties.of()
+                    .strength(1.0f)
+                    .sound(SoundType.WOOD)
+                    .noOcclusion(),
+            false
+    );
     public static final Block ROCK = registerBlock(
             "rock",
             RockBlock::new,

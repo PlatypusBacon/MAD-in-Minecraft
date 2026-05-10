@@ -1,7 +1,10 @@
 package bunger.group;
 
 import bunger.group.tyler.item.ModItems;
+import bunger.group.tyler2.block.ModBlockEntities;
+import bunger.group.tyler2.block.ModBlocks;
 import bunger.group.tyler3.RegisterSpawns;
+
 import bunger.group.tyler3.network.UnlockRecipePagePayload;
 import bunger.group.tyler3.rego.RecipePageRegistry;
 import net.fabricmc.api.ModInitializer;
@@ -12,6 +15,8 @@ import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import org.slf4j.Logger;
@@ -55,6 +60,7 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		bunger.group.tyler.entity.ModEntities.registerAttributes();
 		bunger.group.tyler3.entity.ModEntities.registerModEntityTypes();
 		bunger.group.tyler3.entity.ModEntities.registerAttributes();
+		ModBlockEntities.registerModBlockEntities();
 		bunger.group.tyler2.item.ModCreativeTabs.registerCreativeTabs();
 		bunger.group.tyler.item.ModCreativeTabs.registerCreativeTabs();
 		bunger.group.tyler.ModCombatEvents.register();
@@ -66,6 +72,11 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 				UnlockRecipePagePayload.CODEC
 		);
 		RecipePageRegistry.register(ModItems.SQUIRREL_STAPELER, "bear_boxers");
-		RecipePageRegistry.register(Items.LEATHER, "sling");
+		RecipePageRegistry.register(ModItems.SQUIRREL_STAPELER, "bear_boxers");
+		RecipePageRegistry.register(ItemTags.PLANKS, "crafting_table");
+		RecipePageRegistry.register(ModBlocks.ROCK.asItem(), "hot_plate");
+		RecipePageRegistry.register(bunger.group.tyler2.item.ModItems.ANTLER, "antler_pickaxe");
+		RecipePageRegistry.register(bunger.group.tyler2.item.ModItems.HOT_PLATE, "copper_ingot");
+
 	}
 }

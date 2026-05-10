@@ -129,13 +129,20 @@ public class PaintOverlay {
      * Call from {@code ScreenEvents.AFTER_INIT} before creating overlays.
      */
     public static void loadForCurrentWorld() {
-        LOADED = false; // force reload (world may have changed)
+        LOADED = false;
+        TomePageStore.setCurrentWorld(); // capture ID while world info is available
         TomePageStore.LoadResult result = TomePageStore.load(CANVAS_W, CANVAS_H, PaintOverlay::buildPage);
+
         PAGES.clear();
         PAGES.addAll(result.pages());
         UNLOCKED.clear();
         UNLOCKED.addAll(result.unlockedRecipes());
         SAVED_PAGE_INDEX = result.startIndex();
+
+        for (String recipeId : RecipePageRegistry.autoUnlockedRecipes()) {
+            unlockRecipe(recipeId);
+        }
+
         LOADED = true;
     }
 
@@ -185,6 +192,8 @@ public class PaintOverlay {
         if (insertAt <= SAVED_PAGE_INDEX) SAVED_PAGE_INDEX++;
 
         TomePageStore.save(PAGES);
+        Minecraft mc = Minecraft.getInstance();
+        RecipeUnlockedToast.show(mc.getToastManager(), recipeId);
         return true;
     }
 
