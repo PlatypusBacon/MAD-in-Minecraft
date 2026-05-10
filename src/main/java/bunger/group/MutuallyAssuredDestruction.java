@@ -50,7 +50,7 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 
 	public static final Block MAILBOX_BLOCK = MailboxBlock.registerBlock("mailbox_block",
 		MailboxBlock::new,
-		BlockBehaviour.Properties.of().strength(15.0F).requiresCorrectToolForDrops(),
+		BlockBehaviour.Properties.of().strength(5.0F).requiresCorrectToolForDrops(),
 		true
     );
 
