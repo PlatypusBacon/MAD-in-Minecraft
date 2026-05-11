@@ -1,22 +1,29 @@
 package bunger.group.bryan;
 import bunger.group.MutuallyAssuredDestruction;
 import bunger.group.bryan.TaxData;
-
+import bunger.group.bryan.ChestTracker;
+import net.fabricmc.fabric.api.resource.v1.reloader.ResourceReloaderKeys.Server;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.network.Filterable;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.WrittenBookContent;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import java.util.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.entity.Entity;
 
 
 public class TaxLogic {
@@ -87,7 +94,7 @@ public class TaxLogic {
 
 
         long currentDay = user.level().getGameTime() / 24000L;
-        long dueDay = currentDay+1;
+        long dueDay = currentDay-1;
 
         PLAYER_TAXES.put(
             user.getUUID(),
@@ -110,7 +117,7 @@ public class TaxLogic {
     }
 
 
-    public static void checkTaxes(ServerPlayer player) {
+    public static void checkTaxes(ServerPlayer player, MinecraftServer server) {
 
         player.sendSystemMessage(Component.literal("Checking taxes..."));
 
@@ -125,48 +132,67 @@ public class TaxLogic {
         if (currentDay > data.dueDay) {
             if(data.paid){
                 player.sendSystemMessage(Component.literal(player.getName()+" paid their taxes"));
+            } else {
+                player.sendSystemMessage(Component.literal(player.getName()+" failed to pay their taxes... "));
+                
+                punishPlayer(player, server);
+                data.paid = true;
             }
-            player.sendSystemMessage(Component.literal(player.getName()+" failed to pay their taxes... "));
-            punishPlayer(player);
-            data.paid = true;
         }
     }
 
-    public static void punishPlayer(ServerPlayer player) {
+    public static void punishPlayer(Player player, MinecraftServer server) {
 
-        BlockPos playerPos = player.blockPosition();
+        // ============ HANDLES ALL BLOCKS INCDLUING BARRELS ETC ============
+        for (var entry : ChestTracker.getChests().entrySet()) {
 
-        for (int x = -20; x <= 20; x++) {
-            for (int y = -5; y <= 5; y++) {
-                for (int z = -20; z <= 20; z++) {
+            ResourceKey<Level> dim = entry.getKey();
+            Set<BlockPos> positions = entry.getValue();
 
-                    BlockPos pos = playerPos.offset(x, y, z);
-                    BlockEntity be = player.level().getBlockEntity(pos);
+            ServerLevel level = server.getLevel(dim);
+            if (level == null) continue;
 
-                    if (be instanceof ChestBlockEntity chest) {
-                        removeItemsFromChest(chest, 3);
-                    }
+            for (BlockPos pos : positions) {
+
+                BlockEntity be = level.getBlockEntity(pos);
+
+                if (be instanceof Container container) {
+                    TaxData data = TaxLogic.PLAYER_TAXES.get(player.getUUID());
+                    int numItemsToRemove = data.requiredItems.size();
+                    removeItemsFromContainer(container, numItemsToRemove);
+                }
+            }
+        }
+
+        // ============ HANDLES ALL ENTITIES SUCH AS MINECARTS ETC ============
+        for (UUID uuid : StorageEntityTracker.STORAGE_ENTITIES) {
+
+            for (ServerLevel level : server.getAllLevels()) {
+
+                Entity entity = level.getEntity(uuid);
+
+                if (entity instanceof Container container) {
+                    TaxData data = TaxLogic.PLAYER_TAXES.get(player.getUUID());
+                    int numItemsToRemove = data.requiredItems.size();
+                    removeItemsFromContainer(container, numItemsToRemove);
                 }
             }
         }
     }
 
-
-
-
-    public static void removeItemsFromChest(ChestBlockEntity chest, int amount) {
+    public static void removeItemsFromContainer(Container container, int amount) {
 
         Random random = new Random();
 
         for (int i = 0; i < amount; i++) {
 
-            int slot = random.nextInt(chest.getContainerSize());
+            int slot = random.nextInt(container.getContainerSize());
 
-            ItemStack stack = chest.getItem(slot);
+            ItemStack stack = container.getItem(slot);
 
             if (!stack.isEmpty()) {
                 stack.shrink(1);
-                chest.setChanged();
+                container.setChanged();
             }
         }
     }
