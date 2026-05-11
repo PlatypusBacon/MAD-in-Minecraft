@@ -3,7 +3,7 @@ package bunger.group.alex.menu;
 import bunger.group.alex.block.entity.SpellDeskEntity;
 import bunger.group.alex.item.BlankScroll;
 import bunger.group.alex.item.ModItems;
-import bunger.group.alex.item.SpellTypes;
+import bunger.group.alex.item.spell.SpellTypes;
 import bunger.group.alex.spell.SpellDefinition;
 import bunger.group.alex.spell.SpellRegistry;
 import net.minecraft.world.Container;

@@ -1,7 +1,7 @@
 package bunger.group.alex.spell;
 
 import bunger.group.alex.item.ModItems;
-import bunger.group.alex.item.SpellTypes;
+import bunger.group.alex.item.spell.SpellTypes;
 
 import java.util.List;
 

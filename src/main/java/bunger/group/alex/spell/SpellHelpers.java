@@ -1,4 +1,4 @@
-package bunger.group.alex;
+package bunger.group.alex.spell;
 
 import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;

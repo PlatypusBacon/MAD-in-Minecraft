@@ -1,7 +1,7 @@
 package bunger.group.alex.entity.goal;
 
 import bunger.group.alex.entity.MageMob;
-import bunger.group.alex.item.SpellTemplate;
+import bunger.group.alex.item.spell.SpellTemplate;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -37,7 +37,7 @@ public class MediumCastGoal extends Goal {
         if (!(held.getItem() instanceof SpellTemplate spell)) return false;
 
         double dist = mage.distanceTo(target);
-        return dist <= spell.RANGE;
+        return dist <= spell.RANGE * 0.8f; //now within 80% of the range
     }
 
     @Override

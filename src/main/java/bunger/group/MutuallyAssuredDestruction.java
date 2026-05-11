@@ -6,7 +6,7 @@ import bunger.group.alex.spell.LearnSpellPacket;
 import bunger.group.alex.Mana;
 import bunger.group.alex.ManaPacket;
 import bunger.group.alex.ParticleHelpers;
-import bunger.group.alex.SpellHelpers;
+import bunger.group.alex.spell.SpellHelpers;
 import bunger.group.alex.block.ModBlocks;
 import bunger.group.alex.block.entity.ModBlockEntities;
 import bunger.group.alex.item.ModItems;

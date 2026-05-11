@@ -1,7 +1,7 @@
-package bunger.group.alex.item;
+package bunger.group.alex.item.spell;
 
 import bunger.group.alex.ParticleHelpers;
-import bunger.group.alex.SpellHelpers;
+import bunger.group.alex.spell.SpellHelpers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -17,9 +17,10 @@ import net.minecraft.world.phys.*;
 
 import java.util.Optional;
 
-public class ChannelStorm extends SpellTemplate {
-    public ChannelStorm(Properties properties) {
-        super(properties, 80, 40, SpellTypes.LIGHTNING);
+public class AgarthanThunder extends SpellTemplate {
+
+    public AgarthanThunder(Properties properties) {
+        super(properties, 130, 50, SpellTypes.LIGHTNING);
     }
 
     @Override
@@ -78,31 +79,29 @@ public class ChannelStorm extends SpellTemplate {
             if (level instanceof ServerLevel serverLevel) {
                 WeatherData weather = serverLevel.getWeatherData();
                 weather.setRaining(true);
-                weather.setRainTime(100);
+                weather.setRainTime(200);
                 weather.setThundering(true);
-                weather.setThunderTime(100);
+                weather.setThunderTime(200);
                 weather.setClearWeatherTime(0);
             }
 
             Vec3 finalCentre = centre;
-            ParticleHelpers.runForTicks(120, new Runnable() {
+            ParticleHelpers.runForTicks(200, new Runnable() {
                 double offset = 0;
                 @Override
                 public void run() {
                     offset += 0.1;
-                    ParticleHelpers.spawnRingParticles(level, finalCentre, 3,
+                    ParticleHelpers.spawnRingParticles(level, finalCentre, 20,
                             offset, ParticleTypes.ELECTRIC_SPARK);
                 }
             });
         }
 
         if (centre != null) {
-            double radius = 3;
+            double radius = 20.0;
             Vec3 finalCentre1 = centre;
-            int[] tickCounter = {0};
-            SpellHelpers.runForTicks(100, () -> {
-                tickCounter[0]++;
-                if (tickCounter[0] % 10 == 0) {
+            SpellHelpers.runForTicks(200, () -> {
+                for (int i = 0; i < 5; i++) {
                     double angle = Math.random() * Math.PI * 2;
                     double dist = Math.sqrt(Math.random()) * radius;
 
@@ -119,9 +118,11 @@ public class ChannelStorm extends SpellTemplate {
                     lightningBolt.setPos(place.getCenter());
                     level.addFreshEntity(lightningBolt);
                 }
+
             });
         }
 
         ParticleHelpers.spawnBeamParticles(level, start, end, ParticleTypes.CLOUD);
     }
+
 }

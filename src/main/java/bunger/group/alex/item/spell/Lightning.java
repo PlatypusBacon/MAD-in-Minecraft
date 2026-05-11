@@ -1,25 +1,22 @@
-package bunger.group.alex.item;
+package bunger.group.alex.item.spell;
 
 import bunger.group.alex.ParticleHelpers;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
 
 import java.util.Optional;
 
-public class Zap extends SpellTemplate {
-    public Zap(Properties properties) {
-        super(properties.useCooldown(0.1f), 4, 20, SpellTypes.LIGHTNING);
+public class Lightning extends SpellTemplate {
+    public Lightning(Properties properties) {
+        super(properties, 30, 25, SpellTypes.LIGHTNING);
     }
 
     @Override
@@ -31,9 +28,16 @@ public class Zap extends SpellTemplate {
         double range = this.RANGE;
 
         Vec3 start = user.getEyePosition();
+        Vec3 end = getCastEndPoint(user);
         Vec3 look = user.getLookAngle();
-        Vec3 end = start.add(look.scale(range));
 
+        BlockHitResult blockHit = level.clip(new ClipContext(
+                start,
+                end,
+                ClipContext.Block.OUTLINE,
+                ClipContext.Fluid.NONE,
+                user
+        ));
 
         EntityHitResult entityHit = null;
         double closestDist = range * range;
@@ -54,21 +58,29 @@ public class Zap extends SpellTemplate {
             }
         }
 
+        Vec3 centre = null;
+        if (blockHit.getType() != HitResult.Type.MISS) {
+            BlockPos pos = blockHit.getBlockPos();
+            centre = Vec3.atCenterOf(pos).add(0, 0.6, 0);
+        }
         if (entityHit != null) {
             Entity entity = entityHit.getEntity();
-            DamageSource source = level.damageSources().indirectMagic(entity, user);
-            entity.hurtServer((ServerLevel) level, source, 1.5f);
-
-            if (entity instanceof LivingEntity living) {
-                living.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 10, 4, false, false));
-            }
-            end = entityHit.getLocation();
+            centre = entity.position().add(0, 0.1, 0);
         }
+
+        if (centre != null) {
+            int x = (int) centre.x;
+            int z = (int) centre.z;
+            int y = level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING, x, z);
+
+            BlockPos place = new BlockPos(x, y, z);
+
+            LightningBolt lightningBolt = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
+            lightningBolt.setPos(place.getCenter());
+            level.addFreshEntity(lightningBolt);
+        }
+
         ParticleHelpers.spawnBeamParticles(level, start, end, ParticleTypes.ELECTRIC_SPARK);
     }
-
-    @Override
-    public int getUseDuration(ItemStack stack, LivingEntity entity) {
-        return 10; // ticks (20 ticks = 1 second)
-    }
 }
+

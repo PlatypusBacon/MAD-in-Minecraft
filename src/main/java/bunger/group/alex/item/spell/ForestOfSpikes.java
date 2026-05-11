@@ -1,7 +1,7 @@
-package bunger.group.alex.item;
+package bunger.group.alex.item.spell;
 
 import bunger.group.alex.ParticleHelpers;
-import bunger.group.alex.SpellHelpers;
+import bunger.group.alex.spell.SpellHelpers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.Entity;
@@ -15,7 +15,7 @@ import net.minecraft.world.phys.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ForestOfSpikes extends SpellTemplate{
+public class ForestOfSpikes extends SpellTemplate {
     public ForestOfSpikes(Properties properties) {
         super(properties, 110, 50, SpellTypes.EARTH);
     }

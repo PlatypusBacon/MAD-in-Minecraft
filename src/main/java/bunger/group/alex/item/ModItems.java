@@ -3,6 +3,7 @@ package bunger.group.alex.item;
 import bunger.group.MutuallyAssuredDestruction;
 import bunger.group.alex.item.armor.ClothArmorMaterial;
 import bunger.group.alex.item.armor.GoblinCrown;
+import bunger.group.alex.item.spell.*;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -86,10 +87,22 @@ public class ModItems {
             new InvokeRain.Properties()
     );
 
+    public static final Item TSUNAMI = registerItem(
+            "spell_water_tsunami",
+            Tsunami::new,
+            new Tsunami.Properties()
+    );
+
     public static final Item POISON_WAVE = registerItem(
             "spell_poison_wave",
             PoisonWave::new,
             new PoisonWave.Properties()
+    );
+
+    public static final Item POISON_RAIN = registerItem(
+            "spell_poison_rain",
+            PoisonRain::new,
+            new PoisonRain.Properties()
     );
 
     public static final Item STAFF_OF_TELEPORTATION = registerItem(

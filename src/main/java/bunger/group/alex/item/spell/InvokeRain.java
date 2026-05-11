@@ -1,4 +1,4 @@
-package bunger.group.alex.item;
+package bunger.group.alex.item.spell;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
@@ -6,7 +6,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.WeatherData;
 
-public class InvokeRain extends SpellTemplate{
+public class InvokeRain extends SpellTemplate {
     public InvokeRain(Properties properties) {
         super(properties, 110, 1, SpellTypes.WATER);
     }
