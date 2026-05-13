@@ -101,7 +101,7 @@ public class PoisonWave extends SpellTemplate {
                         entity.hurtServer((ServerLevel) level, source, 0.5f);
 
                         Vec3 knockbackDir = entity.position().subtract(user.position()).normalize();
-                        entity.knockback(0.3, -knockbackDir.x, -knockbackDir.z);
+                        entity.knockback(0, -knockbackDir.x, -knockbackDir.z);
                     }
                 }
             });

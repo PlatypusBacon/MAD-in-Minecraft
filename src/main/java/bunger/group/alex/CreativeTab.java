@@ -54,6 +54,7 @@ public class CreativeTab {
                 // Poison
                 output.accept(ModItems.POISON_WAVE);
                 output.accept(ModItems.POISON_RAIN);
+                output.accept(ModItems.BLANK_POISON_SCROLL);
                 // Staff
                 output.accept(ModItems.STAFF_OF_TELEPORTATION);
                 // Other items

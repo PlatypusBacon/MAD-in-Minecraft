@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "mutually-assured-destruction:item/blank_poison_scroll"
+  }
+}

@@ -21,11 +21,16 @@ public class SpellRegistry {
 
             // LIGHTNING
             new SpellDefinition("Zap", SpellTypes.LIGHTNING, 10, ModItems.ZAP),
-            new SpellDefinition("Channel Storm", SpellTypes.LIGHTNING, 50, ModItems.CHANNEL_STORM),
+            new SpellDefinition("Lightning", SpellTypes.LIGHTNING, 25, ModItems.LIGHTNING),
+            new SpellDefinition("Channel Storm", SpellTypes.LIGHTNING, 60, ModItems.CHANNEL_STORM),
 
             // WATER
             new SpellDefinition("Summon Water", SpellTypes.WATER, 5, ModItems.SUMMON_WATER),
             new SpellDefinition("Invoke Rain", SpellTypes.WATER, 30, ModItems.INVOKE_RAIN),
+
+            // POISON
+            new SpellDefinition("Poison Wave", SpellTypes.POISON, 50, ModItems.POISON_WAVE),
+            new SpellDefinition("Poison Rain", SpellTypes.POISON, 50, ModItems.POISON_RAIN),
 
             // AGARTHA
             new SpellDefinition("Agarthan Thunder", SpellTypes.AGARTHA,100, ModItems.AGARTHAN_THUNDER),

@@ -143,6 +143,12 @@ public class ModItems {
             new BlankScroll.Properties()
     );
 
+    public static final Item BLANK_POISON_SCROLL = registerItem(
+            "blank_poison_scroll",
+            (Item.Properties properties) -> new BlankScroll(properties, SpellTypes.POISON),
+            new BlankScroll.Properties()
+    );
+
     // Materials
     public static final Item PURE_MANA = registerItem(
             "eitr",

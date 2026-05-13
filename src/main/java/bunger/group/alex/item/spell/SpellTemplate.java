@@ -49,6 +49,8 @@ public class SpellTemplate extends Item {
     public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
         builder.accept(Component.literal("Mana: ").withStyle(ChatFormatting.GRAY)
                 .append(Component.literal(String.valueOf(this.MANA_USE)).withStyle(ChatFormatting.DARK_PURPLE)));
+        builder.accept(Component.literal("Range: ").withStyle(ChatFormatting.GRAY)
+                .append(Component.literal(String.valueOf(this.RANGE)).withStyle(ChatFormatting.GRAY)));
     }
 
     /**

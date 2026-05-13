@@ -43,7 +43,7 @@ public class GoblinMageEntity extends MageMob implements GoblinFaction, GoblinPa
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new MediumCastGoal(this));
+        this.goalSelector.addGoal(1, new MediumCastGoal(this, 1.0f));
         this.goalSelector.addGoal(2, new GoblinPatrolGoal<>(this, 1.0));
         this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
