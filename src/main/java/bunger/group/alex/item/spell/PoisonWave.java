@@ -25,7 +25,7 @@ public class PoisonWave extends SpellTemplate {
     private int PERPCOUNT = 0;
 
     public PoisonWave(Properties properties) {
-        super(properties, 10, 25,  SpellTypes.POISON);
+        super(properties, 40, 25,  SpellTypes.POISON);
     }
 
     // Sends wave of poison out from usser
@@ -65,9 +65,24 @@ public class PoisonWave extends SpellTemplate {
         Vec3 rayStart = new Vec3(pos.x, pos.y+1, pos.z);
         Vec3 rayEnd = new Vec3(pos.x, pos.y - 10, pos.z);
         BlockHitResult hit = level.clip(new ClipContext(rayStart, rayEnd, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, user));
-        double y = (hit.getType() == HitResult.Type.BLOCK) ? hit.getLocation().y : pos.y;
+        if (hit.getType() != HitResult.Type.BLOCK) {
+            return;
+        }
+        double y = hit.getLocation().y;
         Vec3 newPos = new Vec3(pos.x, y, pos.z);
 
+        Vec3 userPos = user.getEyePosition();
+        BlockHitResult losCheck = level.clip(new ClipContext(
+                userPos,
+                newPos.add(0, 1, 0), // aim at mid-height of the pillar
+                ClipContext.Block.COLLIDER,
+                ClipContext.Fluid.NONE,
+                user
+        ));
+        if (losCheck.getType() == HitResult.Type.BLOCK) {
+            // A wall was hit before reaching this point — bail out
+            return;
+        }
 
         delay *= 3;
         // Particles

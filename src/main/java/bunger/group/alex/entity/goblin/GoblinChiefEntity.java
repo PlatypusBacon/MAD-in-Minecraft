@@ -23,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class GoblinChiefEntity extends Monster implements GoblinFaction, GoblinPatrolMember {
 
@@ -88,6 +89,12 @@ public class GoblinChiefEntity extends Monster implements GoblinFaction, GoblinP
     @Override
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
                                                   EntitySpawnReason spawnReason, @Nullable SpawnGroupData groupData) {
+        // Rand
+        int rand = ThreadLocalRandom.current().nextInt(1, 3);
+        if (rand != 1) {
+            return null;
+        }
+
         this.populateDefaultEquipmentSlots(level.getRandom(), difficulty);
         groupData = super.finalizeSpawn(level, difficulty, spawnReason, groupData);
 

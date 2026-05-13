@@ -18,7 +18,7 @@ public class ModBlocks {
     public static final Block SPELL_DESK = register(
             "spell_desk",
             SpellDesk::new,
-            BlockBehaviour.Properties.of(),
+            BlockBehaviour.Properties.of().strength(3.0f, 5.0f),
             true
     );
 

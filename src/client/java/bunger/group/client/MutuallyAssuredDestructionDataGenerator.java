@@ -1,6 +1,8 @@
 package bunger.group.client;
 
 import bunger.group.client.alex.datagen.AlexRecipeProvider;
+import bunger.group.client.alex.datagen.ModBlockLootTableProvider;
+import bunger.group.client.alex.datagen.ModBlockTagProvider;
 import bunger.group.client.alex.datagen.ModEntityLootTableProvider;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
@@ -11,5 +13,7 @@ public class MutuallyAssuredDestructionDataGenerator implements DataGeneratorEnt
 		FabricDataGenerator.Pack alexPack = fabricDataGenerator.createPack();
 		alexPack.addProvider(AlexRecipeProvider::new);
 		alexPack.addProvider(ModEntityLootTableProvider::new);
+		alexPack.addProvider(ModBlockLootTableProvider::new);
+		alexPack.addProvider(ModBlockTagProvider::new);
 	}
 }

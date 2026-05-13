@@ -92,6 +92,16 @@ public class ModEntityLootTableProvider extends FabricEntityLootSubProvider {
                         .when(LootItemRandomChanceWithEnchantedBonusCondition
                                 .randomChanceAndLootingBoost(registries, 1f, 0.20f))
                 )
+
+                // Roll 3; Maybe poison scroll
+                .withPool(LootPool.lootPool()
+                        .setRolls(ConstantValue.exactly(1.0f))
+                        .add(LootItem.lootTableItem(Items.GOLD_NUGGET)
+                                .apply(SetItemCountFunction.setCount(
+                                        UniformGenerator.between(1.0f, 1.0f))))
+                        .when(LootItemRandomChanceWithEnchantedBonusCondition
+                                .randomChanceAndLootingBoost(registries, 0.075f, 0.0f))
+                )
         );
 
         add(ModEntityTypes.GOBLIN_RANGER, LootTable.lootTable()
@@ -156,7 +166,7 @@ public class ModEntityLootTableProvider extends FabricEntityLootSubProvider {
                                 .apply(SetItemCountFunction.setCount(
                                         UniformGenerator.between(0f, 2.0f))))
                         .when(LootItemRandomChanceWithEnchantedBonusCondition
-                                .randomChanceAndLootingBoost(registries, 0.05f, 0.1f))
+                                .randomChanceAndLootingBoost(registries, 0.05f, 0.0f))
                 )
         );
     }
