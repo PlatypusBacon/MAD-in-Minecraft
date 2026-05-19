@@ -65,7 +65,12 @@ public class CreativeTab {
                 output.accept(ModItems.CLOTH_CHESTPLATE);
                 output.accept(ModItems.CLOTH_LEGGINGS);
                 output.accept(ModItems.CLOTH_BOOTS);
+
                 output.accept(ModItems.GOBLIN_CROWN);
+
+                output.accept(ModItems.SKELETON_CHESTPLATE);
+                output.accept(ModItems.ZOMBIE_LEGGINGS);
+                output.accept(ModItems.SPIDER_BOOTS);
 
                 // Blocks
                 output.accept(ModBlocks.SPELL_DESK);

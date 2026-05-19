@@ -37,8 +37,7 @@ public class GoblinCrown extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
-        builder.accept(Component.literal("Still emanates the").withStyle(ChatFormatting.GRAY));
-        builder.accept(Component.literal("Goblin Chief's rage").withStyle(ChatFormatting.GRAY));
+        builder.accept(Component.literal("Imbues the Goblin Chief's rage").withStyle(ChatFormatting.GRAY));
     }
 
     @Override
@@ -60,12 +59,8 @@ public class GoblinCrown extends Item {
         public static final ArmorMaterial INSTANCE = new ArmorMaterial(
                 BASE_DURABILITY,
                 Map.of(
-                        ArmorType.HELMET, 2,
-                        ArmorType.CHESTPLATE, 6,
-                        ArmorType.LEGGINGS, 6,
-                        ArmorType.BOOTS, 6
-                ),
-                50,
+                        ArmorType.HELMET, 2
+                ), 30,
                 SoundEvents.ARMOR_EQUIP_GOLD,
                 0.0F,
                 0.0F,

@@ -1,8 +1,7 @@
 package bunger.group.alex.item;
 
 import bunger.group.MutuallyAssuredDestruction;
-import bunger.group.alex.item.armor.ClothArmorMaterial;
-import bunger.group.alex.item.armor.GoblinCrown;
+import bunger.group.alex.item.armor.*;
 import bunger.group.alex.item.spell.*;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
@@ -179,6 +178,7 @@ public class ModItems {
             Item::new,
             new Item.Properties().humanoidArmor(ClothArmorMaterial.INSTANCE, ArmorType.CHESTPLATE)
                     .durability(ArmorType.CHESTPLATE.getDurability(ClothArmorMaterial.BASE_DURABILITY))
+
     );
 
     public static final Item CLOTH_LEGGINGS = registerItem(
@@ -199,6 +199,24 @@ public class ModItems {
             "goblin_crown",
             GoblinCrown::new,
             new GoblinCrown.Properties()
+    );
+
+    public static final Item SPIDER_BOOTS = registerItem(
+            "spider_boots",
+            SpiderBoots::new,
+            new SpiderBoots.Properties()
+    );
+
+    public static final Item ZOMBIE_LEGGINGS = registerItem(
+            "zombie_leggings",
+            ZombieLeggings::new,
+            new ZombieLeggings.Properties()
+    );
+
+    public static final Item SKELETON_CHESTPLATE = registerItem(
+            "skeleton_chestplate",
+            SkeletonChestplate::new,
+            new SkeletonChestplate.Properties()
     );
 
 
