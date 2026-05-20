@@ -1,8 +1,5 @@
 package bunger.group.bryan;
 import bunger.group.MutuallyAssuredDestruction;
-import bunger.group.bryan.TaxData;
-import bunger.group.bryan.ChestTracker;
-import net.fabricmc.fabric.api.resource.v1.reloader.ResourceReloaderKeys.Server;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
@@ -21,7 +18,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import java.util.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.entity.Entity;
 
@@ -70,7 +66,7 @@ public class TaxLogic {
             String itemId = BuiltInRegistries.ITEM.getKey(entry.getKey()).toString();
 
             requiredItems.put(itemId, entry.getValue());
-            System.out.println("!!!!!!!!!!"+entry.getValue());
+            // System.out.println("!!!!!!!!!!"+entry.getValue());
         }
 
         for (Map.Entry<Item, Integer> entry : taxMap.entrySet()) {
@@ -94,7 +90,7 @@ public class TaxLogic {
 
 
         long currentDay = user.level().getGameTime() / 24000L;
-        long dueDay = currentDay-1;
+        long dueDay = currentDay+1;
 
         PLAYER_TAXES.put(
             user.getUUID(),
@@ -103,7 +99,7 @@ public class TaxLogic {
 
         itemStack.set(DataComponents.WRITTEN_BOOK_CONTENT, content);
 
-        System.out.println(requiredItems+"!!!!!!!!!!");
+        // System.out.println(requiredItems+"!!!!!!!!!!");
     }
 
 
@@ -129,11 +125,11 @@ public class TaxLogic {
 
         long currentDay = player.level().getGameTime() / 24000L;
 
-        if (currentDay > data.dueDay) {
+        if (currentDay >= data.dueDay) { //less than or equal otherwise you get taxes before previous one due?
             if(data.paid){
-                player.sendSystemMessage(Component.literal(player.getName()+" paid their taxes"));
+                player.sendSystemMessage(Component.literal(player.getName().getString() +" paid their taxes"));
             } else {
-                player.sendSystemMessage(Component.literal(player.getName()+" failed to pay their taxes... "));
+                player.sendSystemMessage(Component.literal(player.getName().getString() +" failed to pay their taxes... "));
                 
                 punishPlayer(player, server);
                 data.paid = true;
@@ -159,7 +155,7 @@ public class TaxLogic {
                 if (be instanceof Container container) {
                     TaxData data = TaxLogic.PLAYER_TAXES.get(player.getUUID());
                     int numItemsToRemove = data.requiredItems.size();
-                    removeItemsFromContainer(container, numItemsToRemove);
+                    removeItemsFromContainer(container, numItemsToRemove, player);
                 }
             }
         }
@@ -174,27 +170,48 @@ public class TaxLogic {
                 if (entity instanceof Container container) {
                     TaxData data = TaxLogic.PLAYER_TAXES.get(player.getUUID());
                     int numItemsToRemove = data.requiredItems.size();
-                    removeItemsFromContainer(container, numItemsToRemove);
+                    removeItemsFromContainer(container, numItemsToRemove, player);
                 }
             }
         }
     }
 
-    public static void removeItemsFromContainer(Container container, int amount) {
+    public static void removeItemsFromContainer(Container container, int amount, Player player) {
 
         Random random = new Random();
 
         for (int i = 0; i < amount; i++) {
 
             int slot = random.nextInt(container.getContainerSize());
-
             ItemStack stack = container.getItem(slot);
 
             if (!stack.isEmpty()) {
-                stack.shrink(1);
+
+                String itemName = stack.getHoverName().getString();
+                int itemCount = stack.getCount();
+
+                ItemStack notice = new ItemStack(NoticeItem.NOTICE_ITEM);
+                WrittenBookContent content = new WrittenBookContent(
+                    Filterable.passThrough("Notice of Asset Seizure"),
+                    "The IRS",
+                    0,
+                    List.of(
+                        Filterable.passThrough(Component.literal(
+                            "NOTICE OF ASSET SEIZURE\n\n" +
+                            "Due to unpaid taxes, the IRS has seized the following property from "
+                            + player.getName().getString() + ".\n\n" +
+                            "Seized Item:\n" +
+                            itemCount + "x " + itemName
+                        ))
+                    ),
+                    false
+                );
+                notice.set(DataComponents.WRITTEN_BOOK_CONTENT, content);
+
+                container.setItem(slot, notice);
+
                 container.setChanged();
             }
         }
     }
-
 }

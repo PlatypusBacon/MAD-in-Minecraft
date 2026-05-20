@@ -12,6 +12,8 @@ import bunger.group.bryan.TaxItem;
 import bunger.group.bryan.TaxLogic;
 import bunger.group.bryan.MailboxBlock;
 import bunger.group.bryan.StorageEntityTracker;
+import bunger.group.bryan.NoticeItem;
+
 import java.util.List;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -150,11 +152,12 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		//Bunger2.initialize();
 
 		TaxItem.initialize();
+		NoticeItem.initialize();
 
 		// ============ GIVE PLAYERS TAXES =============
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
 
-			long day = server.overworld().getGameTime() % 100L;
+			long day = server.overworld().getGameTime() % 24000L * 1L;
 
 			// run once per day
 			if (day == 0) {
@@ -177,7 +180,7 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		// ================ CHECK TAXES ================
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
 
-			long day = server.overworld().getGameTime() % 100L;
+			long day = server.overworld().getGameTime() % 24000L;
 
 			// run once per day
 			if (day == 0) {
@@ -206,7 +209,7 @@ public class MutuallyAssuredDestruction implements ModInitializer {
         });
 
 
-
+		// ================ CHECK ENTITIES ================
 		UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
 
 			if (!world.isClientSide()) {

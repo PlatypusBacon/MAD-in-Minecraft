@@ -1,4 +1,5 @@
 {
   "block.mutually-assured-destruction.mailbox_block": "Mailbox",
-  "item.mutually-assured-destruction.tax_item": "CP14 Notice of Assessment"
+  "item.mutually-assured-destruction.tax_item": "CP14 Notice of Assessment",
+  "item.mutually-assured-destruction.notice_item": "Notice of Asset Seizure"
 }
