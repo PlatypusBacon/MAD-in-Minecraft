@@ -38,6 +38,8 @@ public class GoblinCrown extends Item {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
         builder.accept(Component.literal("Imbues the Goblin Chief's rage").withStyle(ChatFormatting.GRAY));
+        builder.accept(Component.literal("+Strength I").withStyle(ChatFormatting.DARK_GREEN));
+        builder.accept(Component.literal("+Speed I").withStyle(ChatFormatting.DARK_GREEN));
     }
 
     @Override

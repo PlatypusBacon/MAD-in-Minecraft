@@ -39,7 +39,7 @@ public class SkeletonChestplate extends Item {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
         builder.accept(Component.literal("A bit bony").withStyle(ChatFormatting.GRAY));
-        builder.accept(Component.literal("+25% Projectile Damage").withStyle(ChatFormatting.DARK_GREEN));
+        builder.accept(Component.literal("+25% Arrow Damage").withStyle(ChatFormatting.DARK_GREEN));
     }
 
     @Override
