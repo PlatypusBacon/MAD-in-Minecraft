@@ -26,9 +26,16 @@ public class ModItems {
             new IceShield.Properties()
     );
 
+    public static final Item FREEZE = registerItem(
+            "spell_ice_freeze",
+            Freeze::new,
+            new Freeze.Properties()
+    );
+
+
     public static final Item AGARTHAN_ICE_DOME = registerItem(
             "spell_ice_agarthan_ice_dome",
-            AgarthanIceDome::new, // funky lambda I am not that sure of
+            AgarthanIceDome::new,
             new AgarthanIceDome.Properties()
     );
 

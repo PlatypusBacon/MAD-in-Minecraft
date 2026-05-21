@@ -38,6 +38,7 @@ public class CreativeTab {
                 output.accept(ModItems.BLANK_LIGHTNING_SCROLL);
                 // Ice
                 output.accept(ModItems.ICE_SHIELD);
+                output.accept(ModItems.FREEZE);
                 output.accept(ModItems.BLANK_ICE_SCROLL);
                 // Fire
                 output.accept(ModItems.IGNITION);
