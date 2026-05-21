@@ -3,12 +3,15 @@ package bunger.group.alex;
 
 import bunger.group.MutuallyAssuredDestruction;
 import bunger.group.alex.item.ModItems;
+import bunger.group.alex.item.armor.ClothArmor;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentSyncPredicate;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentTarget;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -60,22 +63,25 @@ public class Mana {
 
         public void recalculateMaxMana() {
             if (target instanceof Player player) {
-                ItemStack helmet    = player.getItemBySlot(EquipmentSlot.HEAD);
-                ItemStack chest     = player.getItemBySlot(EquipmentSlot.CHEST);
-                ItemStack leggings  = player.getItemBySlot(EquipmentSlot.LEGS);
-                ItemStack boots     = player.getItemBySlot(EquipmentSlot.FEET);
-
                 // Okay so this is funky but best way (i think)
-                int maxMana = 100; // base mana, then add bonus then set it?
+                int maxMana = 50; // base mana,
 
-                // Cloth Armour
-                if (helmet.is(ModItems.CLOTH_HELMET)) {maxMana += 5;}
-                if (chest.is(ModItems.CLOTH_CHESTPLATE)) {maxMana += 10;}
-                if (leggings.is(ModItems.CLOTH_LEGGINGS)) {maxMana += 10;}
-                if (boots.is(ModItems.CLOTH_BOOTS)) {maxMana += 5;}
+                for (EquipmentSlot slot : EquipmentSlot.values()) {
+                    ItemStack stack = player.getItemBySlot(slot);
+
+                    if (stack.getItem() instanceof ClothArmor armor) {
+                        if (armor.getSlot() == slot) {
+                            maxMana += armor.getMaxManaBonus();
+                        }
+                    }
+                }
 
                 // then redefine it as Max Mana
                 this.setMaxMana(maxMana);
+                if (this.getCurrentMana() > this.getMaxMana()) {
+                    this.setCurrentMana(maxMana);
+                    ServerPlayNetworking.send((ServerPlayer) player, new ManaPacket(this.getCurrentMana(), this.getMaxMana()));
+                }
 
             } else {
                 System.out.println("UHHHHHHHH");// REALLY shouldn't get here

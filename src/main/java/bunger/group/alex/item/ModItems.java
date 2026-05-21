@@ -168,39 +168,31 @@ public class ModItems {
             new Item.Properties()
     );
 
-    // Armour
-    public static final Item CLOTH_HELMET = registerItem(
-            "cloth_helmet",
-            Item::new,
-            new Item.Properties()
-                    .humanoidArmor(ClothArmorMaterial.INSTANCE, ArmorType.HELMET)
-                    .durability(ArmorType.HELMET.getDurability(ClothArmorMaterial.BASE_DURABILITY))
-                    .component(DataComponents.EQUIPPABLE, Equippable.builder(EquipmentSlot.HEAD)
-                            .setEquipSound(SoundEvents.ARMOR_EQUIP_LEATHER)
-                            .build())
-    );
+        // Armour
+        public static final Item CLOTH_HELMET = registerItem(
+                "cloth_helmet",
+                (Item.Properties properties) -> new ClothArmor(properties, ArmorType.HELMET),
+                new ClothArmor.Properties()
+        );
 
-    public static final Item CLOTH_CHESTPLATE = registerItem(
-            "cloth_chestplate",
-            Item::new,
-            new Item.Properties().humanoidArmor(ClothArmorMaterial.INSTANCE, ArmorType.CHESTPLATE)
-                    .durability(ArmorType.CHESTPLATE.getDurability(ClothArmorMaterial.BASE_DURABILITY))
+        public static final Item CLOTH_CHESTPLATE = registerItem(
+                "cloth_chestplate",
+                (Item.Properties properties) -> new ClothArmor(properties, ArmorType.CHESTPLATE),
+                new ClothArmor.Properties()
 
-    );
+        );
 
-    public static final Item CLOTH_LEGGINGS = registerItem(
-            "cloth_leggings",
-            Item::new,
-            new Item.Properties().humanoidArmor(ClothArmorMaterial.INSTANCE, ArmorType.LEGGINGS)
-                    .durability(ArmorType.LEGGINGS.getDurability(ClothArmorMaterial.BASE_DURABILITY))
-    );
+        public static final Item CLOTH_LEGGINGS = registerItem(
+                "cloth_leggings",
+                (Item.Properties properties) -> new ClothArmor(properties, ArmorType.LEGGINGS),
+                new ClothArmor.Properties()
+        );
 
-    public static final Item CLOTH_BOOTS = registerItem(
-            "cloth_boots",
-            Item::new,
-            new Item.Properties().humanoidArmor(ClothArmorMaterial.INSTANCE, ArmorType.BOOTS)
-                    .durability(ArmorType.BOOTS.getDurability(ClothArmorMaterial.BASE_DURABILITY))
-    );
+        public static final Item CLOTH_BOOTS = registerItem(
+                "cloth_boots",
+                (Item.Properties properties) -> new ClothArmor(properties, ArmorType.BOOTS),
+                new ClothArmor.Properties()
+        );
 
     public static final Item GOBLIN_CROWN = registerItem(
             "goblin_crown",
