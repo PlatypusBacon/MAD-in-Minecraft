@@ -17,7 +17,7 @@ import java.util.Optional;
 
 public class Zap extends SpellTemplate {
     public Zap(Properties properties) {
-        super(properties.useCooldown(0.1f), 4, 20, SpellTypes.LIGHTNING);
+        super(properties.useCooldown(0.1f), 5, 15, SpellTypes.LIGHTNING);
     }
 
 
@@ -36,7 +36,7 @@ public class Zap extends SpellTemplate {
             dir = user.getLookAngle();
         }
 
-        advanceBeam(level, user, dir, start, 1, 3, 1, ParticleTypes.ELECTRIC_SPARK);
+        advanceBeam(level, user, dir, start, 1, 4, 1, ParticleTypes.ELECTRIC_SPARK);
     }
 
     @Override
