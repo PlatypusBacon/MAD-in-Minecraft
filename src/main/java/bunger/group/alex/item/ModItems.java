@@ -4,16 +4,12 @@ import bunger.group.MutuallyAssuredDestruction;
 import bunger.group.alex.item.armor.*;
 import bunger.group.alex.item.spell.*;
 import net.minecraft.core.Registry;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.equipment.ArmorType;
-import net.minecraft.world.item.equipment.Equippable;
 
 import java.util.function.Function;
 
@@ -24,6 +20,12 @@ public class ModItems {
             "spell_ice_ice_shield",
             IceShield::new, // funky lambda I am not that sure of
             new IceShield.Properties()
+    );
+
+    public static final Item ICE_BULWARK = registerItem(
+            "spell_ice_ice_bulwark",
+            IceBulwark::new, // funky lambda I am not that sure of
+            new IceBulwark.Properties()
     );
 
     public static final Item FREEZE = registerItem(
@@ -67,6 +69,12 @@ public class ModItems {
             "spell_fire_ignition",
             Ignition::new,
             new Ignition.Properties()
+    );
+
+    public static final Item FIREBALL = registerItem(
+            "spell_fire_fireball",
+            Fireball::new,
+            new Fireball.Properties()
     );
 
     public static final Item IMPALE = registerItem(

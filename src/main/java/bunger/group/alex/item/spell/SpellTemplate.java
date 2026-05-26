@@ -106,14 +106,6 @@ public class SpellTemplate extends Item {
 
     /**
      * Speed = step * 20/delay
-     * @param level
-     * @param user
-     * @param dir
-     * @param start
-     * @param curDist
-     * @param step
-     * @param delay
-     * @param particle
      */
     public void advanceBeam(Level level, LivingEntity user, Vec3 dir, Vec3 start, int curDist, int step, int delay, ParticleOptions particle) {
         if (curDist >= this.RANGE) return;

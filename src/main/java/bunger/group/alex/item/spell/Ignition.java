@@ -21,7 +21,7 @@ import static net.minecraft.world.phys.Vec3.atCenterOf;
 
 public class Ignition extends SpellTemplate {
     public Ignition(Properties properties) {
-        super(properties, 20, 25, SpellTypes.FIRE);
+        super(properties.useCooldown(1.0f), 20, 25, SpellTypes.FIRE);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class Ignition extends SpellTemplate {
             dir = user.getLookAngle();
         }
 
-        advanceBeam(level, user, dir, start, 1, 2, 1, ParticleTypes.FLAME);
+        advanceBeam(level, user, dir, start, 1, 2, 1, ParticleTypes.SMALL_FLAME);
     }
 
     @Override

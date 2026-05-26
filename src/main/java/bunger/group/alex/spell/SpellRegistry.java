@@ -18,6 +18,8 @@ public class SpellRegistry {
 
             // ICE
             new SpellDefinition("Ice Shield",SpellTypes.ICE,10, ModItems.ICE_SHIELD),
+            new SpellDefinition("Ice Bulwark",SpellTypes.ICE,30, ModItems.ICE_BULWARK),
+            new SpellDefinition("Freeze",SpellTypes.ICE,50, ModItems.FREEZE),
 
             // LIGHTNING
             new SpellDefinition("Zap", SpellTypes.LIGHTNING, 10, ModItems.ZAP),

@@ -22,7 +22,7 @@ public class Freeze extends SpellTemplate{
     private static final int r = 1;
 
     public Freeze(Properties properties) {
-        super(properties, 90, 25, SpellTypes.ICE);
+        super(properties.useCooldown(3.0f), 90, 25, SpellTypes.ICE);
     }
 
     @Override

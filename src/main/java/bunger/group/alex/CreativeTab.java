@@ -38,10 +38,12 @@ public class CreativeTab {
                 output.accept(ModItems.BLANK_LIGHTNING_SCROLL);
                 // Ice
                 output.accept(ModItems.ICE_SHIELD);
+                output.accept(ModItems.ICE_BULWARK);
                 output.accept(ModItems.FREEZE);
                 output.accept(ModItems.BLANK_ICE_SCROLL);
                 // Fire
                 output.accept(ModItems.IGNITION);
+                output.accept(ModItems.FIREBALL);
                 output.accept(ModItems.BLANK_FIRE_SCROLL);
                 // Earth
                 output.accept(ModItems.IMPALE);

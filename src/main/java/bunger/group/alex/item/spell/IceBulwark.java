@@ -8,15 +8,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 
-public class IceShield extends SpellTemplate {
-    public IceShield(Properties properties) {
-        super(properties.useCooldown(0.75f), 15, 4,  SpellTypes.ICE);
+public class IceBulwark extends SpellTemplate {
+    public IceBulwark(Properties properties) {
+        super(properties.useCooldown(1.5f), 30, 6,  SpellTypes.ICE);
     }
 
     @Override
     public void cast(Level level, LivingEntity user, ItemStack stack) {
         if (level.isClientSide()) {
-            return; // I lowkey dont fuck with client only magic
+            return;
         }
         Vec3 center = user.position().add(0, 1.0, 0);
         double radius = (double) this.RANGE;
@@ -45,8 +45,8 @@ public class IceShield extends SpellTemplate {
         Vec3 right = normal.cross(up).normalize();
         Vec3 forward = right.cross(normal).normalize();
 
-        for (int x = -1; x <= 1; x++) {
-            for (int y = -1; y <= 1; y++) {
+        for (int x = -3; x <= 3; x++) {
+            for (int y = -3; y <= 3; y++) {
 
                 Vec3 point = hitPoint
                         .add(right.scale(x))
@@ -68,7 +68,7 @@ public class IceShield extends SpellTemplate {
                     final BlockPos finalPos = pos;
                     final Level finalLevel = level;
 
-                    SpellHelpers.runAfterTicks(60, () -> {
+                    SpellHelpers.runAfterTicks(120, () -> {
                         if (finalLevel.getBlockState(finalPos).is(Blocks.ICE) || finalLevel.getBlockState(finalPos).is(Blocks.WATER)) {
                             finalLevel.setBlock(finalPos, Blocks.AIR.defaultBlockState(), 3);
                         }

@@ -36,7 +36,7 @@ public class Zap extends SpellTemplate {
             dir = user.getLookAngle();
         }
 
-        advanceBeam(level, user, dir, start, 1, 4, 1, ParticleTypes.ELECTRIC_SPARK);
+        advanceBeam(level, user, dir, start, 1, 4, 1, ParticleTypes.FIREWORK);
     }
 
     @Override
