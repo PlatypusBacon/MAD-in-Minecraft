@@ -17,7 +17,7 @@ import static bunger.group.alex.ParticleHelpers.spawnVolatileParticle;
 
 public class Fireball extends SpellTemplate {
     public Fireball(Properties properties) {
-        super(properties.useCooldown(5.0f), 70, 40, SpellTypes.FIRE);
+        super(properties.useCooldown(5.0f), 90, 40, SpellTypes.FIRE);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class Fireball extends SpellTemplate {
         level.explode(
                 user,
                 pos.x, pos.y+.5, pos.z,
-                5.0F,
+                2.5F,
                 true,
                 Level.ExplosionInteraction.TNT
         );
