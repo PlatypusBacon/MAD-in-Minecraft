@@ -2,14 +2,18 @@ package bunger.group.alex.item.spell;
 
 import bunger.group.alex.ParticleHelpers;
 import bunger.group.alex.spell.SpellHelpers;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.arrow.Arrow;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
@@ -17,12 +21,13 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 import static bunger.group.alex.ParticleHelpers.spawnStaticParticle;
 
 public class StaffOfReflection extends SpellTemplate {
     public StaffOfReflection(Properties properties) {
-        super(properties.useCooldown(60.0f), 100, 2, SpellTypes.STAFF);
+        super(properties.useCooldown(20.0f), 120, 0, SpellTypes.STAFF);
     }
 
     @Override
@@ -31,7 +36,7 @@ public class StaffOfReflection extends SpellTemplate {
             return;
         }
 
-        final int range = this.RANGE;
+        final double range = 1.5;
         Set<Projectile> reflected = new HashSet<>();
 
         int[] tickCounter = {0};
