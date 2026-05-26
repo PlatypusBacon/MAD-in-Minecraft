@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "mutually-assured-destruction:item/cloth"
+    "layer0": "mutually-assured-destruction:item/cloth_item"
   }
 }

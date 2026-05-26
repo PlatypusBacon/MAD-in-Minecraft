@@ -117,6 +117,12 @@ public class ModItems {
             new StaffOfTeleportation.Properties()
     );
 
+    public static final Item STAFF_OF_REFLECTION = registerItem(
+            "spell_staff_of_reflection",
+            StaffOfReflection::new,
+            new StaffOfReflection.Properties()
+    );
+
     // Blank Spells
 
     public static final Item BLANK_LIGHTNING_SCROLL = registerItem(

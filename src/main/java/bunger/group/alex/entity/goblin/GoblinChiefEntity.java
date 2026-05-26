@@ -90,8 +90,12 @@ public class GoblinChiefEntity extends Monster implements GoblinFaction, GoblinP
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
                                                   EntitySpawnReason spawnReason, @Nullable SpawnGroupData groupData) {
         // Rand
-        int rand = ThreadLocalRandom.current().nextInt(1, 3);
+        int rand = ThreadLocalRandom.current().nextInt(1, 6); // 1 in 5
         if (rand != 1) {
+            return null;
+        }
+        if (!level.getEntitiesOfClass(GoblinChiefEntity.class,
+                this.getBoundingBox().inflate(200.0)).isEmpty()) {
             return null;
         }
 

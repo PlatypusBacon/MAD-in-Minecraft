@@ -1,8 +1,10 @@
 package bunger.group;
 
 import bunger.group.alex.CreativeTab;
+import bunger.group.alex.effect.ModEffects;
 import bunger.group.alex.entity.EntityLootUpdater;
 import bunger.group.alex.entity.ModEntityTypes;
+import bunger.group.alex.item.potion.ModPotions;
 import bunger.group.alex.spell.LearnSpellPacket;
 import bunger.group.alex.Mana;
 import bunger.group.alex.ManaPacket;
@@ -29,12 +31,17 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		// Alex Innit stuff
 		// Packets
 		PayloadTypeRegistry.clientboundPlay().register(ManaPacket.TYPE, ManaPacket.CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(LearnSpellPacket.TYPE, LearnSpellPacket.CODEC);
 
+		// Effects
+		ModEffects.register();
+
 		// Items
 		ModItems.register();
+		ModPotions.register();
 
 		// Blocks
 		ModBlocks.register();
@@ -89,5 +96,7 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 			ServerPlayNetworking.send(player, new ManaPacket(mana.getCurrentMana(), mana.getMaxMana()));
             SlotTypes.initPlayer(player);
 		});
+
+		// END Alex Innit stuff
 	}
 }

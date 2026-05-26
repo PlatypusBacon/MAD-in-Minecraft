@@ -58,8 +58,11 @@ public class CreativeTab {
                 output.accept(ModItems.BLANK_POISON_SCROLL);
                 // Staff
                 output.accept(ModItems.STAFF_OF_TELEPORTATION);
+                output.accept(ModItems.STAFF_OF_REFLECTION);
+
                 // Other items
                 output.accept(ModItems.PURE_MANA);
+                output.accept(ModItems.CLOTH);
 
                 // Armour
                 output.accept(ModItems.CLOTH_HELMET);

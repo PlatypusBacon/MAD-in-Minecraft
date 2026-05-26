@@ -104,7 +104,7 @@ public class ModEntityTypes {
                 LAND_OVERWORLD,
                 MobCategory.MONSTER,
                 ModEntityTypes.GOBLIN_CHIEF,
-                1, 1, 2
+                1, 1, 1
         );
     }
 }

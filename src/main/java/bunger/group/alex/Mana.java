@@ -2,6 +2,8 @@ package bunger.group.alex;
 
 
 import bunger.group.MutuallyAssuredDestruction;
+import bunger.group.alex.effect.ManaBoostEffect;
+import bunger.group.alex.effect.ModEffects;
 import bunger.group.alex.item.ModItems;
 import bunger.group.alex.item.armor.ClothArmor;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
@@ -12,6 +14,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -66,6 +69,7 @@ public class Mana {
                 // Okay so this is funky but best way (i think)
                 int maxMana = 50; // base mana,
 
+                // Items
                 for (EquipmentSlot slot : EquipmentSlot.values()) {
                     ItemStack stack = player.getItemBySlot(slot);
 
@@ -74,6 +78,13 @@ public class Mana {
                             maxMana += armor.getMaxManaBonus();
                         }
                     }
+                }
+
+                // Potion effect
+                MobEffectInstance effect = player.getEffect(ModEffects.MANA_BOOST);
+                if (effect != null) {
+                    int amplifier = effect.getAmplifier();
+                    maxMana += ManaBoostEffect.BOOST * (1+ amplifier);
                 }
 
                 // then redefine it as Max Mana

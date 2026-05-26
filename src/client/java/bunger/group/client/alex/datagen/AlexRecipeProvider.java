@@ -27,7 +27,7 @@ public class AlexRecipeProvider extends FabricRecipeProvider {
                 HolderLookup.RegistryLookup<Item> itemLookup = registries.lookupOrThrow(Registries.ITEM);
 
                 // Cloth
-                shaped(RecipeCategory.MISC, ModItems.CLOTH, 4)
+                shaped(RecipeCategory.MISC, ModItems.CLOTH, 2)
                         .pattern(" w ")
                         .pattern("wew")
                         .pattern(" w ")
