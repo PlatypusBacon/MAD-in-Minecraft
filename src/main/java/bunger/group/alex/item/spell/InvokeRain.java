@@ -8,7 +8,7 @@ import net.minecraft.world.level.saveddata.WeatherData;
 
 public class InvokeRain extends SpellTemplate {
     public InvokeRain(Properties properties) {
-        super(properties, 110, 1, SpellTypes.WATER);
+        super(properties.useCooldown(30.0f), 110, 1, SpellTypes.WATER);
     }
 
     @Override

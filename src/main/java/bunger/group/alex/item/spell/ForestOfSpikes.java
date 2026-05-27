@@ -17,7 +17,7 @@ import java.util.List;
 
 public class ForestOfSpikes extends SpellTemplate {
     public ForestOfSpikes(Properties properties) {
-        super(properties, 110, 50, SpellTypes.EARTH);
+        super(properties.useCooldown(10.0f), 110, 50, SpellTypes.EARTH);
     }
 
     @Override

@@ -10,7 +10,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class AgarthanIceDome extends SpellTemplate {
     public AgarthanIceDome(Properties properties) {
-        super(properties, 40, 7,  SpellTypes.ICE);
+        super(properties.useCooldown(2.0f), 40, 7,  SpellTypes.ICE);
     }
 
     @Override

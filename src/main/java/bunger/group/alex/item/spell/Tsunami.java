@@ -25,10 +25,10 @@ public class Tsunami extends SpellTemplate {
     private int PERPCOUNT = 0;
 
     public Tsunami(Properties properties) {
-        super(properties, 50, 30,  SpellTypes.WATER);
+        super(properties.useCooldown(5.0f), 50, 30,  SpellTypes.WATER);
     }
 
-    // Sends wave of poison out from usser
+    // Sends wave out from user
     @Override
     public void cast(Level level, LivingEntity user, ItemStack stack) {
         if (level.isClientSide()) {

@@ -23,7 +23,7 @@ import java.util.Optional;
 
 public class ChannelStorm extends SpellTemplate {
     public ChannelStorm(Properties properties) {
-        super(properties, 80, 40, SpellTypes.LIGHTNING);
+        super(properties.useCooldown(3.0f), 80, 40, SpellTypes.LIGHTNING);
     }
 
 

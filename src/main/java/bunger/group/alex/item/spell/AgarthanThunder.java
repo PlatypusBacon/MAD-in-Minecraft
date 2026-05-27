@@ -20,7 +20,7 @@ import java.util.Optional;
 public class AgarthanThunder extends SpellTemplate {
 
     public AgarthanThunder(Properties properties) {
-        super(properties, 130, 50, SpellTypes.LIGHTNING);
+        super(properties.useCooldown(20.0f), 130, 50, SpellTypes.LIGHTNING);
     }
 
     @Override

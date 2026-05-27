@@ -23,7 +23,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Impale extends SpellTemplate {
 
     public Impale(Properties properties) {
-        super(properties, 20, 15,  SpellTypes.EARTH);
+        super(properties.useCooldown(0.5f), 20, 15,  SpellTypes.EARTH);
     }
 
 

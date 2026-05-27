@@ -17,7 +17,7 @@ import java.util.Optional;
 public class SummonWater extends SpellTemplate {
 
     public SummonWater(Properties properties) {
-        super(properties, 20, 30, SpellTypes.WATER);
+        super(properties.useCooldown(1.5f), 20, 30, SpellTypes.WATER);
     }
 
     @Override

@@ -24,7 +24,7 @@ import static net.minecraft.world.phys.Vec3.atCenterOf;
 public class PoisonRain extends SpellTemplate {
 
     public PoisonRain(Properties properties) {
-        super(properties, 10, 25,  SpellTypes.POISON);
+        super(properties.useCooldown(5.0f), 10, 25,  SpellTypes.POISON);
     }
 
     // Sends wave of poison out from user

@@ -20,7 +20,7 @@ import java.util.Optional;
 
 public class Lightning extends SpellTemplate {
     public Lightning(Properties properties) {
-        super(properties, 30, 25, SpellTypes.LIGHTNING);
+        super(properties.useCooldown(1.0f), 30, 25, SpellTypes.LIGHTNING);
     }
 
 

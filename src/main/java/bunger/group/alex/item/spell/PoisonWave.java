@@ -25,7 +25,7 @@ public class PoisonWave extends SpellTemplate {
     private int PERPCOUNT = 0;
 
     public PoisonWave(Properties properties) {
-        super(properties, 40, 25,  SpellTypes.POISON);
+        super(properties.useCooldown(2.0f), 40, 25,  SpellTypes.POISON);
     }
 
     // Sends wave of poison out from usser
