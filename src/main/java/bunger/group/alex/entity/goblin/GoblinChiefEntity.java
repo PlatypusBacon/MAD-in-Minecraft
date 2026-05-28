@@ -86,17 +86,20 @@ public class GoblinChiefEntity extends Monster implements GoblinFaction, GoblinP
         this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.DIAMOND_AXE));
     }
 
-    @Override
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
                                                   EntitySpawnReason spawnReason, @Nullable SpawnGroupData groupData) {
-        // Rand
-        int rand = ThreadLocalRandom.current().nextInt(1, 6); // 1 in 5
-        if (rand != 1) {
-            return null;
-        }
-        if (!level.getEntitiesOfClass(GoblinChiefEntity.class,
-                this.getBoundingBox().inflate(200.0)).isEmpty()) {
-            return null;
+        // Only apply rarity check for natural spawns, not commands
+        if (spawnReason == EntitySpawnReason.NATURAL || spawnReason == EntitySpawnReason.CHUNK_GENERATION) {
+            int rand = ThreadLocalRandom.current().nextInt(1, 6);
+            if (rand != 1) {
+                this.discard();
+                return null;
+            }
+            if (!level.getEntitiesOfClass(GoblinChiefEntity.class,
+                    this.getBoundingBox().inflate(200.0)).isEmpty()) {
+                this.discard();
+                return null;
+            }
         }
 
         this.populateDefaultEquipmentSlots(level.getRandom(), difficulty);

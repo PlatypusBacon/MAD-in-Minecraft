@@ -78,6 +78,9 @@ public class CreativeTab {
                 output.accept(ModItems.ZOMBIE_LEGGINGS);
                 output.accept(ModItems.SPIDER_BOOTS);
 
+                // Weapons
+                output.accept(ModItems.LONGBOW);
+
                 // Blocks
                 output.accept(ModBlocks.SPELL_DESK);
             })

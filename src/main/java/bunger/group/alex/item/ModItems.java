@@ -34,7 +34,6 @@ public class ModItems {
             new Freeze.Properties()
     );
 
-
     public static final Item AGARTHAN_ICE_DOME = registerItem(
             "spell_ice_agarthan_ice_dome",
             AgarthanIceDome::new,
@@ -169,44 +168,39 @@ public class ModItems {
             new BlankScroll.Properties()
     );
 
-    // Materials
-    public static final Item PURE_MANA = registerItem(
-            "eitr",
-            Item::new,
-            new Item.Properties()
+    // Weapons
+    public static final Item LONGBOW = registerItem(
+            "longbow",
+            Longbow::new,
+            new Longbow.Properties()
     );
 
-    public static final Item CLOTH = registerItem(
-            "cloth_item",
-            Item::new,
-            new Item.Properties()
+
+    // Armour
+    public static final Item CLOTH_HELMET = registerItem(
+            "cloth_helmet",
+            (Item.Properties properties) -> new ClothArmor(properties, ArmorType.HELMET),
+            new ClothArmor.Properties()
     );
 
-        // Armour
-        public static final Item CLOTH_HELMET = registerItem(
-                "cloth_helmet",
-                (Item.Properties properties) -> new ClothArmor(properties, ArmorType.HELMET),
-                new ClothArmor.Properties()
-        );
+    public static final Item CLOTH_CHESTPLATE = registerItem(
+            "cloth_chestplate",
+            (Item.Properties properties) -> new ClothArmor(properties, ArmorType.CHESTPLATE),
+            new ClothArmor.Properties()
 
-        public static final Item CLOTH_CHESTPLATE = registerItem(
-                "cloth_chestplate",
-                (Item.Properties properties) -> new ClothArmor(properties, ArmorType.CHESTPLATE),
-                new ClothArmor.Properties()
+    );
 
-        );
+    public static final Item CLOTH_LEGGINGS = registerItem(
+            "cloth_leggings",
+            (Item.Properties properties) -> new ClothArmor(properties, ArmorType.LEGGINGS),
+            new ClothArmor.Properties()
+    );
 
-        public static final Item CLOTH_LEGGINGS = registerItem(
-                "cloth_leggings",
-                (Item.Properties properties) -> new ClothArmor(properties, ArmorType.LEGGINGS),
-                new ClothArmor.Properties()
-        );
-
-        public static final Item CLOTH_BOOTS = registerItem(
-                "cloth_boots",
-                (Item.Properties properties) -> new ClothArmor(properties, ArmorType.BOOTS),
-                new ClothArmor.Properties()
-        );
+    public static final Item CLOTH_BOOTS = registerItem(
+            "cloth_boots",
+            (Item.Properties properties) -> new ClothArmor(properties, ArmorType.BOOTS),
+            new ClothArmor.Properties()
+    );
 
     public static final Item GOBLIN_CROWN = registerItem(
             "goblin_crown",
@@ -230,6 +224,19 @@ public class ModItems {
             "skeleton_chestplate",
             SkeletonChestplate::new,
             new SkeletonChestplate.Properties()
+    );
+
+    // Materials
+    public static final Item PURE_MANA = registerItem(
+            "eitr",
+            Item::new,
+            new Item.Properties()
+    );
+
+    public static final Item CLOTH = registerItem(
+            "cloth_item",
+            Item::new,
+            new Item.Properties()
     );
 
 

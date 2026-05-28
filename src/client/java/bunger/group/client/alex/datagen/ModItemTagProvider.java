@@ -44,5 +44,7 @@ public class ModItemTagProvider extends FabricTagsProvider.ItemTagsProvider {
                 .add(ModItems.CLOTH_HELMET)
                 .add(ModItems.GOBLIN_CROWN);
 
+        valueLookupBuilder(ItemTags.BOW_ENCHANTABLE)
+                .add((ModItems.LONGBOW));
     }
 }

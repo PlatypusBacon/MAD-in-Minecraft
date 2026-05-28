@@ -27,6 +27,12 @@ public class ModEntityTypes {
                     .sized(0.75f, 1.6f)
     );
 
+    public static final EntityType<SkeletonRangerEntity> SKELETON_RANGER = register(
+            "skeleton_ranger",
+            EntityType.Builder.<SkeletonRangerEntity>of(SkeletonRangerEntity::new, MobCategory.MONSTER)
+                    .sized(0.75f, 2.0f)
+    );
+
     public static final EntityType<GoblinGruntEntity> GOBLIN_GRUNT = register(
             "goblin_grunt",
             EntityType.Builder.<GoblinGruntEntity>of(GoblinGruntEntity::new, MobCategory.MONSTER)
@@ -66,6 +72,7 @@ public class ModEntityTypes {
         FabricDefaultAttributeRegistry.register(GOBLIN_RANGER, GoblinRangerEntity.createAttributes().build());
         FabricDefaultAttributeRegistry.register(GOBLIN_CHIEF,  GoblinChiefEntity.createAttributes().build());
         FabricDefaultAttributeRegistry.register(WRAITH,        WraithEntity.createAttributes().build());
+        FabricDefaultAttributeRegistry.register(SKELETON_RANGER,        SkeletonRangerEntity.createAttributes().build());
         registerSpawns();
     }
 
@@ -87,17 +94,24 @@ public class ModEntityTypes {
         );
 
         BiomeModifications.addSpawn(
+                LAND_OVERWORLD,
+                MobCategory.MONSTER,
+                ModEntityTypes.SKELETON_RANGER,
+                6, 1, 1
+        );
+
+        BiomeModifications.addSpawn(
                 BiomeSelectors.tag(BiomeTags.SPAWNS_WARM_VARIANT_FARM_ANIMALS),
                 MobCategory.MONSTER,
                 ModEntityTypes.GOBLIN_GRUNT,
-                10, 1, 2
+                20, 1, 2
         );
 
         BiomeModifications.addSpawn(
                 BiomeSelectors.tag(BiomeTags.SPAWNS_WARM_VARIANT_FARM_ANIMALS),
                 MobCategory.MONSTER,
                 ModEntityTypes.GOBLIN_RANGER,
-                10, 1, 2
+                20, 1, 2
         );
 
         BiomeModifications.addSpawn(

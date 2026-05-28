@@ -36,7 +36,7 @@ public class StaffOfReflection extends SpellTemplate {
             return;
         }
 
-        final double range = 1.5;
+        final double range = 2;
         Set<Projectile> reflected = new HashSet<>();
 
         int[] tickCounter = {0};
@@ -46,16 +46,22 @@ public class StaffOfReflection extends SpellTemplate {
 
             AABB hitbox = new AABB(userPos.x - range, userPos.y - range, userPos.z - range,
                     userPos.x + range, userPos.y + range, userPos.z + range);
-            List<Entity> hits = level.getEntitiesOfClass(Entity.class, hitbox, e -> e != user);
+
+            List<Entity> hits = level.getEntitiesOfClass(Entity.class, hitbox.inflate(1.0), e -> e != user);
 
             for (Entity entity : hits) {
-                if (entity instanceof Projectile projectile
-                        && projectile.getOwner() != user
-                        && reflected.add(projectile)) {
-                    spawnStaticParticle(level, entity.position(), ParticleTypes.CRIT);
-                    projectile.setDeltaMovement(projectile.getDeltaMovement().reverse().scale(1.1f));
-                    projectile.setOwner(user);
-                    projectile.hurtMarked = true;
+                if (entity instanceof Projectile projectile && projectile.getOwner() != user && reflected.add(projectile)) {
+                    Vec3 motion = projectile.getDeltaMovement();
+                    Vec3 pos = projectile.position();
+                    // check if trajectory passes near user
+                    Vec3 toUser = userPos.subtract(pos);
+                    double dot = toUser.dot(motion.normalize());
+                    if (dot > 0 || pos.distanceTo(userPos) < range * 2) {
+                        spawnStaticParticle(level, entity.position(), ParticleTypes.CRIT);
+                        projectile.setDeltaMovement(motion.reverse().scale(1.1f));
+                        projectile.setOwner(user);
+                        projectile.hurtMarked = true;
+                    }
                 }
             }
 

@@ -8,7 +8,7 @@ public class MutuallyAssuredDestructionDataGenerator implements DataGeneratorEnt
 	@Override
 	public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
 		FabricDataGenerator.Pack alexPack = fabricDataGenerator.createPack();
-		alexPack.addProvider(AlexRecipeProvider::new);
+		alexPack.addProvider(ModRecipeProvider::new);
 		alexPack.addProvider(ModEntityLootTableProvider::new);
 		alexPack.addProvider(ModBlockLootTableProvider::new);
 		alexPack.addProvider(ModBlockTagProvider::new);

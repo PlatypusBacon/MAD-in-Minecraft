@@ -48,6 +48,39 @@ public class ModEntityLootTableProvider extends FabricEntityLootSubProvider {
                 )
         );
 
+        add(ModEntityTypes.SKELETON_RANGER, LootTable.lootTable()
+
+                // ── Roll 1: Pure Mana (20% chance, +10% per looting level)  2 Rolls ─────────────
+                .withPool(LootPool.lootPool()
+                        .setRolls(ConstantValue.exactly(2.0f))
+                        .add(LootItem.lootTableItem(ModItems.PURE_MANA)
+                                .apply(SetItemCountFunction.setCount(
+                                        UniformGenerator.between(1.0f, 1.0f))))
+                        .when(LootItemRandomChanceWithEnchantedBonusCondition
+                                .randomChanceAndLootingBoost(registries, 0.20f, 0.1f))
+                )
+
+                // Roll 2: Drop a 0-6 Arrows always
+                .withPool(LootPool.lootPool()
+                        .setRolls(ConstantValue.exactly(1.0f))
+                        .add(LootItem.lootTableItem(Items.ARROW)
+                                .apply(SetItemCountFunction.setCount(
+                                        UniformGenerator.between(0f, 6.0f))))
+                        .when(LootItemRandomChanceWithEnchantedBonusCondition
+                                .randomChanceAndLootingBoost(registries, 1f, 0.20f))
+                )
+
+                // Roll 3: Drop 1-4 Bones always
+                .withPool(LootPool.lootPool()
+                        .setRolls(ConstantValue.exactly(1.0f))
+                        .add(LootItem.lootTableItem(Items.BONE)
+                                .apply(SetItemCountFunction.setCount(
+                                        UniformGenerator.between(1.0f, 4.0f))))
+                        .when(LootItemRandomChanceWithEnchantedBonusCondition
+                                .randomChanceAndLootingBoost(registries, 1f, 0.20f))
+                )
+        );
+
         add(ModEntityTypes.GOBLIN_GRUNT, LootTable.lootTable()
 
                 // ── Roll 1: Pure Mana (10% chance, +5% per looting level)  2 Rolls ─────────────

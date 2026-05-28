@@ -12,6 +12,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.ModelLayerRegistry;
 public class ModEntityModelLayers {
 
     public static final ModelLayerLocation WRAITH = createMain("wraith");
+    public static final ModelLayerLocation SKELETON_RANGER = createMain("skeleton_ranger");
     public static final ModelLayerLocation GOBLIN_GRUNT = createMain("goblin_grunt");
     public static final ModelLayerLocation GOBLIN_MAGE = createMain("goblin_mage");
     public static final ModelLayerLocation GOBLIN_RANGER = createMain("goblin_ranger");
@@ -24,6 +25,7 @@ public class ModEntityModelLayers {
 
     public static void registerModelLayers() {
         ModelLayerRegistry.registerModelLayer(ModEntityModelLayers.WRAITH, WraithEntityModel::createBodyLayer);
+        ModelLayerRegistry.registerModelLayer(ModEntityModelLayers.SKELETON_RANGER, SkeletonRangerEntityModel::createBodyLayer);
         ModelLayerRegistry.registerModelLayer(ModEntityModelLayers.GOBLIN_GRUNT, GoblinGruntEntityModel::createBodyLayer);
         ModelLayerRegistry.registerModelLayer(ModEntityModelLayers.GOBLIN_MAGE, GoblinMageEntityModel::createBodyLayer);
         ModelLayerRegistry.registerModelLayer(ModEntityModelLayers.GOBLIN_RANGER, GoblinRangerEntityModel::createBodyLayer);
@@ -32,6 +34,7 @@ public class ModEntityModelLayers {
 
     public static void registerRenderers() {
         EntityRenderers.register(ModEntityTypes.WRAITH, WraithEntityRenderer::new);
+        EntityRenderers.register(ModEntityTypes.SKELETON_RANGER, SkeletonRangerEntityRenderer::new);
         EntityRenderers.register(ModEntityTypes.GOBLIN_GRUNT, GoblinGruntEntityRenderer::new);
         EntityRenderers.register(ModEntityTypes.GOBLIN_MAGE, GoblinMageEntityRenderer::new);
         EntityRenderers.register(ModEntityTypes.GOBLIN_RANGER, GoblinRangerEntityRenderer::new);

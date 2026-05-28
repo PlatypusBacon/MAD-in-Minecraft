@@ -14,8 +14,8 @@ import net.minecraft.world.item.Item;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 
-public class AlexRecipeProvider extends FabricRecipeProvider {
-    public AlexRecipeProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+public class ModRecipeProvider extends FabricRecipeProvider {
+    public ModRecipeProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 
