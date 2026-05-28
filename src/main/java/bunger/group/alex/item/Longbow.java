@@ -19,14 +19,14 @@ import org.jspecify.annotations.Nullable;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class Longbow extends ProjectileWeaponItem {
+public class Longbow extends BowItem {
     public static final int MAX_DRAW_DURATION = 40;
     public static final int DEFAULT_RANGE = 30;
     public static final int ARROW_DAMAGE = 2;
     public static final float POWER_MULT = 4.5F;
 
     public Longbow(final Item.Properties properties) {
-        super(properties);
+        super(properties.durability(500).enchantable(10));
     }
 
     public boolean releaseUsing(final @NonNull ItemStack itemStack, final @NonNull Level level, final @NonNull LivingEntity entity, final int remainingTime) {
@@ -101,4 +101,5 @@ public class Longbow extends ProjectileWeaponItem {
     public int getDefaultProjectileRange() {
         return DEFAULT_RANGE;
     }
+
 }

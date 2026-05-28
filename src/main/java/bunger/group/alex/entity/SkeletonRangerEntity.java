@@ -3,11 +3,13 @@ package bunger.group.alex.entity;
 import bunger.group.alex.entity.goal.LongbowAttackGoal;
 import bunger.group.alex.item.Longbow;
 import bunger.group.alex.item.ModItems;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,6 +20,7 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.golem.IronGolem;
 import net.minecraft.world.entity.animal.wolf.Wolf;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.skeleton.AbstractSkeleton;
 import net.minecraft.world.entity.monster.skeleton.Skeleton;
 import net.minecraft.world.entity.player.Player;
@@ -27,6 +30,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 
@@ -114,6 +118,16 @@ public class SkeletonRangerEntity extends Skeleton {
     @Override
     public void setFreezeConverting(boolean isConverting) {
         // do nothing
+    }
+
+    public static boolean canSpawn(EntityType<SkeletonRangerEntity> type,
+                                   ServerLevelAccessor level,
+                                   EntitySpawnReason spawnReason,
+                                   BlockPos pos,
+                                   RandomSource random) {
+
+        return Monster.isDarkEnoughToSpawn(level, pos, random)
+                && Monster.checkMonsterSpawnRules(type, level, spawnReason, pos, random);
     }
 
 }

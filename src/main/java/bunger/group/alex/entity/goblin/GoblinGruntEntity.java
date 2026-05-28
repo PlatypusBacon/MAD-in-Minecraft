@@ -1,6 +1,9 @@
 package bunger.group.alex.entity.goblin;
 
+import bunger.group.alex.entity.SkeletonRangerEntity;
 import bunger.group.alex.entity.goal.GoblinPatrolGoal;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -130,5 +133,15 @@ public class GoblinGruntEntity extends Monster implements GoblinFaction, GoblinP
     @Override
     public boolean removeWhenFarAway(double distanceToClosestPlayer) {
         return patrol == null || !patrol.isAlive();
+    }
+
+    public static boolean canSpawn(EntityType<GoblinGruntEntity> type,
+                                   ServerLevelAccessor level,
+                                   EntitySpawnReason spawnReason,
+                                   BlockPos pos,
+                                   RandomSource random) {
+
+        return Monster.isDarkEnoughToSpawn(level, pos, random)
+                && Monster.checkMonsterSpawnRules(type, level, spawnReason, pos, random);
     }
 }

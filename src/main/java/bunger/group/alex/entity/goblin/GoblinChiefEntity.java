@@ -1,8 +1,10 @@
 package bunger.group.alex.entity.goblin;
 
 import bunger.group.alex.entity.ModEntityTypes;
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -235,5 +237,15 @@ public class GoblinChiefEntity extends Monster implements GoblinFaction, GoblinP
             );
             hasAlerted = true;
         }
+    }
+
+    public static boolean canSpawn(EntityType<GoblinChiefEntity> type,
+                                   ServerLevelAccessor level,
+                                   EntitySpawnReason spawnReason,
+                                   BlockPos pos,
+                                   RandomSource random) {
+
+        return Monster.isDarkEnoughToSpawn(level, pos, random)
+                && Monster.checkMonsterSpawnRules(type, level, spawnReason, pos, random);
     }
 }

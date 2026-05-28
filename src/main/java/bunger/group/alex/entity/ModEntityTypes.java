@@ -13,9 +13,9 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BiomeTags;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.level.levelgen.Heightmap;
 
 import java.util.function.Predicate;
 
@@ -86,6 +86,7 @@ public class ModEntityTypes {
                         .and(BiomeSelectors.tag(BiomeTags.IS_RIVER).negate());
 
 
+        // ===================== WRAITH =====================
         BiomeModifications.addSpawn(
                 LAND_OVERWORLD,
                 MobCategory.MONSTER,
@@ -93,12 +94,29 @@ public class ModEntityTypes {
                 6, 1, 1
         );
 
+        SpawnPlacements.register(
+                ModEntityTypes.WRAITH,
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                WraithEntity::canSpawn
+        );
+
+        // ===================== SKELETON RANGER =====================
         BiomeModifications.addSpawn(
                 LAND_OVERWORLD,
                 MobCategory.MONSTER,
                 ModEntityTypes.SKELETON_RANGER,
-                6, 1, 1
+                8, 1, 1
         );
+
+        SpawnPlacements.register(
+                ModEntityTypes.SKELETON_RANGER,
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                SkeletonRangerEntity::canSpawn
+        );
+
+        // ===================== GOBLIN GRUNT =====================
 
         BiomeModifications.addSpawn(
                 BiomeSelectors.tag(BiomeTags.SPAWNS_WARM_VARIANT_FARM_ANIMALS),
@@ -107,6 +125,15 @@ public class ModEntityTypes {
                 20, 1, 2
         );
 
+        SpawnPlacements.register(
+                ModEntityTypes.GOBLIN_GRUNT,
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                GoblinGruntEntity::canSpawn
+        );
+
+        // ===================== GOBLIN RANGER =====================
+
         BiomeModifications.addSpawn(
                 BiomeSelectors.tag(BiomeTags.SPAWNS_WARM_VARIANT_FARM_ANIMALS),
                 MobCategory.MONSTER,
@@ -114,11 +141,27 @@ public class ModEntityTypes {
                 20, 1, 2
         );
 
+        SpawnPlacements.register(
+                ModEntityTypes.GOBLIN_RANGER,
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                GoblinRangerEntity::canSpawn
+        );
+
+        // ===================== GOBLIN CHIEF =====================
+
         BiomeModifications.addSpawn(
                 LAND_OVERWORLD,
                 MobCategory.MONSTER,
                 ModEntityTypes.GOBLIN_CHIEF,
                 1, 1, 1
+        );
+
+        SpawnPlacements.register(
+                ModEntityTypes.GOBLIN_CHIEF,
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                GoblinChiefEntity::canSpawn
         );
     }
 }

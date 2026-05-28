@@ -57,7 +57,7 @@ public class ModEntityLootTableProvider extends FabricEntityLootSubProvider {
                                 .apply(SetItemCountFunction.setCount(
                                         UniformGenerator.between(1.0f, 1.0f))))
                         .when(LootItemRandomChanceWithEnchantedBonusCondition
-                                .randomChanceAndLootingBoost(registries, 0.20f, 0.1f))
+                                .randomChanceAndLootingBoost(registries, 0.15f, 0.05f))
                 )
 
                 // Roll 2: Drop a 0-6 Arrows always
@@ -78,6 +78,16 @@ public class ModEntityLootTableProvider extends FabricEntityLootSubProvider {
                                         UniformGenerator.between(1.0f, 4.0f))))
                         .when(LootItemRandomChanceWithEnchantedBonusCondition
                                 .randomChanceAndLootingBoost(registries, 1f, 0.20f))
+                )
+
+                // Roll 4: Maybe Chestplate
+                .withPool(LootPool.lootPool()
+                        .setRolls(ConstantValue.exactly(1.0f))
+                        .add(LootItem.lootTableItem(ModItems.SKELETON_CHESTPLATE)
+                                .apply(SetItemCountFunction.setCount(
+                                        UniformGenerator.between(1.0f, 1.0f))))
+                        .when(LootItemRandomChanceWithEnchantedBonusCondition
+                                .randomChanceAndLootingBoost(registries, 0.002f, 0.001f))
                 )
         );
 
