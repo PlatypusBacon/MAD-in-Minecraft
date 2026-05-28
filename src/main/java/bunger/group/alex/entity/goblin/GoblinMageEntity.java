@@ -66,9 +66,7 @@ public class GoblinMageEntity extends MageMob implements GoblinFaction, GoblinPa
 
     @Override
     protected void populateDefaultEquipmentSlots(net.minecraft.util.RandomSource random, DifficultyInstance difficulty) {
-        ItemStack spell = random.nextFloat() < SPELL_A_CHANCE
-                ? new ItemStack(ModItems.POISON_WAVE)
-                : new ItemStack(ModItems.POISON_WAVE);
+        ItemStack spell = new ItemStack(ModItems.POISON_WAVE);
         this.setItemSlot(EquipmentSlot.MAINHAND, spell);
     }
 
