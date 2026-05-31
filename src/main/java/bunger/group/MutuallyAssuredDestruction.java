@@ -14,8 +14,6 @@ import bunger.group.alex.menu.SpellDeskMenu;
 import bunger.group.csmit863.CustomSounds;
 import bunger.group.csmit863.Madness;
 import bunger.group.csmit863.biome.ModBiomes;
-import bunger.group.csmit863.entity.ModEntityTypes;
-import bunger.group.csmit863.entity.OverseerEntity;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;

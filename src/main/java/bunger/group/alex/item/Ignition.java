@@ -29,8 +29,8 @@ public class Ignition extends SpellTemplate {
         double range = this.RANGE;
 
         Vec3 start = user.getEyePosition();
+        Vec3 end = getCastEndPoint(user);
         Vec3 look = user.getLookAngle();
-        Vec3 end = start.add(look.scale(range));
 
         BlockHitResult blockHit = level.clip(new ClipContext(
                 start,

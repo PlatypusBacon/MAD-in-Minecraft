@@ -30,6 +30,11 @@
 		{
 			"config": "mutually-assured-destruction.client.mixins.json",
 			"environment": "client"
+		},
+		"moreslots.mixins.json",
+		{
+			"config": "moreslots.client.mixins.json",
+			"environment": "client"
 		}
 	],
 	"depends": {

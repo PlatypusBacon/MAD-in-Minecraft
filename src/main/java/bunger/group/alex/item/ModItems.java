@@ -37,6 +37,12 @@ public class ModItems {
             new Zap.Properties()
     );
 
+    public static final Item LIGHTNING = registerItem(
+            "spell_lightning_lightning",
+            Lightning::new,
+            new Lightning.Properties()
+    );
+
     public static final Item CHANNEL_STORM = registerItem(
             "spell_lightning_channel_storm",
             ChannelStorm::new,
@@ -108,6 +114,12 @@ public class ModItems {
     public static final Item BLANK_EARTH_SCROLL = registerItem(
             "blank_earth_scroll",
             (Item.Properties properties) -> new BlankScroll(properties, SpellTypes.EARTH),
+            new BlankScroll.Properties()
+    );
+
+    public static final Item BLANK_WATER_SCROLL = registerItem(
+            "blank_water_scroll",
+            (Item.Properties properties) -> new BlankScroll(properties, SpellTypes.WATER),
             new BlankScroll.Properties()
     );
 

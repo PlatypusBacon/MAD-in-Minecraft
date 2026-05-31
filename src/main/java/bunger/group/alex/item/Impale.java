@@ -32,11 +32,8 @@ public class Impale extends SpellTemplate {
             return;
         }
 
-        double range = this.RANGE;
-
         Vec3 start = user.getEyePosition();
-        Vec3 look = user.getLookAngle();
-        Vec3 end = start.add(look.scale(range));
+        Vec3 end = getCastEndPoint(user);
 
         BlockHitResult blockHit = level.clip(new ClipContext(
                 start,

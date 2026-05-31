@@ -10,7 +10,8 @@ public class SpellRegistry {
     public static final List<SpellDefinition> ALL_SPELLS = List.of(
 
             // EARTH
-            new SpellDefinition("Impale", SpellTypes.EARTH,25, ModItems.IMPALE),
+            new SpellDefinition("Impale", SpellTypes.EARTH,15, ModItems.IMPALE),
+            new SpellDefinition("Forest of Spikes", SpellTypes.EARTH,75, ModItems.FOREST_OF_SPIKES),
 
             // FIRE
             new SpellDefinition("Ignition", SpellTypes.FIRE,15, ModItems.IGNITION),

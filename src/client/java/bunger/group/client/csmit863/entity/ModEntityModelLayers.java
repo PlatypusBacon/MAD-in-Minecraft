@@ -15,6 +15,6 @@ public class ModEntityModelLayers {
 
     public static void registerModelLayers() {
         ModelLayerRegistry.registerModelLayer(ModEntityModelLayers.SHROOMJAK, ShroomjakEntityModel::getTexturedModelData);
-        ModelLayerRegistry.registerModelLayer(ModEntityModelLayers.OVERSEER, OverseerEntityModel::getTexturedModelData);
+        //ModelLayerRegistry.registerModelLayer(ModEntityModelLayers.OVERSEER, OverseerEntityModel::getTexturedModelData);
     }
 }

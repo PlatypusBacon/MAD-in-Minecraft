@@ -31,6 +31,7 @@ public class CreativeTab {
                 output.accept(ModItems.ICE_SHIELD);
                 output.accept(ModItems.AGARTHAN_THUNDER);
                 output.accept(ModItems.ZAP);
+                output.accept(ModItems.LIGHTNING);
                 output.accept(ModItems.CHANNEL_STORM);
                 output.accept(ModItems.AGARTHAN_ICE_DOME);
                 output.accept(ModItems.IGNITION);
@@ -43,6 +44,7 @@ public class CreativeTab {
                 output.accept(ModItems.BLANK_FIRE_SCROLL);
                 output.accept(ModItems.BLANK_ICE_SCROLL);
                 output.accept(ModItems.BLANK_EARTH_SCROLL);
+                output.accept(ModItems.BLANK_WATER_SCROLL);
                 output.accept(ModItems.PURE_MANA);
 
                 // Armour
