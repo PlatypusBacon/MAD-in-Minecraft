@@ -1,7 +1,7 @@
 package bunger.group.alex.spell;
 
 import bunger.group.alex.item.ModItems;
-import bunger.group.alex.item.SpellTypes;
+import bunger.group.alex.item.spell.SpellTypes;
 
 import java.util.List;
 
@@ -18,14 +18,21 @@ public class SpellRegistry {
 
             // ICE
             new SpellDefinition("Ice Shield",SpellTypes.ICE,10, ModItems.ICE_SHIELD),
+            new SpellDefinition("Ice Bulwark",SpellTypes.ICE,30, ModItems.ICE_BULWARK),
+            new SpellDefinition("Freeze",SpellTypes.ICE,50, ModItems.FREEZE),
 
             // LIGHTNING
             new SpellDefinition("Zap", SpellTypes.LIGHTNING, 10, ModItems.ZAP),
-            new SpellDefinition("Channel Storm", SpellTypes.LIGHTNING, 50, ModItems.CHANNEL_STORM),
+            new SpellDefinition("Lightning", SpellTypes.LIGHTNING, 25, ModItems.LIGHTNING),
+            new SpellDefinition("Channel Storm", SpellTypes.LIGHTNING, 60, ModItems.CHANNEL_STORM),
 
             // WATER
             new SpellDefinition("Summon Water", SpellTypes.WATER, 5, ModItems.SUMMON_WATER),
             new SpellDefinition("Invoke Rain", SpellTypes.WATER, 30, ModItems.INVOKE_RAIN),
+
+            // POISON
+            new SpellDefinition("Poison Wave", SpellTypes.POISON, 50, ModItems.POISON_WAVE),
+            new SpellDefinition("Poison Rain", SpellTypes.POISON, 50, ModItems.POISON_RAIN),
 
             // AGARTHA
             new SpellDefinition("Agarthan Thunder", SpellTypes.AGARTHA,100, ModItems.AGARTHAN_THUNDER),

@@ -4,8 +4,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -21,6 +23,7 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.storage.loot.LootTable;
 
 
@@ -136,4 +139,13 @@ public class WraithEntity extends Monster {
         super.knockback(strength * 0.5, x, z);
     }
 
+    public static boolean canSpawn(EntityType<WraithEntity> type,
+                                   ServerLevelAccessor level,
+                                   EntitySpawnReason spawnReason,
+                                   BlockPos pos,
+                                   RandomSource random) {
+
+        return Monster.isDarkEnoughToSpawn(level, pos, random)
+                && Monster.checkMonsterSpawnRules(type, level, spawnReason, pos, random);
+    }
 }

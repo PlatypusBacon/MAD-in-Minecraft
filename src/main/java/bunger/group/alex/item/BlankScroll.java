@@ -1,5 +1,6 @@
 package bunger.group.alex.item;
 
+import bunger.group.alex.item.spell.SpellTypes;
 import net.minecraft.world.item.Item;
 
 public class BlankScroll extends Item {

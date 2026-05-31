@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "mutually-assured-destruction:item/spell_lightning_channel_storm"
+  }
+}

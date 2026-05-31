@@ -1,18 +1,15 @@
 package bunger.group.alex.item;
 
 import bunger.group.MutuallyAssuredDestruction;
-import bunger.group.alex.item.armor.ClothArmorMaterial;
+import bunger.group.alex.item.armor.*;
+import bunger.group.alex.item.spell.*;
 import net.minecraft.core.Registry;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.equipment.ArmorType;
-import net.minecraft.world.item.equipment.Equippable;
 
 import java.util.function.Function;
 
@@ -25,9 +22,21 @@ public class ModItems {
             new IceShield.Properties()
     );
 
+    public static final Item ICE_BULWARK = registerItem(
+            "spell_ice_ice_bulwark",
+            IceBulwark::new, // funky lambda I am not that sure of
+            new IceBulwark.Properties()
+    );
+
+    public static final Item FREEZE = registerItem(
+            "spell_ice_freeze",
+            Freeze::new,
+            new Freeze.Properties()
+    );
+
     public static final Item AGARTHAN_ICE_DOME = registerItem(
             "spell_ice_agarthan_ice_dome",
-            AgarthanIceDome::new, // funky lambda I am not that sure of
+            AgarthanIceDome::new,
             new AgarthanIceDome.Properties()
     );
 
@@ -61,6 +70,12 @@ public class ModItems {
             new Ignition.Properties()
     );
 
+    public static final Item FIREBALL = registerItem(
+            "spell_fire_fireball",
+            Fireball::new,
+            new Fireball.Properties()
+    );
+
     public static final Item IMPALE = registerItem(
             "spell_earth_impale",
             Impale::new,
@@ -85,10 +100,34 @@ public class ModItems {
             new InvokeRain.Properties()
     );
 
+    public static final Item TSUNAMI = registerItem(
+            "spell_water_tsunami",
+            Tsunami::new,
+            new Tsunami.Properties()
+    );
+
+    public static final Item POISON_WAVE = registerItem(
+            "spell_poison_wave",
+            PoisonWave::new,
+            new PoisonWave.Properties()
+    );
+
+    public static final Item POISON_RAIN = registerItem(
+            "spell_poison_rain",
+            PoisonRain::new,
+            new PoisonRain.Properties()
+    );
+
     public static final Item STAFF_OF_TELEPORTATION = registerItem(
             "spell_staff_of_teleportation",
             StaffOfTeleportation::new,
             new StaffOfTeleportation.Properties()
+    );
+
+    public static final Item STAFF_OF_REFLECTION = registerItem(
+            "spell_staff_of_reflection",
+            StaffOfReflection::new,
+            new StaffOfReflection.Properties()
     );
 
     // Blank Spells
@@ -123,6 +162,70 @@ public class ModItems {
             new BlankScroll.Properties()
     );
 
+    public static final Item BLANK_POISON_SCROLL = registerItem(
+            "blank_poison_scroll",
+            (Item.Properties properties) -> new BlankScroll(properties, SpellTypes.POISON),
+            new BlankScroll.Properties()
+    );
+
+    // Weapons
+    public static final Item LONGBOW = registerItem(
+            "longbow",
+            Longbow::new,
+            new Longbow.Properties()
+    );
+
+
+    // Armour
+    public static final Item CLOTH_HELMET = registerItem(
+            "cloth_helmet",
+            (Item.Properties properties) -> new ClothArmor(properties, ArmorType.HELMET),
+            new ClothArmor.Properties()
+    );
+
+    public static final Item CLOTH_CHESTPLATE = registerItem(
+            "cloth_chestplate",
+            (Item.Properties properties) -> new ClothArmor(properties, ArmorType.CHESTPLATE),
+            new ClothArmor.Properties()
+
+    );
+
+    public static final Item CLOTH_LEGGINGS = registerItem(
+            "cloth_leggings",
+            (Item.Properties properties) -> new ClothArmor(properties, ArmorType.LEGGINGS),
+            new ClothArmor.Properties()
+    );
+
+    public static final Item CLOTH_BOOTS = registerItem(
+            "cloth_boots",
+            (Item.Properties properties) -> new ClothArmor(properties, ArmorType.BOOTS),
+            new ClothArmor.Properties()
+    );
+
+    public static final Item GOBLIN_CROWN = registerItem(
+            "goblin_crown",
+            GoblinCrown::new,
+            new GoblinCrown.Properties()
+    );
+
+    public static final Item SPIDER_BOOTS = registerItem(
+            "spider_boots",
+            SpiderBoots::new,
+            new SpiderBoots.Properties()
+    );
+
+    public static final Item ZOMBIE_LEGGINGS = registerItem(
+            "zombie_leggings",
+            ZombieLeggings::new,
+            new ZombieLeggings.Properties()
+    );
+
+    public static final Item SKELETON_CHESTPLATE = registerItem(
+            "skeleton_chestplate",
+            SkeletonChestplate::new,
+            new SkeletonChestplate.Properties()
+    );
+
     // Materials
     public static final Item PURE_MANA = registerItem(
             "eitr",
@@ -137,39 +240,6 @@ public class ModItems {
     );
 
 
-
-    // Armour
-    public static final Item CLOTH_HELMET = registerItem(
-            "cloth_helmet",
-            Item::new,
-            new Item.Properties()
-                    .humanoidArmor(ClothArmorMaterial.INSTANCE, ArmorType.HELMET)
-                    .durability(ArmorType.HELMET.getDurability(ClothArmorMaterial.BASE_DURABILITY))
-                    .component(DataComponents.EQUIPPABLE, Equippable.builder(EquipmentSlot.HEAD)
-                            .setEquipSound(SoundEvents.ARMOR_EQUIP_LEATHER)
-                            .build())
-    );
-
-    public static final Item CLOTH_CHESTPLATE = registerItem(
-            "cloth_chestplate",
-            Item::new,
-            new Item.Properties().humanoidArmor(ClothArmorMaterial.INSTANCE, ArmorType.CHESTPLATE)
-                    .durability(ArmorType.CHESTPLATE.getDurability(ClothArmorMaterial.BASE_DURABILITY))
-    );
-
-    public static final Item CLOTH_LEGGINGS = registerItem(
-            "cloth_leggings",
-            Item::new,
-            new Item.Properties().humanoidArmor(ClothArmorMaterial.INSTANCE, ArmorType.LEGGINGS)
-                    .durability(ArmorType.LEGGINGS.getDurability(ClothArmorMaterial.BASE_DURABILITY))
-    );
-
-    public static final Item CLOTH_BOOTS = registerItem(
-            "cloth_boots",
-            Item::new,
-            new Item.Properties().humanoidArmor(ClothArmorMaterial.INSTANCE, ArmorType.BOOTS)
-                    .durability(ArmorType.BOOTS.getDurability(ClothArmorMaterial.BASE_DURABILITY))
-    );
 
     public static <T extends Item> T registerItem(
             String name,

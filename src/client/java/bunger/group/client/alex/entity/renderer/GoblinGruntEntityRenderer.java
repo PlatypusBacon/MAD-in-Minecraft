@@ -1,7 +1,7 @@
 package bunger.group.client.alex.entity.renderer;
 
 import bunger.group.MutuallyAssuredDestruction;
-import bunger.group.alex.entity.GoblinGruntEntity;
+import bunger.group.alex.entity.goblin.GoblinGruntEntity;
 import bunger.group.client.alex.entity.model.GoblinGruntEntityModel;
 import bunger.group.client.alex.entity.model.ModEntityModelLayers;
 import bunger.group.client.alex.entity.state.GoblinGruntEntityRenderState;

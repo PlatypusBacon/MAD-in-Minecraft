@@ -28,30 +28,58 @@ public class CreativeTab {
             .title(Component.translatable("creativeTab.wizardry-tab"))
             .displayItems((parameters, output) -> {
                 // Items
-                output.accept(ModItems.ICE_SHIELD);
+                // Agarthan Spells
+                output.accept(ModItems.AGARTHAN_ICE_DOME);
                 output.accept(ModItems.AGARTHAN_THUNDER);
+                // Lightning
                 output.accept(ModItems.ZAP);
                 output.accept(ModItems.LIGHTNING);
                 output.accept(ModItems.CHANNEL_STORM);
-                output.accept(ModItems.AGARTHAN_ICE_DOME);
+                output.accept(ModItems.BLANK_LIGHTNING_SCROLL);
+                // Ice
+                output.accept(ModItems.ICE_SHIELD);
+                output.accept(ModItems.ICE_BULWARK);
+                output.accept(ModItems.FREEZE);
+                output.accept(ModItems.BLANK_ICE_SCROLL);
+                // Fire
                 output.accept(ModItems.IGNITION);
+                output.accept(ModItems.FIREBALL);
+                output.accept(ModItems.BLANK_FIRE_SCROLL);
+                // Earth
                 output.accept(ModItems.IMPALE);
                 output.accept(ModItems.FOREST_OF_SPIKES);
+                output.accept(ModItems.BLANK_EARTH_SCROLL);
+                // Water
                 output.accept(ModItems.SUMMON_WATER);
                 output.accept(ModItems.INVOKE_RAIN);
-                output.accept(ModItems.STAFF_OF_TELEPORTATION);
-                output.accept(ModItems.BLANK_LIGHTNING_SCROLL);
-                output.accept(ModItems.BLANK_FIRE_SCROLL);
-                output.accept(ModItems.BLANK_ICE_SCROLL);
-                output.accept(ModItems.BLANK_EARTH_SCROLL);
+                output.accept(ModItems.TSUNAMI);
                 output.accept(ModItems.BLANK_WATER_SCROLL);
+                // Poison
+                output.accept(ModItems.POISON_WAVE);
+                output.accept(ModItems.POISON_RAIN);
+                output.accept(ModItems.BLANK_POISON_SCROLL);
+                // Staff
+                output.accept(ModItems.STAFF_OF_TELEPORTATION);
+                output.accept(ModItems.STAFF_OF_REFLECTION);
+
+                // Other items
                 output.accept(ModItems.PURE_MANA);
+                output.accept(ModItems.CLOTH);
 
                 // Armour
                 output.accept(ModItems.CLOTH_HELMET);
                 output.accept(ModItems.CLOTH_CHESTPLATE);
                 output.accept(ModItems.CLOTH_LEGGINGS);
                 output.accept(ModItems.CLOTH_BOOTS);
+
+                output.accept(ModItems.GOBLIN_CROWN);
+
+                output.accept(ModItems.SKELETON_CHESTPLATE);
+                output.accept(ModItems.ZOMBIE_LEGGINGS);
+                output.accept(ModItems.SPIDER_BOOTS);
+
+                // Weapons
+                output.accept(ModItems.LONGBOW);
 
                 // Blocks
                 output.accept(ModBlocks.SPELL_DESK);

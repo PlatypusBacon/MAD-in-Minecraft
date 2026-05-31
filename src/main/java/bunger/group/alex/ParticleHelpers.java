@@ -1,5 +1,6 @@
 package bunger.group.alex;
 
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
@@ -80,6 +81,20 @@ public class ParticleHelpers {
             if (level instanceof ServerLevel serverLevel) {
                 serverLevel.sendParticles(particle, x, y, z, 1, 0, 0, 0, 0);
             }
+        }
+    }
+
+    public static void spawnVolatileParticle(Level level, Vec3 pos, ParticleOptions particle)
+    {
+        if (level instanceof ServerLevel serverLevel) {
+            serverLevel.sendParticles(particle, pos.x, pos.y, pos.z, 1, 0, 0.5, 0, 0.1);
+        }
+    }
+
+    public static void spawnStaticParticle(Level level, Vec3 pos, ParticleOptions particle)
+    {
+        if (level instanceof ServerLevel serverLevel) {
+            serverLevel.sendParticles(particle, pos.x, pos.y, pos.z, 1, 0, 0, 0, 0.02);
         }
     }
 }

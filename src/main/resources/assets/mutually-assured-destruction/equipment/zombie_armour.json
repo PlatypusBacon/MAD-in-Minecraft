@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "mutually-assured-destruction:zombie_armour"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "mutually-assured-destruction:zombie_armour"
+      }
+    ]
+  }
+}
