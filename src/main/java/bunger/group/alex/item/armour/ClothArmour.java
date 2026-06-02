@@ -1,21 +1,15 @@
-package bunger.group.alex.item.armor;
+package bunger.group.alex.item.armour;
 
 import bunger.group.MutuallyAssuredDestruction;
-import bunger.group.alex.Mana;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -25,12 +19,12 @@ import net.minecraft.world.item.equipment.*;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class ClothArmor extends Item {
+public class ClothArmour extends Item {
 
     ArmorType slot;
     int maxManaInc;
 
-    public ClothArmor(Properties properties, ArmorType slot) {
+    public ClothArmour(Properties properties, ArmorType slot) {
         Properties finalProps = properties
                 .humanoidArmor(ClothArmorMaterial.INSTANCE, slot)
                 .durability(slot.getDurability(ClothArmorMaterial.BASE_DURABILITY));

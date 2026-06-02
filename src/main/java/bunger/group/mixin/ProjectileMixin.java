@@ -1,6 +1,6 @@
 package bunger.group.mixin;
 
-import bunger.group.alex.item.armor.SkeletonChestplate;
+import bunger.group.alex.item.armour.SkeletonChestplate;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;

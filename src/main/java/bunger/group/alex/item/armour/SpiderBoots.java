@@ -1,8 +1,7 @@
-package bunger.group.alex.item.armor;
+package bunger.group.alex.item.armour;
 
 import bunger.group.MutuallyAssuredDestruction;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;

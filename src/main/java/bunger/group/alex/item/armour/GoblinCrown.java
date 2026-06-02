@@ -1,4 +1,4 @@
-package bunger.group.alex.item.armor;
+package bunger.group.alex.item.armour;
 
 import bunger.group.MutuallyAssuredDestruction;
 import net.minecraft.ChatFormatting;
