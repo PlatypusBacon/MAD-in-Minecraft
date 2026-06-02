@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "mutually-assured-destruction:enchanted_chain"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "mutually-assured-destruction:cloth"
+      }
+    ]
+  }
+}

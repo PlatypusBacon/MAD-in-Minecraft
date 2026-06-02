@@ -229,6 +229,7 @@ public class ModItems {
             new EnchantedChainArmour.Properties()
     );
 
+    // Misc
     public static final Item GOBLIN_CROWN = registerItem(
             "goblin_crown",
             GoblinCrown::new,
