@@ -29,12 +29,7 @@ public class EnchantedChainArmour extends Item {
                 .humanoidArmor(EnchantedChainArmourMaterial.INSTANCE, slot)
                 .durability(slot.getDurability(EnchantedChainArmourMaterial.BASE_DURABILITY));
 
-        if (slot == ArmorType.HELMET) {
-            finalProps = finalProps.component(
-                    DataComponents.EQUIPPABLE,
-                    Equippable.builder(slot.getSlot()).build()
-            );
-        }
+
 
         super(finalProps);
 
