@@ -3,7 +3,7 @@
 	"package": "bunger.group.client.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"client": [
-		"ExampleClientMixin"
+        "ArbalestAnimMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

@@ -175,6 +175,12 @@ public class ModItems {
             new Longbow.Properties()
     );
 
+    public static final Item ARBALEST = registerItem(
+            "arbalest",
+            Arbalest::new,
+            new Arbalest.Properties()
+    );
+
 
     // Armour
     // Cloth

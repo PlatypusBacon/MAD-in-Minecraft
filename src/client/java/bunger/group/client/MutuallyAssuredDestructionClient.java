@@ -6,6 +6,7 @@ import bunger.group.alex.entity.ModEntityTypes;
 import bunger.group.alex.menu.ModMenuType;
 import bunger.group.client.alex.entity.model.ModEntityModelLayers;
 import bunger.group.client.alex.entity.renderer.WraithEntityRenderer;
+import bunger.group.client.alex.item.ArbalestPull;
 import bunger.group.client.alex.rendering.screens.inventory.SpellDeskScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -16,6 +17,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.item.properties.numeric.RangeSelectItemModelProperties;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Util;
 
@@ -45,6 +47,11 @@ public class MutuallyAssuredDestructionClient implements ClientModInitializer {
 				VanillaHudElements.CHAT,
 				Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, "mana_bar"),
 				MutuallyAssuredDestructionClient::renderMana
+		);
+
+		RangeSelectItemModelProperties.ID_MAPPER.put(
+				Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, "arbalest_pull"),
+				ArbalestPull.MAP_CODEC
 		);
 	}
 
