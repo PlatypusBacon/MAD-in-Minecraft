@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "x": "#minecraft:iron_tool_materials"
+  },
+  "pattern": [
+    " x ",
+    " x ",
+    "x x"
+  ],
+  "result": {
+    "id": "mutually-assured-destruction:iron_hog"
+  },
+  "show_notification": false
+}

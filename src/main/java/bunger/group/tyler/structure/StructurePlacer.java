@@ -111,19 +111,8 @@ public class StructurePlacer {
             StructureEventData data = StructureEventData.get(level);
             BlockPos o = data.getTrueOrigin();
 
-            BlockPos wallBlock = switch (rotation) {
-                case NONE                -> o.offset( 7,  2,  22);
-                case CLOCKWISE_90        -> o.offset(-22, 2,   7);
-                case CLOCKWISE_180       -> o.offset(-7,  2, -22);
-                case COUNTERCLOCKWISE_90 -> o.offset( 22, 2,  -7);
-            };
-
-            Direction facing = switch (rotation) {
-                case NONE                -> Direction.NORTH;
-                case CLOCKWISE_90        -> Direction.EAST;
-                case CLOCKWISE_180       -> Direction.SOUTH;
-                case COUNTERCLOCKWISE_90 -> Direction.WEST;
-            };
+            BlockPos wallBlock = getPaintingWallPos(level);
+            Direction facing = getPaintingFacing(level);
 
             // discard any existing painting in the area
             var existing = level.getEntitiesOfClass(
@@ -281,7 +270,26 @@ public class StructurePlacer {
             case COUNTERCLOCKWISE_90 -> base.getCounterClockWise();
         };
     }
+    public static BlockPos getPaintingWallPos(ServerLevel level) {
+        StructureEventData data = StructureEventData.get(level);
+        BlockPos o = data.getTrueOrigin();
+        return switch (data.getStructureRotation()) {
+            case NONE                -> o.offset( 7,  2,  22);
+            case CLOCKWISE_90        -> o.offset(-22, 2,   7);
+            case CLOCKWISE_180       -> o.offset(-7,  2, -22);
+            case COUNTERCLOCKWISE_90 -> o.offset( 22, 2,  -7);
+        };
+    }
 
+    public static Direction getPaintingFacing(ServerLevel level) {
+        StructureEventData data = StructureEventData.get(level);
+        return switch (data.getStructureRotation()) {
+            case NONE                -> Direction.NORTH;
+            case CLOCKWISE_90        -> Direction.EAST;
+            case CLOCKWISE_180       -> Direction.SOUTH;
+            case COUNTERCLOCKWISE_90 -> Direction.WEST;
+        };
+    }
     private static BlockPos getTrueOriginFromBoundingBox(BoundingBox box, Rotation rotation) {
         return switch (rotation) {
             case NONE                -> new BlockPos(box.minX(), box.minY(), box.minZ());

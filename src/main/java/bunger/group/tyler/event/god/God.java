@@ -72,12 +72,11 @@ public class God {
 
     private static void playSoundForPlayers(ServerLevel level, SoundEvent sound, ServerPlayer eventPlayer) {
         for (var p : level.players()) {
-            ServerPlayer sp = (ServerPlayer) p;
-            if (sp == eventPlayer || sp.distanceToSqr(eventPlayer) < 64 * 64) {
-                sp.connection.send(new ClientboundSoundPacket(
+            if (p == eventPlayer || p.distanceToSqr(eventPlayer) < 64 * 64) {
+                p.connection.send(new ClientboundSoundPacket(
                         net.minecraft.core.Holder.direct(sound),
-                        SoundSource.MUSIC,
-                        sp.getX(), sp.getY(), sp.getZ(),
+                        SoundSource.RECORDS,
+                        p.getX(), p.getY(), p.getZ(),
                         1.0f, 1.0f,
                         level.getRandom().nextLong()
                 ));

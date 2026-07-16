@@ -19,13 +19,23 @@ public class RegisterSpawns {
         Predicate<BiomeSelectionContext> selector = BiomeSelectors.foundInOverworld()
                 .or(BiomeSelectors.foundInTheNether());
 
-        BiomeModifications.addSpawn(selector, MobCategory.MONSTER, ModEntities.DUDE, 2, 1, 1);
-        SpawnPlacements.register(
+        BiomeModifications.addSpawn(selector, MobCategory.MONSTER, ModEntities.DUDE, 1, 1, 1);
+              /*SpawnPlacements.register(
                 ModEntities.DUDE,
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 Mob::checkMobSpawnRules
+        );*/
+
+        SpawnPlacements.register(
+                ModEntities.DUDE,
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                (type, level, spawnReason, pos, random) ->
+                        random.nextFloat() < 0.1f
+                                && Mob.checkMobSpawnRules(type, level, spawnReason, pos, random)
         );
+
 
         Predicate<BiomeSelectionContext> deerSelector = BiomeSelectors.foundInOverworld();
         BiomeModifications.addSpawn(deerSelector, MobCategory.CREATURE, ModEntities.DEER, 10, 1, 4);

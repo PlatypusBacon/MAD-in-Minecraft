@@ -151,6 +151,16 @@ public class ModCreativeTabs {
                         output.accept(ModItems.VENISON);
                         output.accept(ModItems.COOKED_VENISON);
 
+                        // Jerky
+                        output.accept(ModItems.ANIMAL_SKIN);
+                        output.accept(ModItems.DEER_JERKY);
+                        output.accept(ModItems.BEEF_JERKY);
+                        output.accept(ModItems.PORK_JERKY);
+                        output.accept(ModItems.SHEEP_JERKY);
+                        output.accept(ModItems.CHICKEN_JERKY);
+                        output.accept(ModItems.DRIED_SALMON);
+                        output.accept(ModItems.DRIED_COD);
+
                     })
                     .build()
     );

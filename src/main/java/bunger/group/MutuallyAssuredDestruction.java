@@ -72,11 +72,11 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 				UnlockRecipePagePayload.CODEC
 		);
 		RecipePageRegistry.register(ModItems.SQUIRREL_STAPELER, "bear_boxers");
-		RecipePageRegistry.register(ModItems.SQUIRREL_STAPELER, "bear_boxers");
 		RecipePageRegistry.register(ItemTags.PLANKS, "crafting_table");
 		RecipePageRegistry.register(ModBlocks.ROCK.asItem(), "hot_plate");
 		RecipePageRegistry.register(bunger.group.tyler2.item.ModItems.ANTLER, "antler_pickaxe");
 		RecipePageRegistry.register(bunger.group.tyler2.item.ModItems.HOT_PLATE, "copper_ingot");
-
+		RecipePageRegistry.register(Items.STICK, "tanning_rack");
+		RecipePageRegistry.register(bunger.group.tyler3.item.ModItems.MEDIUM_AMMO, "bullet");
 	}
 }

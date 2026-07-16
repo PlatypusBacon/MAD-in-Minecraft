@@ -78,6 +78,7 @@ public class MutuallyAssuredDestructionClient implements ClientModInitializer {
 		);
 		RecipePageRegistry.register("sling");
 		RecipePageRegistry.register("flint_knife");
+		RecipePageRegistry.register("spell_quest");
 		ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
 			PaintOverlay.loadForCurrentWorld();
 		});

@@ -27,7 +27,7 @@ public class TanningRackBlockEntity extends BlockEntity {
      * How many ticks of valid sunlight are needed to dry one item.
      * 24000 ticks = 1 Minecraft day; 6000 = 5 minutes of daytime exposure.
      */
-    private static final int DRY_TIME = 20;
+    private static final int DRY_TIME = 6000;
 
     private final ItemStack[] items   = new ItemStack[SLOT_COUNT];
     private final int[]       progress = new int[SLOT_COUNT];
@@ -89,18 +89,11 @@ public class TanningRackBlockEntity extends BlockEntity {
         if (time >= 12000) return false;
         return level.canSeeSky(pos.above());
     }
-
-    // -------------------------------------------------------------------------
     // Drying recipes
-    // Replace these mappings with your own items/tags once registered.
-    // -------------------------------------------------------------------------
 
     /**
      * Maps an input ItemStack to its dried output, or ItemStack.EMPTY if the
      * item cannot be dried on the tanning rack.
-     *
-     * Add your own mod items here (e.g. ModItems.RAW_MEAT -> ModItems.DRIED_MEAT,
-     * ModItems.ANIMAL_SKIN -> Items.LEATHER, etc.).
      */
     public static ItemStack getDryingResult(ItemStack input) {
         if (input.isEmpty()) return ItemStack.EMPTY;
@@ -127,6 +120,9 @@ public class TanningRackBlockEntity extends BlockEntity {
         }
         if (input.is(Items.COD)) {
             return new ItemStack(ModItems.DRIED_COD);
+        }
+        if (input.is(ModItems.VENISON)) {
+            return new ItemStack(ModItems.DEER_JERKY);
         }
 
         return ItemStack.EMPTY;

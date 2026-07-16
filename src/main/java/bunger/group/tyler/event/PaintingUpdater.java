@@ -24,12 +24,9 @@ public class PaintingUpdater {
             Identifier.fromNamespaceAndPath("mutually-assured-destruction", "god_coming_3"),
             Identifier.fromNamespaceAndPath("mutually-assured-destruction", "god_coming_4"),
     };
-    public static void updatePaintingToIndex(ServerLevel level,
-                                             StructureEventData data,
-                                             int index) {
-        BlockPos paintingPos = StructurePlacer.resolvePaintingPos(level, data);
+    public static void updatePaintingToIndex(ServerLevel level, StructureEventData data, int index) {
         int clampedIndex = Math.max(0, Math.min(index, VARIANTS.length - 1));
-        applyVariant(level, data, paintingPos, VARIANTS[clampedIndex]);
+        applyVariant(level, data, VARIANTS[clampedIndex]);
     }
 
     public static void updatePainting(ServerLevel level, StructureEventData data) {
@@ -37,70 +34,25 @@ public class PaintingUpdater {
         updatePaintingToIndex(level, data, nextIndex);
     }
 
-    private static void applyVariant(ServerLevel level,
-                                     StructureEventData data,
-                                     BlockPos searchPos,
-                                     Identifier variantId) {
-        Painting painting = findNearest(level, searchPos, 3.0);
+    private static void applyVariant(ServerLevel level, StructureEventData data, Identifier variantId) {
+        BlockPos wallPos = StructurePlacer.getPaintingWallPos(level);
+        Direction facing = StructurePlacer.getPaintingFacing(level);
 
-        if (painting == null) {
-            System.err.println("Painting not near stored pos " + searchPos
-                    + " — searching full structure bounds");
-            BlockPos min = data.getStructureOrigin();
-            BlockPos max = data.getStructureEnd();
-            List<Painting> all = level.getEntitiesOfClass(
-                    Painting.class,
-                    new AABB(Vec3.atLowerCornerOf(min), Vec3.atLowerCornerOf(max)).inflate(4.0)            );
-            if (!all.isEmpty()) {
-                BlockPos bed = data.getBedPos();
-                painting = all.stream()
-                        .min(Comparator.comparingDouble(p ->
-                                p.distanceToSqr(bed.getX(), bed.getY(), bed.getZ())))
-                        .orElse(null);
-
-                if (painting != null) {
-                    BlockPos corrected = painting.blockPosition()
-                            .relative(painting.getDirection());
-                    data.setPaintingPos(corrected);
-                    System.out.println("Painting pos corrected to: " + corrected);
-                }
-            }
-        }
-
-        if (painting == null) {
-            System.err.println("No painting found anywhere in structure — "
-                    + "use /setstructure painting to set manually");
-            return;
-        }
-
-        BlockPos pos = painting.blockPosition();
-        Direction facing = painting.getDirection();
-        painting.discard();
-
-        var registry = level.registryAccess()
-                .lookupOrThrow(Registries.PAINTING_VARIANT);
-        var variantHolder = registry.get(
-                ResourceKey.create(Registries.PAINTING_VARIANT, variantId));
-
+        var registry = level.registryAccess().lookupOrThrow(Registries.PAINTING_VARIANT);
+        var variantHolder = registry.get(ResourceKey.create(Registries.PAINTING_VARIANT, variantId));
         if (variantHolder.isEmpty()) {
             System.err.println("Painting variant not found: " + variantId);
             return;
         }
 
-        Painting newPainting = new Painting(level, pos, facing, variantHolder.get());
-        level.addFreshEntity(newPainting);
-        System.out.println("Painting updated to: " + variantId + " at " + pos);
-    }
+        // wipe anything at the canonical spot first — covers strays/duplicates too,
+        // instead of relying on a radius search that can miss if anything is off
+        level.getEntitiesOfClass(Painting.class, new AABB(wallPos).inflate(3.0))
+                .forEach(p -> p.discard());
 
-    private static Painting findNearest(ServerLevel level, BlockPos pos, double radius) {
-        List<Painting> paintings = level.getEntitiesOfClass(
-                Painting.class,
-                new AABB(pos).inflate(radius)
-        );
-        if (paintings.isEmpty()) return null;
-        return paintings.stream()
-                .min(Comparator.comparingDouble(p ->
-                        p.distanceToSqr(pos.getX(), pos.getY(), pos.getZ())))
-                .orElse(null);
+        Painting newPainting = new Painting(level, wallPos, facing, variantHolder.get());
+        level.addFreshEntity(newPainting);
+        data.setPaintingPos(wallPos.relative(facing));
+        System.out.println("Painting updated to: " + variantId + " at " + wallPos);
     }
 }

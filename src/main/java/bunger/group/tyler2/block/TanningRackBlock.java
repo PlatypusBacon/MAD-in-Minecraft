@@ -50,14 +50,14 @@ public class TanningRackBlock extends BaseEntityBlock {
     private static final VoxelShape SHAPE = Shapes.or(SHAPE_BAR, SHAPE_LEG_L, SHAPE_LEG_R);
     private static final VoxelShape SHAPE_NORTH_SOUTH = Shapes.or(
             Block.box(1, 12, 7, 15, 14, 9),  // bar along X
-            Block.box(1, 0, 5, 4, 12, 11),
-            Block.box(12, 0, 5, 15, 12, 11)
+            Block.box(1, 0, 5, 3, 12, 11),
+            Block.box(12, 0, 5, 14, 12, 11)
     );
 
     private static final VoxelShape SHAPE_EAST_WEST = Shapes.or(
             Block.box(7, 12, 1, 9, 14, 15),  // bar along Z
-            Block.box(5, 0, 1, 11, 12, 4),
-            Block.box(5, 0, 12, 11, 12, 15)
+            Block.box(5, 0, 1, 11, 12, 3),
+            Block.box(5, 0, 12, 11, 12, 14)
     );
 
     @Override

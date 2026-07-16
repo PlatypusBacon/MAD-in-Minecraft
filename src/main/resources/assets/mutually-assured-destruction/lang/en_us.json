@@ -132,7 +132,7 @@
   "painting.mutually-assured-destruction.god_coming_1.author": "Unknown",
   "painting.mutually-assured-destruction.god_coming_0.author": "Unknown",
   "entity.mutually-assured-destruction.squirrel_wife": "Squirrel Wife",
-  "enchantment.mutually-assured-destruction.stapled": "STAPLED",
+  "enchantment.mutually-assured-destruction.stapeled": "STAPLED",
   "itemGroup.mutually-assured-destruction.sticks_tab": "New Sticks",
   "itemGroup.mutually-assured-destruction.squirrel_tab": "Squirrel Stapeler",
   "itemGroup.mutually-assured-destruction.sticky_tab": "Sticky Goop",
@@ -162,5 +162,6 @@
   "item.mutually-assured-destruction.dried_salmon": "Dried Salmon",
   "item.mutually-assured-destruction.venison": "Venison",
   "item.mutually-assured-destruction.cooked_venison": "Cooked Venison",
-  "item.mutually-assured-destruction.animal_skin": "Animal Skin"
+  "item.mutually-assured-destruction.animal_skin": "Animal Skin",
+  "filled_map.squirrel_house": "Your house in the woods"
 }

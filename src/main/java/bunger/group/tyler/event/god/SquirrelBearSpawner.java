@@ -5,6 +5,7 @@ import bunger.group.tyler.entity.ModEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.level.levelgen.Heightmap;
 
 public class SquirrelBearSpawner {
 
@@ -33,8 +34,11 @@ public class SquirrelBearSpawner {
             // Reject if inside structure bounds
             if (x >= minX && x <= maxX && z >= minZ && z <= maxZ) continue;
 
-            int y = level.getHeight(
-                    net.minecraft.world.level.levelgen.Heightmap.Types.WORLD_SURFACE, x, z);
+            // Ignores leaves, so we don't land on top of tree canopies
+            int y = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z);
+
+            BlockPos spawnPos = new BlockPos(x, y, z);
+            if (!isValidGroundSpawn(level, spawnPos)) continue;
 
             var bear = ModEntities.SQUIRREL_BEAR.create(level, EntitySpawnReason.LOAD);
             if (bear == null) continue;
@@ -44,5 +48,25 @@ public class SquirrelBearSpawner {
             level.addFreshEntity(bear);
             spawned++;
         }
+        System.out.println("[SquirrelBearSpawner] Done: spawned " + spawned
+                + " squirrel bears in " + attempts + " attempts");
+    }
+
+    /**
+     * Rejects spawn points that are in/on a fluid, or have nothing solid underneath
+     */
+    private static boolean isValidGroundSpawn(ServerLevel level, BlockPos pos) {
+        BlockPos below = pos.below();
+
+        // The spawn block itself is water/lava
+        if (!level.getFluidState(pos).isEmpty()) return false;
+
+        // The block we'd be "standing on" is actually a fluid surface
+        if (!level.getFluidState(below).isEmpty()) return false;
+
+        // Nothing solid underneath -> would float/fall
+        if (level.getBlockState(below).isAir()) return false;
+
+        return true;
     }
 }
