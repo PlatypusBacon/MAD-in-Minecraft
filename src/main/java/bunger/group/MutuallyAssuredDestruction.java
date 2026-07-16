@@ -14,14 +14,12 @@ import bunger.group.bryan.MailboxBlock;
 import bunger.group.bryan.StorageEntityTracker;
 import bunger.group.bryan.NoticeItem;
 
-import java.util.List;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.vehicle.boat.ChestBoat;
 import net.minecraft.world.entity.vehicle.boat.ChestRaft;
@@ -31,9 +29,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import com.mojang.serialization.Codec;
-// import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.core.BlockPos;
@@ -41,13 +37,7 @@ import net.minecraft.core.Registry;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
-import net.minecraft.server.level.ServerPlayer;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import java.util.*;
-import net.minecraft.world.level.Level; 
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.vehicle.boat.ChestBoat;
-import net.minecraft.world.entity.vehicle.minecart.MinecartChest;
+
 
 
 import bunger.group.csmit863.Bunger3;
@@ -138,8 +128,6 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		)
 	);
 
-
-
 	// ================ END OF BRYAN'S INITIALIZATION SECTION ================
 
 
@@ -154,13 +142,30 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		TaxItem.initialize();
 		NoticeItem.initialize();
 
-		// ============ GIVE PLAYERS TAXES =============
+
+				// ================ CHECK TAXES ================
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
 
-			long day = server.overworld().getGameTime() % 24000L * 1L;
+			long day = server.overworld().getGameTime() % 24000L;
 
 			// run once per day
 			if (day == 0) {
+
+				for (ServerPlayer player : server.getPlayerList().getPlayers()) {
+					TaxLogic.checkTaxes(player, server);
+				}
+			}
+		});
+
+
+
+		// ============ GIVE PLAYERS TAXES =============
+		ServerTickEvents.END_SERVER_TICK.register(server -> {
+
+			long day = server.overworld().getGameTime() % (24000L * 5L);
+
+			// stagger check and give by 100 ticks so no overlap
+			if (day == 100 && (server.overworld().getGameTime() > 24000L)) {
 
 				for (ServerPlayer player : server.getPlayerList().getPlayers()) {
 
@@ -177,19 +182,6 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 			}
 		});
 
-		// ================ CHECK TAXES ================
-		ServerTickEvents.END_SERVER_TICK.register(server -> {
-
-			long day = server.overworld().getGameTime() % 24000L;
-
-			// run once per day
-			if (day == 0) {
-
-				for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-					TaxLogic.checkTaxes(player, server);
-				}
-			}
-		});
 
 		// ================ CHEST POS ================
 		UseBlockCallback.EVENT.register((player, world, hand, hit) -> {
@@ -229,8 +221,6 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 
 
       	CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.BUILDING_BLOCKS).register((creativeTab) -> creativeTab.accept(MAILBOX_BLOCK));
-		//CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.INGREDIENTS).register((creativeTab) -> creativeTab.accept(TaxItem.TAX_ITEM));
-
 
 		LOGGER.info("Hello Fabric world!");
 	}

@@ -11,7 +11,6 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -19,11 +18,9 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -75,13 +72,6 @@ public class MailboxBlock extends Block {
                                           InteractionHand hand,
                                           BlockHitResult hit) {
 
-        if (world.isClientSide()) {
-            System.out.println("IS CLIENTSIDE !!!!!!!!!!!");
-            return InteractionResult.SUCCESS;
-        } else {
-            System.out.println("IS SERVERSIDE !!!!!!!!!!!");
-        }
-
         TaxData data = TaxLogic.PLAYER_TAXES.get(player.getUUID());
 
         if (data == null) {
@@ -97,7 +87,6 @@ public class MailboxBlock extends Block {
         if (data.requiredItems.containsKey(heldId)) {
 
             int remaining = data.requiredItems.get(heldId) - 1;
-            System.out.println("Remaining = " + remaining + "!!!!!!!!!!!!!!!!!");
 
             held.shrink(1);
 

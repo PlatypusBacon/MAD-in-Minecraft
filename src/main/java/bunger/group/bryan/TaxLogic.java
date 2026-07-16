@@ -41,20 +41,30 @@ public class TaxLogic {
         1x pickaxe obtainable stone (1-64)
         1x food item or farming item (1-64)
         1x ore (1-32) (current pickaxe?)
-        1x random (1-16)
+        1x random (1-16) (now nuggets)
         */
         
         TagKey<Item> WOOD = MutuallyAssuredDestruction.WOOD_TAXES;
         TagKey<Item> STONE = MutuallyAssuredDestruction.STONE_TAXES;
         TagKey<Item> FOOD = MutuallyAssuredDestruction.FOOD_TAXES;
         TagKey<Item> ORE = MutuallyAssuredDestruction.ORE_TAXES;
-        TagKey<Item> RANDOM = ItemTags.ANVIL;
+        TagKey<Item> RANDOM = ItemTags.METAL_NUGGETS;
+
+
+        // select ore item first so we can adjust quantity for rare items
+        Item oreItem = getRandomFromTag(ORE, random);
+        int numOre = random.nextInt(32) + 1;
+        // if the chosen ore is netherite scrap or ingot, limit to 1
+        String oreId = BuiltInRegistries.ITEM.getKey(oreItem).toString();
+        if (oreId.equals("minecraft:netherite_scrap") || oreId.equals("minecraft:netherite_ingot")) {
+            numOre = 1;
+        }
 
         taxMap.put(getRandomFromTag(WOOD, random), random.nextInt(64) + 1);
         taxMap.put(getRandomFromTag(STONE, random), random.nextInt(64) + 1);
         taxMap.put(getRandomFromTag(FOOD, random), random.nextInt(64) + 1);
-        taxMap.put(getRandomFromTag(ORE, random), random.nextInt(32) + 1);
-        taxMap.put(getRandomFromTag(RANDOM, random), random.nextInt(16) + 1);
+        taxMap.put(oreItem, numOre);
+        taxMap.put(getRandomFromTag(RANDOM, random), random.nextInt(64) + 1);
 
         StringBuilder text = new StringBuilder();
 
@@ -90,7 +100,8 @@ public class TaxLogic {
 
 
         long currentDay = user.level().getGameTime() / 24000L;
-        long dueDay = currentDay+1;
+        long dueDay = currentDay+5;
+        System.out.println("Current Day: " + currentDay + " Due Day: " + dueDay);
 
         PLAYER_TAXES.put(
             user.getUUID(),
@@ -99,7 +110,6 @@ public class TaxLogic {
 
         itemStack.set(DataComponents.WRITTEN_BOOK_CONTENT, content);
 
-        // System.out.println(requiredItems+"!!!!!!!!!!");
     }
 
 
