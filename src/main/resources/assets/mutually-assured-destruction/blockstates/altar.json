@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "mutually-assured-destruction:block/altar" },
+        "facing=south": { "model": "mutually-assured-destruction:block/altar", "y": 180 },
+        "facing=east":  { "model": "mutually-assured-destruction:block/altar", "y": 90 },
+        "facing=west":  { "model": "mutually-assured-destruction:block/altar", "y": 270 }
+    }
+}

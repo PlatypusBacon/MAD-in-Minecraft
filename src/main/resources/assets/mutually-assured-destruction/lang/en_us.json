@@ -1,7 +1,7 @@
 {
   "block.mutually-assured-destruction.mailbox_block": "Mailbox",
   "item.mutually-assured-destruction.tax_item": "CP14 Notice of Assessment",
-  "item.mutually-assured-destruction.notice_item": "Notice of Asset Seizure"
+  "item.mutually-assured-destruction.notice_item": "Notice of Asset Seizure",
   "item.mutually-assured-destruction.squirrel_gun": "Squirrel Gun",
   "item.mutually-assured-destruction.squeather_feet": "Foot Squeather",
   "item.mutually-assured-destruction.squeather_legs": "Leg Squeather",
@@ -166,5 +166,12 @@
   "item.mutually-assured-destruction.venison": "Venison",
   "item.mutually-assured-destruction.cooked_venison": "Cooked Venison",
   "item.mutually-assured-destruction.animal_skin": "Animal Skin",
-  "filled_map.squirrel_house": "Your house in the woods"
+  "filled_map.squirrel_house": "Your house in the woods",
+  
+  "effect.mutually-assured-destruction.red_darkness": "Voremoth's Rage",
+  "entity.mutually-assured-destruction.prophet": "Prophet",
+  "entity.mutually-assured-destruction.voremoth": "Voremoth",
+  "block.mutually-assured-destruction.altar_fragment": "Altar Fragment",
+  "block.mutually-assured-destruction.altar": "Altar",
+  "item.mutually-assured-destruction.voremoth_crown": "Crown of Voremoth"
 }

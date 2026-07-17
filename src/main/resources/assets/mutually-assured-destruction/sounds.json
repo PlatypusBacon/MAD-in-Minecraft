@@ -81,5 +81,92 @@
       { "name": "mutually-assured-destruction:t5", "volume": 1.0 },
       { "name": "mutually-assured-destruction:t6", "volume": 1.0 }
     ]
-  }
+  },
+  "heartbeat": {
+        "sounds": [
+            {
+                "name": "mutually-assured-destruction:heartbeat",
+                "stream": true
+            }
+        ]
+    },
+    "dripping": {
+        "sounds": [
+            {
+                "name": "mutually-assured-destruction:dripping",
+                "stream": true
+            }
+        ]
+    },
+    "altar_form": {
+        "sounds": [
+            {
+                "name": "mutually-assured-destruction:altar_form"
+            }
+        ]
+    },
+    "voremoth1": {
+        "sounds": [
+            {
+                "name": "mutually-assured-destruction:voremoth1",
+                "stream": true
+            }
+        ]
+    },
+    "voremoth2": {
+        "sounds": [
+            {
+                "name": "mutually-assured-destruction:voremoth2",
+                "stream": true
+            }
+        ]
+    },
+    "voremoth3": {
+        "sounds": [
+            {
+                "name": "mutually-assured-destruction:voremoth3",
+                "stream": true
+            }
+        ]
+    },
+    "voremoth4": {
+        "sounds": [
+            {
+                "name": "mutually-assured-destruction:voremoth4",
+                "stream": true
+            }
+        ]
+    },
+    "voremoth5": {
+        "sounds": [
+            {
+                "name": "mutually-assured-destruction:voremoth5",
+                "stream": true
+            }
+        ]
+    },
+    "voremoth_ambient": {
+        "sounds": [
+            {
+                "name": "mutually-assured-destruction:voremoth_ambient",
+                "stream": true  
+            }
+        ]
+    },
+    "voremoth_hit": {
+        "sounds": [
+            {
+                "name": "mutually-assured-destruction:voremoth_hit",
+                "stream": true  
+            }
+        ]
+    },
+    "voremoth_charge": {
+        "sounds": [
+            {
+                "name": "mutually-assured-destruction:voremoth_charge",
+                "stream": true  
+            }
+        ]
+    }
 }

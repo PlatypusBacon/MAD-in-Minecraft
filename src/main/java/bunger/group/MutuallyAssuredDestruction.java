@@ -8,6 +8,12 @@ import bunger.group.tyler3.RegisterSpawns;
 import bunger.group.tyler3.network.UnlockRecipePagePayload;
 import bunger.group.tyler3.rego.RecipePageRegistry;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
@@ -58,8 +64,33 @@ import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 
 
 import bunger.group.csmit863.Bunger3;
-import bunger.group.ethan.Bunger4;
+import bunger.group.ethan.AltarFragmentBlock;
+import bunger.group.ethan.AltarBlock;
+import bunger.group.ethan.AltarEventHandler;
 import bunger.group.tyler.Bunger5;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.Identifier;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.SpawnPlacementTypes;
+import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.equipment.ArmorType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.block.Block;
+import bunger.group.ethan.ProphetEntity;
+import bunger.group.ethan.VoremothEntity;
+import bunger.group.ethan.ModEntityTypes;
+//import bunger.group.ethan.ModItems;
+import bunger.group.ethan.RedDarknessEffect;
+// import net.minecraft.resources.ResourceLocation;
+import bunger.group.ethan.RedRainHandler;
+import bunger.group.ethan.VoremothArmorMaterial;
+import bunger.group.ethan.VoremothBossMechanic;
+import bunger.group.ethan.VoremothCrownHandler;
+import bunger.group.ethan.VoremothCrownPacket;
 
 public class MutuallyAssuredDestruction implements ModInitializer {
 	public static final String MOD_ID = "mutually-assured-destruction";
@@ -146,6 +177,54 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 	);
 
 	// ================ END OF BRYAN'S INITIALIZATION SECTION ================
+
+
+	// ================ START OF ETHAN'S INITIALIZATION SECTION ================
+	public static final Map<UUID, Long> RED_RAIN_PLAYERS = new HashMap<>();
+
+	public static final Block ALTAR_FRAGMENT = AltarFragmentBlock.registerBlock("altar_fragment",
+        AltarFragmentBlock::new,
+        BlockBehaviour.Properties.of().strength(4.0F),
+        true
+    );
+
+	public static final Block ALTAR = AltarBlock.registerBlock("altar",
+        AltarBlock::new,
+        BlockBehaviour.Properties.of().strength(4.0F),
+        true
+    );
+
+	public static final Item VOREMOTH_CROWN = bunger.group.ethan.ModItems.register(
+        "voremoth_crown",
+        Item::new,
+        new Item.Properties().humanoidArmor(VoremothArmorMaterial.INSTANCE, ArmorType.HELMET)
+                .durability(ArmorType.HELMET.getDurability(VoremothArmorMaterial.BASE_DURABILITY))
+    );
+
+
+	public static final SoundEvent ALTAR_FORM = SoundEvent.createVariableRangeEvent(
+    	Identifier.fromNamespaceAndPath(MOD_ID, "altar_form")
+	);
+
+	public static final SoundEvent VOREMOTH_HIT = SoundEvent.createFixedRangeEvent(
+    	Identifier.fromNamespaceAndPath(MOD_ID, "voremoth_hit"), 100.0F);
+	public static final SoundEvent VOREMOTH_CHARGE = SoundEvent.createFixedRangeEvent(
+    	Identifier.fromNamespaceAndPath(MOD_ID, "voremoth_charge"), 100.0F);
+	public static final SoundEvent VOREMOTH1 = SoundEvent.createFixedRangeEvent(
+    	Identifier.fromNamespaceAndPath(MOD_ID, "voremoth1"), 100.0F);
+	public static final SoundEvent VOREMOTH2 = SoundEvent.createFixedRangeEvent(
+		Identifier.fromNamespaceAndPath(MOD_ID, "voremoth2"), 100.0F);
+	public static final SoundEvent VOREMOTH3 = SoundEvent.createFixedRangeEvent(
+		Identifier.fromNamespaceAndPath(MOD_ID, "voremoth3"), 100.0F);
+	public static final SoundEvent VOREMOTH4 = SoundEvent.createFixedRangeEvent(
+		Identifier.fromNamespaceAndPath(MOD_ID, "voremoth4"), 100.0F);
+	public static final SoundEvent VOREMOTH5 = SoundEvent.createFixedRangeEvent(
+		Identifier.fromNamespaceAndPath(MOD_ID, "voremoth5"), 100.0F);
+	public static final SoundEvent VOREMOTH_AMBIENT = SoundEvent.createVariableRangeEvent(
+		Identifier.fromNamespaceAndPath(MOD_ID, "voremoth_ambient"));
+
+	// ================ END OF ETHAN'S INITIALIZATION SECTION ================
+
 
 
 	@Override
@@ -283,5 +362,82 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		RecipePageRegistry.register(bunger.group.tyler2.item.ModItems.HOT_PLATE, "copper_ingot");
 		RecipePageRegistry.register(Items.STICK, "tanning_rack");
 		RecipePageRegistry.register(bunger.group.tyler3.item.ModItems.MEDIUM_AMMO, "bullet");
+
+
+
+		// ----------Ethans registrations----------
+
+		ProphetEntity.initialize();
+
+		SpawnPlacements.register(
+			ModEntityTypes.PROPHET,
+			SpawnPlacementTypes.ON_GROUND,
+			Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+			(entityType, level, spawnReason, pos, random) -> {
+				return level.getMaxLocalRawBrightness(pos) <= 7;
+			}
+		);
+
+		BiomeModifications.
+			addSpawn(
+				BiomeSelectors.foundInOverworld(),
+				MobCategory.MONSTER,
+				ModEntityTypes.PROPHET,
+				10,
+				1,
+				1
+			);
+
+		VoremothEntity.initialize();
+
+		VoremothBossMechanic.register();
+		ModEntityTypes.registerModEntityTypes();
+		ModEntityTypes.registerAttributes();
+
+		Registry.register(BuiltInRegistries.SOUND_EVENT, 
+			Identifier.fromNamespaceAndPath("mutually-assured-destruction", "heartbeat"), 
+			ProphetEntity.HEARTBEAT);
+
+		Registry.register(BuiltInRegistries.SOUND_EVENT, 
+			Identifier.fromNamespaceAndPath("mutually-assured-destruction", "dripping"), 
+			ProphetEntity.DRIPPING);
+
+		Registry.register(BuiltInRegistries.MOB_EFFECT,
+			Identifier.fromNamespaceAndPath("mutually-assured-destruction", "red_darkness"),
+			RedDarknessEffect.RED_DARKNESS);
+
+		RedRainHandler.register();
+		AltarEventHandler.register();
+		VoremothCrownHandler.register();
+		VoremothCrownPacket.registerPacket();
+		Registry.register(BuiltInRegistries.SOUND_EVENT,
+    		Identifier.fromNamespaceAndPath(MOD_ID, "altar_form"),
+    		ALTAR_FORM);
+		Registry.register(BuiltInRegistries.SOUND_EVENT,
+			Identifier.fromNamespaceAndPath(MOD_ID, "voremoth1"),
+			VOREMOTH1);
+		Registry.register(BuiltInRegistries.SOUND_EVENT,
+			Identifier.fromNamespaceAndPath(MOD_ID, "voremoth2"),
+			VOREMOTH2);
+		Registry.register(BuiltInRegistries.SOUND_EVENT,
+			Identifier.fromNamespaceAndPath(MOD_ID, "voremoth3"),
+			VOREMOTH3);
+		Registry.register(BuiltInRegistries.SOUND_EVENT,
+			Identifier.fromNamespaceAndPath(MOD_ID, "voremoth4"),
+			VOREMOTH4);
+		Registry.register(BuiltInRegistries.SOUND_EVENT,
+			Identifier.fromNamespaceAndPath(MOD_ID, "voremoth5"),
+			VOREMOTH5);
+		Registry.register(BuiltInRegistries.SOUND_EVENT,
+			Identifier.fromNamespaceAndPath(MOD_ID, "voremoth_ambient"),
+			VOREMOTH_AMBIENT);
+
+
+
+
+
+
+
+		// ------------------------------------------
 	}
 }

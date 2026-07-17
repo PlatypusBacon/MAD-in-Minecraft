@@ -8,7 +8,9 @@
 		"HandRendererMixin",
 		"LivingEntitySwingMixin",
 		"AbstractContainerScreenAccessor",
-		"ImageButtonAccessor"
+		"ImageButtonAccessor",
+		"FogRendererMixin",
+		"FogRendererAccessor"
 	],
 	"injectors": {
 		"defaultRequire": 1
