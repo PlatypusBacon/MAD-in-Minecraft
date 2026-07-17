@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "category": "food",
+  "cookingtime": 200,
+  "experience": 0.35,
+  "ingredient": "mutually-assured-destruction:venison",
+  "result": {
+    "id": "mutually-assured-destruction:cooked_venison"
+  }
+}

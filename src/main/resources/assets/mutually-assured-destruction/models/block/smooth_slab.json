@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "mutually-assured-destruction:block/smooth_plank",
+    "side": "mutually-assured-destruction:block/smooth_plank",
+    "top": "mutually-assured-destruction:block/smooth_plank"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "mutually-assured-destruction:block/smooth_slab"
+    },
+    "type=double": {
+      "model": "mutually-assured-destruction:block/smooth_plank"
+    },
+    "type=top": {
+      "model": "mutually-assured-destruction:block/smooth_slab_top"
+    }
+  }
+}

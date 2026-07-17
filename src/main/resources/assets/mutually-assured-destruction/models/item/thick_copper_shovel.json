@@ -1,0 +1,37 @@
+{
+	"format_version": "1.21.11",
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:item/generated",
+	"textures": {
+		"layer0": "mutually-assured-destruction:item/thick_shovel/thick_copper_shovel"
+	},
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [-39, -90, 0],
+			"translation": [-0.5, -4.5, 1.5],
+			"scale": [0.85, 0.85, 2.59]
+		},
+		"thirdperson_lefthand": {
+			"translation": [2.5, -2.5, 1.25],
+			"scale": [1, 0.99, 2]
+		},
+		"firstperson_righthand": {
+			"rotation": [-13, -98, 49],
+			"translation": [13, -13, -3.25],
+			"scale": [1.37, 1.39, 2]
+		},
+		"firstperson_lefthand": {
+			"rotation": [153.29, -87, 116.93],
+			"translation": [15.5, -13, -9.75],
+			"scale": [1.01, 1.51, 2]
+		},
+		"fixed": {
+			"translation": [-8.5, -7.25, 0],
+			"scale": [1.82, 1.77, 1.82]
+		},
+		"gui": {
+			"translation": [-8, -8.25, 0],
+			"scale": [1.69, 1.71, 1.69]
+		}
+	}
+}

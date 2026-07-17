@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [ "PP", " S", " S" ],
+  "key": {
+    "P": "#minecraft:stone_tool_materials",
+    "S": "mutually-assured-destruction:thick_stick"
+  },
+  "result": "mutually-assured-destruction:thick_stone_hoe"
+}

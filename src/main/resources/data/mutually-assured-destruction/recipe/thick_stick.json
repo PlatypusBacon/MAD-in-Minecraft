@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [ "P", "P" ],
+  "key": {
+    "P": "#minecraft:planks"
+  },
+  "result": {
+    "id": "mutually-assured-destruction:thick_stick",
+    "count": 2
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [ "PPP", " S ", " S " ],
+  "key": {
+    "P": "#minecraft:iron_tool_materials",
+    "S": "mutually-assured-destruction:long_stick"
+  },
+  "result": "mutually-assured-destruction:long_iron_pickaxe"
+}

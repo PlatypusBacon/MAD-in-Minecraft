@@ -1,0 +1,69 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "rolls": 1.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "mutually-assured-destruction:rock",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "add": false,
+              "count": 1.0,
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "mutually-assured-destruction:rock",
+                  "properties": { "segment_amount": "1" }
+                }
+              ]
+            },
+            {
+              "function": "minecraft:set_count",
+              "add": false,
+              "count": 2.0,
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "mutually-assured-destruction:rock",
+                  "properties": { "segment_amount": "2" }
+                }
+              ]
+            },
+            {
+              "function": "minecraft:set_count",
+              "add": false,
+              "count": 3.0,
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "mutually-assured-destruction:rock",
+                  "properties": { "segment_amount": "3" }
+                }
+              ]
+            },
+            {
+              "function": "minecraft:set_count",
+              "add": false,
+              "count": 4.0,
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "mutually-assured-destruction:rock",
+                  "properties": { "segment_amount": "4" }
+                }
+              ]
+            },
+            {
+              "function": "minecraft:explosion_decay"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "random_sequence": "mutually-assured-destruction:rock"
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "sticks",
+  "key": {
+    "y": "mutually-assured-destruction:long_stick",
+    "x": "#minecraft:stone_tool_materials"
+  },
+  "pattern": [
+    "yx"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:stick"
+  }
+}

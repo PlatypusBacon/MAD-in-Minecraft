@@ -1,7 +1,17 @@
 package bunger.group;
 
+import bunger.group.tyler.item.ModItems;
+import bunger.group.tyler2.block.ModBlockEntities;
+import bunger.group.tyler2.block.ModBlocks;
+import bunger.group.tyler3.RegisterSpawns;
+
+import bunger.group.tyler3.network.UnlockRecipePagePayload;
+import bunger.group.tyler3.rego.RecipePageRegistry;
 import net.fabricmc.api.ModInitializer;
 
+import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import bunger.group.alex.Bunger1;
@@ -30,6 +40,13 @@ import net.minecraft.world.item.ItemStack;
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import com.mojang.serialization.Codec;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.levelgen.GenerationStep;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.core.BlockPos;
@@ -189,7 +206,7 @@ public class MutuallyAssuredDestruction implements ModInitializer {
             if (world.isClientSide()){
 				return InteractionResult.PASS;
 			}
-			
+
             BlockPos pos = hit.getBlockPos();
             BlockState state = world.getBlockState(pos);
 
@@ -223,5 +240,48 @@ public class MutuallyAssuredDestruction implements ModInitializer {
       	CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.BUILDING_BLOCKS).register((creativeTab) -> creativeTab.accept(MAILBOX_BLOCK));
 
 		LOGGER.info("Hello Fabric world!");
+		bunger.group.tyler.structure.ModStructures.register();
+		bunger.group.tyler2.event.Trip.register();
+		bunger.group.tyler.block.ModBlocks.registerModBlocks();
+		bunger.group.tyler.sound.ModSounds.initialize();
+		bunger.group.tyler3.sounds.ModSounds.initialize();
+		BiomeModifications.addFeature(
+				BiomeSelectors.foundInOverworld(),
+				GenerationStep.Decoration.VEGETAL_DECORATION,
+				ResourceKey.create(
+						Registries.PLACED_FEATURE,
+						Identifier.fromNamespaceAndPath(MOD_ID, "rock")
+				)
+		);
+		bunger.group.tyler.event.TickScheduler.register();
+		bunger.group.tyler.event.god.StructureManager.register();
+		bunger.group.tyler.event.SundownWatcher.register();
+		bunger.group.tyler.command.SetupStructureCommand.register();
+		bunger.group.tyler.item.ModItems.registerModItems();
+		bunger.group.tyler2.item.ModItems.registerModItems();
+		bunger.group.tyler3.item.ModItems.registerModItems();
+		bunger.group.tyler2.block.ModBlocks.registerModBlocks();
+		bunger.group.tyler.entity.ModEntities.registerModEntityTypes();
+		bunger.group.tyler.entity.ModEntities.registerAttributes();
+		bunger.group.tyler3.entity.ModEntities.registerModEntityTypes();
+		bunger.group.tyler3.entity.ModEntities.registerAttributes();
+		ModBlockEntities.registerModBlockEntities();
+		bunger.group.tyler2.item.ModCreativeTabs.registerCreativeTabs();
+		bunger.group.tyler.item.ModCreativeTabs.registerCreativeTabs();
+		bunger.group.tyler.ModCombatEvents.register();
+		bunger.group.tyler.net.PunchSidePacket.registerServer();
+		bunger.group.tyler3.network.ModNet.register();
+		RegisterSpawns.register();
+		PayloadTypeRegistry.clientboundPlay().register(
+				UnlockRecipePagePayload.TYPE,
+				UnlockRecipePagePayload.CODEC
+		);
+		RecipePageRegistry.register(ModItems.SQUIRREL_STAPELER, "bear_boxers");
+		RecipePageRegistry.register(ItemTags.PLANKS, "crafting_table");
+		RecipePageRegistry.register(ModBlocks.ROCK.asItem(), "hot_plate");
+		RecipePageRegistry.register(bunger.group.tyler2.item.ModItems.ANTLER, "antler_pickaxe");
+		RecipePageRegistry.register(bunger.group.tyler2.item.ModItems.HOT_PLATE, "copper_ingot");
+		RecipePageRegistry.register(Items.STICK, "tanning_rack");
+		RecipePageRegistry.register(bunger.group.tyler3.item.ModItems.MEDIUM_AMMO, "bullet");
 	}
 }

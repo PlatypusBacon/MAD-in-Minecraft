@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": "mutually-assured-destruction:long_stick",
+    "x": "minecraft:stick"
+  },
+  "pattern": [
+    "##",
+    "xx"
+  ],
+  "result": {
+    "id": "mutually-assured-destruction:tanning_rack"
+  }
+}

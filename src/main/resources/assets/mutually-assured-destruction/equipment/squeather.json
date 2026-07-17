@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "mutually-assured-destruction:squeather"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "mutually-assured-destruction:squeather"
+      }
+    ]
+  }
+}

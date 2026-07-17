@@ -1,0 +1,85 @@
+{
+  "squirrel_ambient": {
+    "sounds": [
+      { "name": "mutually-assured-destruction:squirrel_ambient", "volume": 0.6 }
+    ]
+  },
+  "gun_fire": {
+    "sounds": [
+      { "name": "mutually-assured-destruction:gun_fire", "volume": 1.0 }
+    ]
+  },
+  "sling_charge": {
+    "sounds": [
+      { "name": "mutually-assured-destruction:sling_charge", "volume": 1.0 }
+    ]
+  },
+  "sling_shot": {
+    "sounds": [
+      { "name": "mutually-assured-destruction:sling_shot", "volume": 1.0 }
+    ]
+  },
+  "vine_boom": {
+    "sounds": [
+      { "name": "mutually-assured-destruction:vine_boom", "volume": 1.0 }
+    ]
+  },
+  "scar_reload": {
+    "sounds": [
+      { "name": "mutually-assured-destruction:scar_reload", "volume": 1.0 }
+    ]
+  },
+  "scar_shot": {
+    "sounds": [
+      { "name": "mutually-assured-destruction:scar_shot", "volume": 1.0 }
+    ]
+  },
+  "bear_idle": {
+    "sounds": [
+      { "name": "mutually-assured-destruction:bear_idle", "volume": 1.0 }
+    ]
+  },
+  "bear_active": {
+    "sounds": [
+      { "name": "mutually-assured-destruction:bear_active", "volume": 1.0 }
+    ]
+  },
+  "reload": {
+    "sounds": [
+      { "name": "mutually-assured-destruction:reload", "volume": 1.0 }
+    ]
+  },
+  "slip": {
+    "sounds": [
+      { "name": "mutually-assured-destruction:slip", "volume": 1.0 }
+    ]
+  },
+  "god_is_coming": {
+    "sounds": [
+      {
+        "name": "mutually-assured-destruction:god_is_coming",
+        "volume": 1.0,
+        "stream": true
+      }
+    ]
+  },
+  "god_is_here": {
+    "sounds": [
+      {
+        "name": "mutually-assured-destruction:god_is_here",
+        "volume": 1.0,
+        "stream": true
+      }
+    ]
+  },
+  "dude_idle": {
+    "sounds": [
+      { "name": "mutually-assured-destruction:t1", "volume": 1.0 },
+      { "name": "mutually-assured-destruction:t2", "volume": 1.0 },
+      { "name": "mutually-assured-destruction:t3", "volume": 1.0 },
+      { "name": "mutually-assured-destruction:t4", "volume": 1.0 },
+      { "name": "mutually-assured-destruction:t5", "volume": 1.0 },
+      { "name": "mutually-assured-destruction:t6", "volume": 1.0 }
+    ]
+  }
+}

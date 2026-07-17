@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [ "S", "S" ],
+  "key": {
+    "S": "mutually-assured-destruction:thick_stick"
+  },
+  "result": {
+    "id": "mutually-assured-destruction:long_stick",
+    "count": 2
+  }
+}

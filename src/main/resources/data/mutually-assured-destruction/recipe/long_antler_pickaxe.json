@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": "mutually-assured-destruction:antler",
+    "x": "mutually-assured-destruction:long_stick"
+  },
+  "pattern": [
+    "##",
+    "x "
+  ],
+  "result": {
+    "id": "mutually-assured-destruction:long_antler_pickaxe"
+  }
+}
