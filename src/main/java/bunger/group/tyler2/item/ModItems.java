@@ -45,7 +45,7 @@ public class ModItems {
     public static final Item DRIED_COD = register("dried_cod", Item::new, new Item.Properties().food(ModFoods.DRIED_COD));    // StandingAndWallBlockItem(block, wallBlock, attachmentDirection, properties)
     public static final Item DRIED_SALMON = register("dried_salmon", Item::new, new Item.Properties().food(ModFoods.DRIED_SALMON));    // StandingAndWallBlockItem(block, wallBlock, attachmentDirection, properties)
     public static final Item SHEEP_JERKY = register("sheep_jerky", JerkyItem::new, new Item.Properties().food(ModFoods.SHEEP_JERKY));    // StandingAndWallBlockItem(block, wallBlock, attachmentDirection, properties)
-
+    public static final Item IRON_HOG = register("iron_hog", p -> new IronHogItem(ToolMaterial.IRON, p), new Item.Properties());
     public static final Item ANIMAL_SKIN = register("animal_skin", Item::new, new Item.Properties().food(ModFoods.CHICKEN_JERKY));    // StandingAndWallBlockItem(block, wallBlock, attachmentDirection, properties)
 
 
