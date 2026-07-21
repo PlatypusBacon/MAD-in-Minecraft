@@ -117,7 +117,6 @@ public class MutuallyAssuredDestructionClient implements ClientModInitializer {
 				}
 			}
 		});
-		// 3. Register your recipes (also in onInitialize, or a dedicated init method):
 		TomeClientNetworking.register();
 		bunger.group.client.tyler.ModEntityModelLayers.registerModelLayers();
 		EntityRenderers.register(bunger.group.tyler.entity.ModEntities.SQUIRREL, SquirrelEntityRenderer::new);

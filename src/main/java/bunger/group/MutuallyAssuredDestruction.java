@@ -5,6 +5,7 @@ import bunger.group.tyler2.block.ModBlockEntities;
 import bunger.group.tyler2.block.ModBlocks;
 import bunger.group.tyler3.RegisterSpawns;
 
+import bunger.group.tyler3.StripperDetector;
 import bunger.group.tyler3.network.UnlockRecipePagePayload;
 import bunger.group.tyler3.rego.RecipePageRegistry;
 import net.fabricmc.api.ModInitializer;
@@ -332,6 +333,7 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 						Identifier.fromNamespaceAndPath(MOD_ID, "rock")
 				)
 		);
+        StripperDetector.register();
 		bunger.group.tyler.event.TickScheduler.register();
 		bunger.group.tyler.event.god.StructureManager.register();
 		bunger.group.tyler.event.SundownWatcher.register();
