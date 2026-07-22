@@ -93,6 +93,24 @@ import bunger.group.ethan.VoremothBossMechanic;
 import bunger.group.ethan.VoremothCrownHandler;
 import bunger.group.ethan.VoremothCrownPacket;
 
+// Alex Imports
+import bunger.group.alex.effect.ModEffects;
+import bunger.group.alex.entity.EntityLootUpdater;
+import bunger.group.alex.item.potion.ModPotions;
+import bunger.group.alex.spell.LearnSpellPacket;
+import bunger.group.alex.Mana;
+import bunger.group.alex.ManaPacket;
+import bunger.group.alex.ParticleHelpers;
+import bunger.group.alex.spell.SpellHelpers;
+
+import bunger.group.alex.menu.ModMenuType;
+import bunger.group.alex.menu.SpellDeskMenu;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.server.level.ServerPlayer;
+
 public class MutuallyAssuredDestruction implements ModInitializer {
 	public static final String MOD_ID = "mutually-assured-destruction";
 
@@ -396,12 +414,12 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		ModEntityTypes.registerModEntityTypes();
 		ModEntityTypes.registerAttributes();
 
-		Registry.register(BuiltInRegistries.SOUND_EVENT, 
-			Identifier.fromNamespaceAndPath("mutually-assured-destruction", "heartbeat"), 
+		Registry.register(BuiltInRegistries.SOUND_EVENT,
+			Identifier.fromNamespaceAndPath("mutually-assured-destruction", "heartbeat"),
 			ProphetEntity.HEARTBEAT);
 
-		Registry.register(BuiltInRegistries.SOUND_EVENT, 
-			Identifier.fromNamespaceAndPath("mutually-assured-destruction", "dripping"), 
+		Registry.register(BuiltInRegistries.SOUND_EVENT,
+			Identifier.fromNamespaceAndPath("mutually-assured-destruction", "dripping"),
 			ProphetEntity.DRIPPING);
 
 		Registry.register(BuiltInRegistries.MOB_EFFECT,
@@ -441,5 +459,70 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 
 
 		// ------------------------------------------
+		// Alex Innit stuff
+		// Packets
+		PayloadTypeRegistry.clientboundPlay().register(ManaPacket.TYPE, ManaPacket.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(LearnSpellPacket.TYPE, LearnSpellPacket.CODEC);
+
+		// Effects
+        bunger.group.alex.effect.ModEffects.register();
+
+		// Items
+        bunger.group.alex.item.ModItems.register();
+		bunger.group.alex.item.potion.ModPotions.register();
+
+		// Blocks
+		bunger.group.alex.block.ModBlocks.register();
+		bunger.group.alex.block.entity.ModBlockEntities.initialize();
+
+		// Mobs
+		bunger.group.alex.entity.ModEntityTypes.registerModEntityTypes();
+		bunger.group.alex.entity.ModEntityTypes.registerAttributes();
+		EntityLootUpdater.update_loot_pools();
+
+		// Menus
+		ModMenuType.initialize();
+
+		// Handle spell learning on server
+		ServerPlayNetworking.registerGlobalReceiver(LearnSpellPacket.TYPE, (payload, context) -> {
+			context.server().execute(() -> {
+				if (context.player().containerMenu instanceof SpellDeskMenu menu) {
+					menu.tryLearnSpell(context.player(), payload.spellIndex());
+				}
+			});
+		});
+
+		// Tick events
+		ServerTickEvents.END_SERVER_TICK.register(server -> {
+			SpellHelpers.tick();
+			ParticleHelpers.tick();
+
+			if (server.getTickCount() % 2 == 0) {
+				for (ServerPlayer player : server.getPlayerList().getPlayers()) {
+					Mana.ManaData mana = Mana.get(player);
+					mana.recalculateMaxMana();
+					if (mana.getCurrentMana() < mana.getMaxMana()) {
+						mana.incrementCurrentMana();
+						ServerPlayNetworking.send(player, new ManaPacket(mana.getCurrentMana(), mana.getMaxMana()));
+					}
+				}
+			}
+		});
+
+		// Creative tab
+		bunger.group.alex.CreativeTab.register();
+
+		// Mana init and slot init on join
+		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
+			ServerPlayer player = handler.player;
+			Mana.ManaData mana = Mana.get(player);
+			if (mana.getMaxMana() == 0) {
+				mana.setMaxMana(50);
+				mana.setCurrentMana(50);
+			}
+			ServerPlayNetworking.send(player, new ManaPacket(mana.getCurrentMana(), mana.getMaxMana()));
+		});
+
+		// END Alex Innit stuff
 	}
 }

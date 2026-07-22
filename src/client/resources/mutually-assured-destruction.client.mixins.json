@@ -10,7 +10,8 @@
 		"AbstractContainerScreenAccessor",
 		"ImageButtonAccessor",
 		"FogRendererMixin",
-		"FogRendererAccessor"
+		"FogRendererAccessor",
+        "ArbalestAnimMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

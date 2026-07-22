@@ -17,6 +17,7 @@
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/mutually-assured-destruction/icon.png",
+	"accessWidener": "mutually-assured-destruction.accesswidener",
 	"environment": "*",
 	"entrypoints": {
 		"main": [

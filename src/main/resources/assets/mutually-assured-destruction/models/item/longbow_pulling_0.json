@@ -1,0 +1,6 @@
+{
+  "parent": "mutually-assured-destruction:item/longbow",
+  "textures": {
+    "layer0": "mutually-assured-destruction:item/longbow_pulling_0"
+  }
+}

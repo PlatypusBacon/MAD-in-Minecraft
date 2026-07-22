@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": { "type": "minecraft:uniform", "min": 2, "max": 5 },
+      "entries": [
+        { "type": "minecraft:item", "name": "mutually-assured-destruction:blank_lightning_scroll" },
+        { "type": "minecraft:item", "name": "mutually-assured-destruction:blank_fire_scroll" },
+        { "type": "minecraft:item", "name": "mutually-assured-destruction:blank_ice_scroll" },
+        { "type": "minecraft:item", "name": "mutually-assured-destruction:blank_earth_scroll" },
+        { "type": "minecraft:item", "name": "mutually-assured-destruction:blank_water_scroll" },
+        { "type": "minecraft:item", "name": "mutually-assured-destruction:blank_poison_scroll" }
+      ]
+    },
+    {
+      "rolls": 2,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "mutually-assured-destruction:eitr",
+          "functions": [
+            { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 5, "max": 8 } }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        { "type": "minecraft:item", "name": "mutually-assured-destruction:spell_staff_of_teleportation", "weight": 25 },
+        { "type": "minecraft:item", "name": "mutually-assured-destruction:spell_staff_of_reflection", "weight": 25 },
+        { "type": "minecraft:empty", "weight": 950 }
+      ]
+    }
+  ]
+}
