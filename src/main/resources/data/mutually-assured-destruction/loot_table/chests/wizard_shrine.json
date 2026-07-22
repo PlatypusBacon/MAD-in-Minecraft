@@ -23,6 +23,14 @@
           ]
         }
       ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        { "type": "minecraft:item", "name": "mutually-assured-destruction:spell_staff_of_teleportation", "weight": 25 },
+        { "type": "minecraft:item", "name": "mutually-assured-destruction:spell_staff_of_reflection", "weight": 25 },
+        { "type": "minecraft:empty", "weight": 950 }
+      ]
     }
   ]
 }

@@ -15,6 +15,7 @@ public class SpellRegistry {
 
             // FIRE
             new SpellDefinition("Ignition", SpellTypes.FIRE,15, ModItems.IGNITION),
+            new SpellDefinition("Fireball", SpellTypes.FIRE,75, ModItems.FIREBALL),
 
             // ICE
             new SpellDefinition("Ice Shield",SpellTypes.ICE,10, ModItems.ICE_SHIELD),
@@ -29,10 +30,10 @@ public class SpellRegistry {
             // WATER
             new SpellDefinition("Summon Water", SpellTypes.WATER, 5, ModItems.SUMMON_WATER),
             new SpellDefinition("Invoke Rain", SpellTypes.WATER, 30, ModItems.INVOKE_RAIN),
+            new SpellDefinition("Tsunami", SpellTypes.WATER, 50, ModItems.TSUNAMI),
 
             // POISON
             new SpellDefinition("Poison Wave", SpellTypes.POISON, 50, ModItems.POISON_WAVE),
-            new SpellDefinition("Poison Rain", SpellTypes.POISON, 50, ModItems.POISON_RAIN),
 
             // AGARTHA
             new SpellDefinition("Agarthan Thunder", SpellTypes.AGARTHA,100, ModItems.AGARTHAN_THUNDER),
