@@ -84,12 +84,6 @@ public class StripperDetector {
                 && (streak.count - STREAK_THRESHOLD) % REPEAT_INTERVAL == 0;
 
         if (crossedThreshold || hitRepeat) {
-            // Debug message sent to the player when detection threshold is crossed
-            sp.sendSystemMessage(Component.literal(
-                    "[StripperDetector] strip mining detected — streak: " + streak.count
-                            + " blocks, facing: " + facing.getName()
-                            + ", y: " + pos.getY()
-            ));
             StripperEvent.DETECTED.invoker().onStripMiningDetected(sp, pos, facing, streak.count);
         }
     }
