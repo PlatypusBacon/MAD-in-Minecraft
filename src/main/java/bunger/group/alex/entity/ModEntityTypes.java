@@ -15,6 +15,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.levelgen.Heightmap;
 
 import java.util.function.Predicate;
@@ -88,10 +89,23 @@ public class ModEntityTypes {
 
         // ===================== WRAITH =====================
         BiomeModifications.addSpawn(
-                LAND_OVERWORLD,
+                BiomeSelectors.foundInOverworld(),
                 MobCategory.MONSTER,
                 ModEntityTypes.WRAITH,
-                6, 1, 1
+                30, 1, 1
+        );
+
+        BiomeModifications.addSpawn(
+                BiomeSelectors.includeByKey(
+                        Biomes.LUSH_CAVES,
+                        Biomes.DRIPSTONE_CAVES,
+                        Biomes.FROZEN_PEAKS,
+                        Biomes.JAGGED_PEAKS,
+                        Biomes.STONY_PEAKS
+                ),
+                MobCategory.MONSTER,
+                ModEntityTypes.WRAITH,
+                80, 1, 1
         );
 
         SpawnPlacements.register(
@@ -100,13 +114,12 @@ public class ModEntityTypes {
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 WraithEntity::canSpawn
         );
-
         // ===================== SKELETON RANGER =====================
         BiomeModifications.addSpawn(
-                LAND_OVERWORLD,
+                BiomeSelectors.foundInOverworld(),
                 MobCategory.MONSTER,
                 ModEntityTypes.SKELETON_RANGER,
-                8, 1, 1
+                40, 1, 3
         );
 
         SpawnPlacements.register(
@@ -122,7 +135,14 @@ public class ModEntityTypes {
                 BiomeSelectors.tag(BiomeTags.SPAWNS_WARM_VARIANT_FARM_ANIMALS),
                 MobCategory.MONSTER,
                 ModEntityTypes.GOBLIN_GRUNT,
-                20, 1, 2
+                140, 3, 6
+        );
+
+        BiomeModifications.addSpawn(
+                BiomeSelectors.foundInOverworld(),
+                MobCategory.MONSTER,
+                ModEntityTypes.GOBLIN_GRUNT,
+                75, 2, 3
         );
 
         SpawnPlacements.register(
@@ -138,7 +158,14 @@ public class ModEntityTypes {
                 BiomeSelectors.tag(BiomeTags.SPAWNS_WARM_VARIANT_FARM_ANIMALS),
                 MobCategory.MONSTER,
                 ModEntityTypes.GOBLIN_RANGER,
-                20, 1, 2
+                140, 3, 6
+        );
+
+        BiomeModifications.addSpawn(
+                BiomeSelectors.foundInOverworld(),
+                MobCategory.MONSTER,
+                ModEntityTypes.GOBLIN_RANGER,
+                75, 2, 4
         );
 
         SpawnPlacements.register(
@@ -151,10 +178,10 @@ public class ModEntityTypes {
         // ===================== GOBLIN CHIEF =====================
 
         BiomeModifications.addSpawn(
-                LAND_OVERWORLD,
+                BiomeSelectors.foundInOverworld(),
                 MobCategory.MONSTER,
                 ModEntityTypes.GOBLIN_CHIEF,
-                1, 1, 1
+                5, 1, 1
         );
 
         SpawnPlacements.register(

@@ -92,11 +92,6 @@ public class GoblinChiefEntity extends Monster implements GoblinFaction, GoblinP
                                                   EntitySpawnReason spawnReason, @Nullable SpawnGroupData groupData) {
         // Only apply rarity check for natural spawns, not commands
         if (spawnReason == EntitySpawnReason.NATURAL || spawnReason == EntitySpawnReason.CHUNK_GENERATION) {
-            int rand = ThreadLocalRandom.current().nextInt(1, 6);
-            if (rand != 1) {
-                this.discard();
-                return null;
-            }
             if (!level.getEntitiesOfClass(GoblinChiefEntity.class,
                     this.getBoundingBox().inflate(200.0)).isEmpty()) {
                 this.discard();
