@@ -15,7 +15,6 @@ import bunger.group.alex.block.entity.ModBlockEntities;
 import bunger.group.alex.item.ModItems;
 import bunger.group.alex.menu.ModMenuType;
 import bunger.group.alex.menu.SpellDeskMenu;
-import bunger.group.moreslots.api.SlotTypes;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
@@ -94,7 +93,6 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 				mana.setCurrentMana(50);
 			}
 			ServerPlayNetworking.send(player, new ManaPacket(mana.getCurrentMana(), mana.getMaxMana()));
-            SlotTypes.initPlayer(player);
 		});
 
 		// END Alex Innit stuff
