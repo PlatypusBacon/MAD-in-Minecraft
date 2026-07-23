@@ -13,7 +13,8 @@
 		"FogRendererAccessor",
         "ArbalestAnimMixin",
 		"HallucinationClientMixin",
-		"accessor.GameRendererAccessor"
+		"accessor.GameRendererAccessor",
+		"MadnessClientMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

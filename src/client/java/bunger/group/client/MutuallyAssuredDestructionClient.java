@@ -83,7 +83,7 @@ import bunger.group.alex.ManaPacket;
 import bunger.group.alex.menu.ModMenuType;
 import bunger.group.client.alex.item.ArbalestPull;
 import bunger.group.client.alex.rendering.screens.inventory.SpellDeskScreen;
-
+import bunger.group.csmit863.MadnessPacket;
 
 public class MutuallyAssuredDestructionClient implements ClientModInitializer {
 	public static KeyMapping RELOAD_KEY;
@@ -94,10 +94,34 @@ public class MutuallyAssuredDestructionClient implements ClientModInitializer {
 
 	public static int clientMana = 0;
 	public static int clientMaxMana = 0;
+
+	public static int clientMadness;
+	public static int clientMaxMadness;
 	private static float displayedMana = 0;
 	private static long fullManaTime = -1;
 	private static final long HIDE_AFTER_MS = 5000;
 	private static boolean inShroomShire = false;
+
+	private static void renderMadnessVignette(GuiGraphicsExtractor graphics, DeltaTracker delta) {
+		Minecraft client = Minecraft.getInstance();
+		if (client.player == null || client.options.hideGui) return;
+
+		int current = clientMadness;
+		int max = clientMaxMadness;
+		if (max <= 0) return;
+
+		float madnessFactor = (float) current / max;
+		if (madnessFactor <= 0.5f) return;
+
+		float intensity = (madnessFactor - 0.5f) / 0.5f;
+		int alpha = (int) (intensity * 100); // tune max opacity here
+
+		int width = client.getWindow().getGuiScaledWidth();
+		int height = graphics.guiHeight();
+
+		int redTint = (alpha << 24) | 0x330000;
+		graphics.fill(0, 0, width, height, redTint);
+	}
 
 	@Override
 	public void onInitializeClient() {
@@ -236,6 +260,11 @@ public class MutuallyAssuredDestructionClient implements ClientModInitializer {
 			}
 		});
 
+	HudElementRegistry.attachElementBefore(
+		VanillaHudElements.MISC_OVERLAYS,
+		Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, "madness_vignette"),
+		MutuallyAssuredDestructionClient::renderMadnessVignette
+	);
 
 	HudElementRegistry.attachElementBefore(
 		VanillaHudElements.MISC_OVERLAYS,
@@ -260,6 +289,10 @@ public class MutuallyAssuredDestructionClient implements ClientModInitializer {
 		ClientPlayNetworking.registerGlobalReceiver(ManaPacket.TYPE, (payload, context) -> {
 			clientMana = payload.current();
 			clientMaxMana = payload.max();
+		});
+		ClientPlayNetworking.registerGlobalReceiver(MadnessPacket.TYPE, (payload, context) -> { // NEW
+			clientMadness = payload.current();
+			clientMaxMadness = payload.max();
 		});
 
 		HudElementRegistry.attachElementBefore(

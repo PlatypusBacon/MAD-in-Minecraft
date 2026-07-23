@@ -114,7 +114,7 @@ import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.level.ServerPlayer;
-
+import bunger.group.csmit863.MadnessPacket;
 public class MutuallyAssuredDestruction implements ModInitializer {
 	public static final String MOD_ID = "mutually-assured-destruction";
 
@@ -467,6 +467,7 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		bunger.group.csmit863.entity.ModEntityTypes.registerAttributes();
 		CustomSounds.initialize();
 		ModBiomes.initialise();
+		PayloadTypeRegistry.clientboundPlay().register(MadnessPacket.TYPE, MadnessPacket.CODEC);
 		// ------------------------------------------
 
 
@@ -513,19 +514,22 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 				for (ServerPlayer player : server.getPlayerList().getPlayers()) {
 					Mana.ManaData mana = Mana.get(player);
 					mana.recalculateMaxMana();
-					Madness.MadnessData madness = Madness.get(player);
+
 					if (mana.getCurrentMana() < mana.getMaxMana()) {
 						mana.incrementCurrentMana();
 						ServerPlayNetworking.send(player, new ManaPacket(mana.getCurrentMana(), mana.getMaxMana()));
 					}
+
+					Madness.MadnessData madness = Madness.get(player);
 					if ((!player.hasEffect(bunger.group.csmit863.item.ModItems.HALLUCINATION_EFFECT)) && (madness.getCurrentMadness() != 0) ) {
-						if (server.overworld().getRandom().nextInt(5) == 0) {  // ~20% chance per tick
+						if (server.overworld().getRandom().nextInt(5) == 0) {
 							madness.decrementCurrentMadness();
 						}
 					}
+					ServerPlayNetworking.send(player, new MadnessPacket(madness.getCurrentMadness(), madness.getMaxMadness())); // NEW
 
-					// Teleport to mad realm at 300 madness
-					if (madness.getCurrentMadness() >= 300) {
+					// Teleport to mad realm at 100 madness
+					if (madness.getCurrentMadness() >= madness.getMaxMadness()) {
 						ServerLevel madRealm = server.getLevel(ModBiomes.MAD_REALM);
 						if (madRealm != null && !player.level().dimension().equals(ModBiomes.MAD_REALM)) {
 							player.teleportTo(
@@ -575,10 +579,13 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 			if (mana.getMaxMana() == 0) {
 				mana.setMaxMana(50);
 				mana.setCurrentMana(50);
-				madness.setMaxMadness(100);
+				madness.setMaxMadness(200);
 			}
 			ServerPlayNetworking.send(player, new ManaPacket(mana.getCurrentMana(), mana.getMaxMana()));
+			ServerPlayNetworking.send(player, new MadnessPacket(madness.getCurrentMadness(), madness.getMaxMadness())); // NEW
 		});
+
+
 
 		// END Alex Innit stuff
 	}
