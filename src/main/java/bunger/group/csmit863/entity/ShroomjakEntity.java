@@ -117,6 +117,43 @@ public class ShroomjakEntity extends Animal {
     }
 
     @Override
+    public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
+        // Immune to arrows/projectiles
+        if (source.is(net.minecraft.tags.DamageTypeTags.IS_PROJECTILE)) {
+            return false;
+        }
+
+        boolean hurt = super.hurtServer(level, source, amount);
+
+        if (hurt) {
+            tryTeleportAway(level);
+        }
+
+        return hurt;
+    }
+
+    private void tryTeleportAway(ServerLevel level) {
+        for (int i = 0; i < 16; i++) {
+            double dx = (this.random.nextDouble() - 0.5) * 16.0;
+            double dy = (this.random.nextDouble() - 0.5) * 8.0;
+            double dz = (this.random.nextDouble() - 0.5) * 16.0;
+            double targetX = this.getX() + dx;
+            double targetY = this.getY() + dy;
+            double targetZ = this.getZ() + dz;
+
+            if (this.randomTeleport(targetX, targetY, targetZ, true)) {
+                level.sendParticles(
+                        ParticleTypes.CAMPFIRE_SIGNAL_SMOKE,
+                        this.getX(), this.getY() + 1, this.getZ(),
+                        10, 0.3, 0.5, 0.3, 0.05
+                );
+                this.playSound(net.minecraft.sounds.SoundEvents.ENDERMAN_TELEPORT, 1.0F, 1.0F);
+                break;
+            }
+        }
+    }
+
+    @Override
     public void tick() {
         super.tick();
 

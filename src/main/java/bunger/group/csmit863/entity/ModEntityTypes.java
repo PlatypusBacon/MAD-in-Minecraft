@@ -1,6 +1,8 @@
 package bunger.group.csmit863.entity;
 
 import bunger.group.MutuallyAssuredDestruction;
+import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -37,5 +39,17 @@ public class ModEntityTypes {
     public static void registerAttributes() {
         FabricDefaultAttributeRegistry.register(SHROOMJAK, ShroomjakEntity.createCubeAttributes());
         FabricDefaultAttributeRegistry.register(OVERSEER, OverseerEntity.createAttributes());
+    }
+
+    public static void registerSpawns() {
+        // ===================== SHROOMJAK =====================
+        BiomeModifications.addSpawn(
+                BiomeSelectors.foundInOverworld(),
+                MobCategory.MONSTER,
+                ModEntityTypes.SHROOMJAK,
+                30, 1, 1
+        );
+
+
     }
 }
