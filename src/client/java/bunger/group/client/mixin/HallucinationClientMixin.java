@@ -2,6 +2,7 @@ package bunger.group.client.mixin;
 
 import bunger.group.MutuallyAssuredDestruction;
 import bunger.group.client.mixin.accessor.GameRendererAccessor;
+import bunger.group.csmit863.Madness;
 import bunger.group.csmit863.biome.ModBiomes;
 import bunger.group.csmit863.item.ModItems;
 import net.minecraft.client.Minecraft;
@@ -14,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+
 @Mixin(Minecraft.class)
 public class HallucinationClientMixin {
     private boolean shaderLoaded = false;
@@ -24,15 +26,6 @@ public class HallucinationClientMixin {
         LocalPlayer player = mc.player;
         if (player == null) return;
 
-        var effect = player.getEffect(ModItems.HALLUCINATION_EFFECT);
-        if (effect == null) {
-            if (shaderLoaded) {
-                mc.gameRenderer.clearPostEffect();
-                shaderLoaded = false;
-            }
-            return;
-        }
-
         if (!shaderLoaded) {
             GameRendererAccessor accessor = (GameRendererAccessor) mc.gameRenderer;
             accessor.invokeSetPostEffect(
@@ -41,27 +34,44 @@ public class HallucinationClientMixin {
             shaderLoaded = true;
         }
 
-        int amplifier = effect.getAmplifier();
-        if (player.getRandom().nextFloat() < 0.004f * (amplifier + 1)) {
-            SoundEvent sound = switch (player.getRandom().nextInt(3)) {
-                case 0 -> SoundEvents.ENDERMAN_TELEPORT;
-                case 1 -> SoundEvents.CREEPER_PRIMED;
-                default -> SoundEvents.CREAKING_AMBIENT;
-            };
-            player.playSound(sound,
-                    0.7f + player.getRandom().nextFloat() * 0.6f,
-                    0.8f + player.getRandom().nextFloat() * 0.6f);
-        }
+        var effect = player.getEffect(ModItems.HALLUCINATION_EFFECT);
+        if (effect == null) {
+            if (shaderLoaded) {
+                mc.gameRenderer.clearPostEffect();
+                shaderLoaded = false;
+            }
+            return;
+        } else {
+            int amplifier = effect.getAmplifier();
 
-        if (player.level().dimension().equals(ModBiomes.MAD_REALM)) {
-            if (player.getRandom().nextFloat() < 0.0005f) {
-                player.playSound(
-                        bunger.group.csmit863.CustomSounds.OVERSEER_HELLO,
-                        0.8f,
-                        1.0f
-                );
+            Madness.MadnessData madness = Madness.get(player);
+            float madnessFactor = madness.getMaxMadness() > 0
+                    ? (float) madness.getCurrentMadness() / madness.getMaxMadness()
+                    : 0f;
+            float chance = 0.004f * (amplifier + 1) * (0.3f + madnessFactor);
+
+            if (player.getRandom().nextFloat() < chance) {
+                SoundEvent sound = switch (player.getRandom().nextInt(3)) {
+                    case 0 -> SoundEvents.SPIDER_STEP;
+                    case 1 -> SoundEvents.CREEPER_PRIMED;
+                    default -> SoundEvents.FIRE_EXTINGUISH;
+                };
+                player.playSound(sound,
+                        0.7f + player.getRandom().nextFloat() * 0.6f,
+                        0.8f + player.getRandom().nextFloat() * 0.6f);
+            }
+
+            if (player.level().dimension().equals(ModBiomes.MAD_REALM)) {
+                if (player.getRandom().nextFloat() < chance) {
+                    player.playSound(
+                            bunger.group.csmit863.CustomSounds.OVERSEER_HELLO,
+                            0.8f,
+                            1.0f
+                    );
+                }
             }
         }
+
     }
 
 }
