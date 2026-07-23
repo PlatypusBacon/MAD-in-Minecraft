@@ -25,6 +25,9 @@
 		],
 		"client": [
 			"bunger.group.client.MutuallyAssuredDestructionClient"
+		],
+		"fabric-datagen": [
+			"bunger.group.client.MutuallyAssuredDestructionDataGenerator"
 		]
 	},
 	"mixins": [

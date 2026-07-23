@@ -17,7 +17,7 @@ import java.util.Optional;
 
 public class Zap extends SpellTemplate {
     public Zap(Properties properties) {
-        super(properties.useCooldown(0.1f), 5, 15, SpellTypes.LIGHTNING);
+        super(properties.useCooldown(0.1f), 8, 15, SpellTypes.LIGHTNING);
     }
 
 

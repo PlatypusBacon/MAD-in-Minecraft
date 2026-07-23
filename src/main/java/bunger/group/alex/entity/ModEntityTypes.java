@@ -135,14 +135,14 @@ public class ModEntityTypes {
                 BiomeSelectors.tag(BiomeTags.SPAWNS_WARM_VARIANT_FARM_ANIMALS),
                 MobCategory.MONSTER,
                 ModEntityTypes.GOBLIN_GRUNT,
-                140, 3, 6
+                120, 3, 6
         );
 
         BiomeModifications.addSpawn(
                 BiomeSelectors.foundInOverworld(),
                 MobCategory.MONSTER,
                 ModEntityTypes.GOBLIN_GRUNT,
-                75, 2, 3
+                70, 2, 3
         );
 
         SpawnPlacements.register(
@@ -158,14 +158,14 @@ public class ModEntityTypes {
                 BiomeSelectors.tag(BiomeTags.SPAWNS_WARM_VARIANT_FARM_ANIMALS),
                 MobCategory.MONSTER,
                 ModEntityTypes.GOBLIN_RANGER,
-                140, 3, 6
+                120, 3, 6
         );
 
         BiomeModifications.addSpawn(
                 BiomeSelectors.foundInOverworld(),
                 MobCategory.MONSTER,
                 ModEntityTypes.GOBLIN_RANGER,
-                75, 2, 4
+                70, 2, 4
         );
 
         SpawnPlacements.register(
@@ -181,7 +181,7 @@ public class ModEntityTypes {
                 BiomeSelectors.foundInOverworld(),
                 MobCategory.MONSTER,
                 ModEntityTypes.GOBLIN_CHIEF,
-                5, 1, 1
+                1, 1, 1
         );
 
         SpawnPlacements.register(
