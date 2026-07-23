@@ -23,6 +23,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.level.ServerPlayer;
 import org.slf4j.Logger;
+
 import org.slf4j.LoggerFactory;
 
 public class MutuallyAssuredDestruction implements ModInitializer {
@@ -40,10 +41,12 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		ModEffects.register();
 
 		// Items
+		bunger.group.csmit863.item.ModItems.register();
 		ModItems.register();
 		ModPotions.register();
 
 		// Blocks
+		bunger.group.csmit863.block.ModBlocks.initialize();
 		ModBlocks.register();
 		ModBlockEntities.initialize();
 
@@ -51,6 +54,8 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		ModEntityTypes.registerModEntityTypes();
 		ModEntityTypes.registerAttributes();
 		EntityLootUpdater.update_loot_pools();
+		bunger.group.csmit863.entity.ModEntityTypes.registerModEntityTypes();
+		bunger.group.csmit863.entity.ModEntityTypes.registerAttributes();
 
 		// Menus
 		ModMenuType.initialize();
