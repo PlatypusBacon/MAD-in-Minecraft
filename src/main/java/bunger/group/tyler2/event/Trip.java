@@ -16,7 +16,7 @@ import java.util.UUID;
 public class Trip {
 
     private static final Map<UUID, BlockPos> lastPositions = new HashMap<>();
-    private static final float DROP_CHANCE = 0.00001f;
+    private static final float DROP_CHANCE = 0.000005f;
 
     public static void register() {
         ServerTickEvents.END_SERVER_TICK.register(server -> {

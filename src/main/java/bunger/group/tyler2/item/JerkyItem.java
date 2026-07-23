@@ -1,6 +1,7 @@
 package bunger.group.tyler2.item;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
@@ -15,8 +16,9 @@ public class JerkyItem extends Item {
 
     @Override
     public ItemStack finishUsingItem(ItemStack itemStack, Level level, LivingEntity entity) {
-        if (entity instanceof ServerPlayer player) {
-            player.sendSystemMessage(Component.literal(player.getPlainTextName() + " is jerking it."));
+        if (entity instanceof ServerPlayer player && level instanceof ServerLevel serverLevel) {
+            Component message = Component.literal(player.getPlainTextName() + " is jerking it.");
+            serverLevel.getServer().getPlayerList().broadcastSystemMessage(message, false);
         }
         return super.finishUsingItem(itemStack, level, entity);
     }
