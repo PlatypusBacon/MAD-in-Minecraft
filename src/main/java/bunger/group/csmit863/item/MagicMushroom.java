@@ -1,4 +1,5 @@
 package bunger.group.csmit863.item;
+import bunger.group.alex.effect.ModEffects;
 import bunger.group.csmit863.block.ModBlocks;
 import bunger.group.csmit863.effects.HallucinationEffect;
 import net.minecraft.server.dedicated.Settings;
@@ -33,6 +34,7 @@ public class MagicMushroom extends BlockItem {
             player.addEffect(new MobEffectInstance(MobEffects.LUCK, newDuration, newAmp));
             player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, newDuration, newAmp));
             player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, newDuration, newAmp));
+            player.addEffect(new MobEffectInstance(ModEffects.MANA_BOOST, 1800, 2));
         }
         return super.finishUsingItem(stack, world, user);
     }

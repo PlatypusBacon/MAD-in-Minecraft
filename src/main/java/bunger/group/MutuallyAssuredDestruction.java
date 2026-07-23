@@ -524,8 +524,8 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 						}
 					}
 
-					// Teleport to mad realm at 100 madness
-					if (madness.getCurrentMadness() >= 100) {
+					// Teleport to mad realm at 300 madness
+					if (madness.getCurrentMadness() >= 300) {
 						ServerLevel madRealm = server.getLevel(ModBiomes.MAD_REALM);
 						if (madRealm != null && !player.level().dimension().equals(ModBiomes.MAD_REALM)) {
 							player.teleportTo(
