@@ -168,5 +168,12 @@
                 "stream": true  
             }
         ]
-    }
+    },
+  "ambient.cave": {
+    "replace": false,
+    "sounds": [
+      "mutually-assured-destruction:scream2",
+      "mutually-assured-destruction:scream3"
+    ]
+  }
 }

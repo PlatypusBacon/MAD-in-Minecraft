@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "X": "#minecraft:copper_tool_materials",
+    "x": "#minecraft:copper_tool_materials",
     "#": "#minecraft:planks"
   },
   "pattern": [

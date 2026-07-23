@@ -1,5 +1,6 @@
 package bunger.group.tyler3;
 
+import bunger.group.tyler.entity.ModEntities;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
@@ -7,12 +8,20 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -26,14 +35,16 @@ public class StripperDetector {
     private static final int Y_THRESHOLD = 15;
     private static final int STREAK_THRESHOLD = 30;
     private static final int REPEAT_INTERVAL = 5;
-    private static final int TICKS_BETWEEN_BREAKS = 180;
+    private static final int TICKS_BETWEEN_BREAKS = 280;
     private static final double FRONT_DOT_MIN = 0.5;
     private static final int MAX_LATERAL_DEVIATION = 1;
     private static final int TICK_INTERVAL = 10;
 
     // ---- Tunnel refill config ----
     private static final double FILL_CHANCE = 0.06;
-    private static final int MIN_FILL_STREAK = 5;
+    private static final double BLINDNESS_CHANCE = 0.08;
+    private static final double DOG_CHANCE = 0.10;
+    private static final int MIN_FILL_STREAK = 10;
     private static final int MIN_FILL_DISTANCE = 3;
     private static final int MAX_FILL_DISTANCE = 8;
     private static final int DEEPSLATE_Y_LEVEL = 0;
@@ -141,7 +152,6 @@ public class StripperDetector {
     private static void maybeFillTunnelBehind(Level level, ServerPlayer player, MiningStreak streak) {
         if (streak.count < MIN_FILL_STREAK) return;
         if (RANDOM.nextDouble() >= FILL_CHANCE) return;
-
         int maxDistance = Math.min(streak.count - 1, MAX_FILL_DISTANCE);
         if (maxDistance < MIN_FILL_DISTANCE) return;
 
@@ -152,6 +162,26 @@ public class StripperDetector {
 
         fillIfAir(level, fillFeet);
         fillIfAir(level, fillHead);
+        if (RANDOM.nextDouble() >= BLINDNESS_CHANCE) return;
+        player.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 260, 0, false, false));
+
+        if (RANDOM.nextDouble() >= DOG_CHANCE) return;
+        var dog = ModEntities.DOG.create(level, EntitySpawnReason.MOB_SUMMONED);
+        dog.setTrackedPlayer(player);
+        dog.setPos(Vec3.atLowerCornerOf(fillFeet));
+        DifficultyInstance dil = null;
+        if (level instanceof ServerLevel sl) {
+            dil = sl.getCurrentDifficultyAt(fillFeet);
+        };
+
+        dog.finalizeSpawn(
+                (ServerLevelAccessor) level,
+                dil,
+                EntitySpawnReason.MOB_SUMMONED,
+                null
+        );
+        level.addFreshEntity(dog);
+
     }
 
     private static void fillIfAir(Level level, BlockPos pos) {

@@ -33,6 +33,11 @@ public class ModEntities {
             EntityType.Builder.<GodEntity>of(GodEntity::new, MobCategory.MONSTER)
                     .sized(12.0f, 12.0f)
     );
+    public static final EntityType<DogEntity> DOG = register(
+            "dog",
+            EntityType.Builder.<DogEntity>of(DogEntity::new, MobCategory.MONSTER)
+                    .sized(4.0f, 4.0f)
+    );
     private static <T extends Entity> EntityType<T> register(String name, EntityType.Builder<T> builder) {
         ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MutuallyAssuredDestruction.MOD_ID, name));
         return Registry.register(BuiltInRegistries.ENTITY_TYPE, key, builder.build(key));
@@ -51,5 +56,6 @@ public class ModEntities {
         FabricDefaultAttributeRegistry.register(SQUIRREL_BEAR, SquirrelBearEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(SQUIRREL_WIFE, SquirrelWifeEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(GOD, GodEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(DOG, DogEntity.createAttributes());
     }
 }
