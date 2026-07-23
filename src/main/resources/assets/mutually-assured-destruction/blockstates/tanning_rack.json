@@ -1,0 +1,9 @@
+
+{
+  "variants": {
+    "facing=north": { "model": "mutually-assured-destruction:block/tanning_rack", "y":  90 },
+    "facing=south": { "model": "mutually-assured-destruction:block/tanning_rack", "y": 270 },
+    "facing=east":  { "model": "mutually-assured-destruction:block/tanning_rack", "y": 180 },
+    "facing=west":  { "model": "mutually-assured-destruction:block/tanning_rack", "y":   0 }
+  }
+}

@@ -29,12 +29,12 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class GoblinChiefEntity extends Monster implements GoblinFaction, GoblinPatrolMember {
 
-    private static final int GRUNT_MIN  = 4;
-    private static final int GRUNT_MAX  = 10;
-    private static final int RANGER_MIN = 2;
-    private static final int RANGER_MAX = 6;
+    private static final int GRUNT_MIN  = 6;
+    private static final int GRUNT_MAX  = 12;
+    private static final int RANGER_MIN = 4;
+    private static final int RANGER_MAX = 8;
     private static final int MAGE_MIN   = 1;
-    private static final int MAGE_MAX   = 2;
+    private static final int MAGE_MAX   = 4;
 
     @Nullable private GoblinChiefEntity patrol = null;
     @Nullable private UUID patrolUUID = null;
@@ -92,11 +92,6 @@ public class GoblinChiefEntity extends Monster implements GoblinFaction, GoblinP
                                                   EntitySpawnReason spawnReason, @Nullable SpawnGroupData groupData) {
         // Only apply rarity check for natural spawns, not commands
         if (spawnReason == EntitySpawnReason.NATURAL || spawnReason == EntitySpawnReason.CHUNK_GENERATION) {
-            int rand = ThreadLocalRandom.current().nextInt(1, 6);
-            if (rand != 1) {
-                this.discard();
-                return null;
-            }
             if (!level.getEntitiesOfClass(GoblinChiefEntity.class,
                     this.getBoundingBox().inflate(200.0)).isEmpty()) {
                 this.discard();

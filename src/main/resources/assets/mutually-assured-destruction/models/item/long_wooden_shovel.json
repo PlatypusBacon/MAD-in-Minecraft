@@ -1,0 +1,28 @@
+{
+	"format_version": "1.21.11",
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:item/generated",
+	"textures": {
+		"layer0": "mutually-assured-destruction:item/long_shovel/long_wooden_shovel"
+	},
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [-39, -90, 0],
+			"translation": [0.5, 10.25, 2.5],
+			"scale": [1.44, 1.53, 1.16]
+		},
+		"thirdperson_lefthand": {
+			"scale": [2, 2, 2]
+		},
+		"firstperson_righthand": {
+			"rotation": [-3, -93, 32],
+			"translation": [12, 7.75, -10.25],
+			"scale": [2, 2, 2]
+		},
+		"firstperson_lefthand": {
+			"rotation": [153.29, -75.13, 116.93],
+			"translation": [16.25, 7, -12],
+			"scale": [2, 2, 2]
+		}
+	}
+}

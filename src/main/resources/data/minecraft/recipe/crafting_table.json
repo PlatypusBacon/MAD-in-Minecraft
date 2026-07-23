@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": "#minecraft:copper_tool_materials",
+    "#": "#minecraft:planks"
+  },
+  "pattern": [
+    "xx",
+    "##"
+  ],
+  "result": {
+    "id": "minecraft:crafting_table"
+  },
+  "show_notification": false
+}

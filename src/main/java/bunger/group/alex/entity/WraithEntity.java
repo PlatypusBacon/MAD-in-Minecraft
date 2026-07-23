@@ -1,5 +1,6 @@
 package bunger.group.alex.entity;
 
+import bunger.group.MutuallyAssuredDestruction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;

@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        },
+        {
+          "condition": "minecraft:match_tool",
+          "predicate": {
+            "items": [
+              "minecraft:copper_pickaxe",
+              "minecraft:iron_pickaxe",
+              "minecraft:golden_pickaxe",
+              "minecraft:diamond_pickaxe",
+              "minecraft:netherite_pickaxe"
+            ]
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "mutually-assured-destruction:mailbox_block"
+        }
+      ]
+    }
+  ],
+  "random_sequence": "mutually-assured-destruction:blocks/mailbox_block"
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "# #",
+    "#x#",
+    "###"
+  ],
+  "key": {
+    "#": "minecraft:copper_ingot",
+    "x": "minecraft:chest"
+
+  },
+  "result": {
+    "id": "mutually-assured-destruction:mailbox_block"
+  }
+
+}

@@ -4,8 +4,8 @@ package bunger.group.alex;
 import bunger.group.MutuallyAssuredDestruction;
 import bunger.group.alex.effect.ManaBoostEffect;
 import bunger.group.alex.effect.ModEffects;
-import bunger.group.alex.item.ModItems;
-import bunger.group.alex.item.armor.ClothArmor;
+import bunger.group.alex.item.armour.ClothArmour;
+import bunger.group.alex.item.armour.EnchantedChainArmour;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentSyncPredicate;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentTarget;
@@ -73,7 +73,15 @@ public class Mana {
                 for (EquipmentSlot slot : EquipmentSlot.values()) {
                     ItemStack stack = player.getItemBySlot(slot);
 
-                    if (stack.getItem() instanceof ClothArmor armor) {
+                    // Cloth Armour
+                    if (stack.getItem() instanceof ClothArmour armor) {
+                        if (armor.getSlot() == slot) {
+                            maxMana += armor.getMaxManaBonus();
+                        }
+                    }
+
+                    // Enchanted Armour
+                    if (stack.getItem() instanceof EnchantedChainArmour armor) {
                         if (armor.getSlot() == slot) {
                             maxMana += armor.getMaxManaBonus();
                         }

@@ -87,7 +87,17 @@ public class ModEntityLootTableProvider extends FabricEntityLootSubProvider {
                                 .apply(SetItemCountFunction.setCount(
                                         UniformGenerator.between(1.0f, 1.0f))))
                         .when(LootItemRandomChanceWithEnchantedBonusCondition
-                                .randomChanceAndLootingBoost(registries, 0.002f, 0.001f))
+                                .randomChanceAndLootingBoost(registries, 0.005f, 0.0025f))
+                )
+
+                // Roll 5: Maybe Bow
+                .withPool(LootPool.lootPool()
+                        .setRolls(ConstantValue.exactly(1.0f))
+                        .add(LootItem.lootTableItem(ModItems.LONGBOW)
+                                .apply(SetItemCountFunction.setCount(
+                                        UniformGenerator.between(1.0f, 1.0f))))
+                        .when(LootItemRandomChanceWithEnchantedBonusCondition
+                                .randomChanceAndLootingBoost(registries, 0.01f, 0.005f))
                 )
         );
 
@@ -202,14 +212,14 @@ public class ModEntityLootTableProvider extends FabricEntityLootSubProvider {
                                 .randomChanceAndLootingBoost(registries, 1f, 0.20f))
                 )
 
-                // Roll 3: Goblin crown ~5% of the time
+                // Roll 3: Goblin crown 10% of the time
                 .withPool(LootPool.lootPool()
                         .setRolls(ConstantValue.exactly(1.0f))
                         .add(LootItem.lootTableItem(ModItems.GOBLIN_CROWN)
                                 .apply(SetItemCountFunction.setCount(
                                         UniformGenerator.between(0f, 2.0f))))
                         .when(LootItemRandomChanceWithEnchantedBonusCondition
-                                .randomChanceAndLootingBoost(registries, 0.05f, 0.0f))
+                                .randomChanceAndLootingBoost(registries, 0.10f, 0.01f))
                 )
         );
     }

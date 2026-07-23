@@ -1,0 +1,29 @@
+{
+	"format_version": "1.21.11",
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:item/generated",
+	"textures": {
+		"layer0": "mutually-assured-destruction:item/thick_pick/thick_antler_pickaxe"
+	},
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [-48, 87, 50],
+			"translation": [0.5, 5.5, -1.5],
+			"scale": [0.85, 0.85, 0.85]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [1, -103, -3],
+			"translation": [1.25, 5.75, -1.5]
+		},
+		"firstperson_righthand": {
+			"rotation": [47, 85, -55.64],
+			"translation": [2.75, 2.25, -6.25],
+			"scale": [1, 0.99, 0.97]
+		},
+		"firstperson_lefthand": {
+			"rotation": [49, -92, 52],
+			"translation": [3.75, 3.75, -5.5],
+			"scale": [0.98, 0.98, 0.99]
+		}
+	}
+}

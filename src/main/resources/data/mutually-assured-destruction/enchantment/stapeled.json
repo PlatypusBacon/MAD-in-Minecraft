@@ -1,0 +1,35 @@
+{
+  "description": {
+    "translate": "enchantment.mutually-assured-destruction.stapeled"
+  },
+  "supported_items": [
+    "mutually-assured-destruction:squeather_head",
+    "mutually-assured-destruction:squeather_chest",
+    "mutually-assured-destruction:squeather_legs",
+    "mutually-assured-destruction:squeather_feet"
+  ],
+  "primary_items": [
+    "mutually-assured-destruction:squeather_head",
+    "mutually-assured-destruction:squeather_chest",
+    "mutually-assured-destruction:squeather_legs",
+    "mutually-assured-destruction:squeather_feet"
+  ],
+  "weight": 1,
+  "max_level": 1,
+  "min_cost": {
+    "base": 10,
+    "per_level_above_first": 0
+  },
+  "max_cost": {
+    "base": 20,
+    "per_level_above_first": 0
+  },
+  "exclusive_set": "#minecraft:curse",
+  "anvil_cost": 5,
+  "slots": [
+    "armor"
+  ],
+  "effects": {
+    "minecraft:prevent_armor_change": {}
+  }
+}

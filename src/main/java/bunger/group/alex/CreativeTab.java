@@ -65,12 +65,18 @@ public class CreativeTab {
                 // Other items
                 output.accept(ModItems.PURE_MANA);
                 output.accept(ModItems.CLOTH);
+                output.accept(ModItems.ENCHANTED_CHAIN);
 
                 // Armour
                 output.accept(ModItems.CLOTH_HELMET);
                 output.accept(ModItems.CLOTH_CHESTPLATE);
                 output.accept(ModItems.CLOTH_LEGGINGS);
                 output.accept(ModItems.CLOTH_BOOTS);
+
+                output.accept(ModItems.ENCHANTED_CHAIN_HELMET);
+                output.accept(ModItems.ENCHANTED_CHAIN_CHESTPLATE);
+                output.accept(ModItems.ENCHANTED_CHAIN_LEGGINGS);
+                output.accept(ModItems.ENCHANTED_CHAIN_BOOTS);
 
                 output.accept(ModItems.GOBLIN_CROWN);
 

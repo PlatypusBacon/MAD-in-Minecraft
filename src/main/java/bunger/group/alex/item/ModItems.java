@@ -1,7 +1,7 @@
 package bunger.group.alex.item;
 
 import bunger.group.MutuallyAssuredDestruction;
-import bunger.group.alex.item.armor.*;
+import bunger.group.alex.item.armour.*;
 import bunger.group.alex.item.spell.*;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -175,33 +175,67 @@ public class ModItems {
             new Longbow.Properties()
     );
 
+    public static final Item ARBALEST = registerItem(
+            "arbalest",
+            Arbalest::new,
+            new Arbalest.Properties()
+    );
+
 
     // Armour
+    // Cloth
     public static final Item CLOTH_HELMET = registerItem(
             "cloth_helmet",
-            (Item.Properties properties) -> new ClothArmor(properties, ArmorType.HELMET),
-            new ClothArmor.Properties()
+            (Item.Properties properties) -> new ClothArmour(properties, ArmorType.HELMET),
+            new ClothArmour.Properties()
     );
 
     public static final Item CLOTH_CHESTPLATE = registerItem(
             "cloth_chestplate",
-            (Item.Properties properties) -> new ClothArmor(properties, ArmorType.CHESTPLATE),
-            new ClothArmor.Properties()
+            (Item.Properties properties) -> new ClothArmour(properties, ArmorType.CHESTPLATE),
+            new ClothArmour.Properties()
 
     );
 
     public static final Item CLOTH_LEGGINGS = registerItem(
             "cloth_leggings",
-            (Item.Properties properties) -> new ClothArmor(properties, ArmorType.LEGGINGS),
-            new ClothArmor.Properties()
+            (Item.Properties properties) -> new ClothArmour(properties, ArmorType.LEGGINGS),
+            new ClothArmour.Properties()
     );
 
     public static final Item CLOTH_BOOTS = registerItem(
             "cloth_boots",
-            (Item.Properties properties) -> new ClothArmor(properties, ArmorType.BOOTS),
-            new ClothArmor.Properties()
+            (Item.Properties properties) -> new ClothArmour(properties, ArmorType.BOOTS),
+            new ClothArmour.Properties()
     );
 
+    // Enchanted Chain
+    public static final Item ENCHANTED_CHAIN_HELMET = registerItem(
+            "enchanted_chain_helmet",
+            (Item.Properties properties) -> new EnchantedChainArmour(properties, ArmorType.HELMET),
+            new EnchantedChainArmour.Properties()
+    );
+
+    public static final Item ENCHANTED_CHAIN_CHESTPLATE = registerItem(
+            "enchanted_chain_chestplate",
+            (Item.Properties properties) -> new EnchantedChainArmour(properties, ArmorType.CHESTPLATE),
+            new EnchantedChainArmour.Properties()
+
+    );
+
+    public static final Item ENCHANTED_CHAIN_LEGGINGS = registerItem(
+            "enchanted_chain_leggings",
+            (Item.Properties properties) -> new EnchantedChainArmour(properties, ArmorType.LEGGINGS),
+            new EnchantedChainArmour.Properties()
+    );
+
+    public static final Item ENCHANTED_CHAIN_BOOTS = registerItem(
+            "enchanted_chain_boots",
+            (Item.Properties properties) -> new EnchantedChainArmour(properties, ArmorType.BOOTS),
+            new EnchantedChainArmour.Properties()
+    );
+
+    // Misc
     public static final Item GOBLIN_CROWN = registerItem(
             "goblin_crown",
             GoblinCrown::new,
@@ -235,6 +269,12 @@ public class ModItems {
 
     public static final Item CLOTH = registerItem(
             "cloth_item",
+            Item::new,
+            new Item.Properties()
+    );
+
+    public static final Item ENCHANTED_CHAIN = registerItem(
+            "enchanted_chain_item",
             Item::new,
             new Item.Properties()
     );

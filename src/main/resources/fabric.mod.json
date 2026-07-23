@@ -5,7 +5,11 @@
 	"name": "Mutually Assured Destruction",
 	"description": "This is an example description! Tell everyone what your mod is about!",
 	"authors": [
-		"Me!"
+		"Tyler",
+        "Bryan",
+        "Ethan",
+        "Alex",
+        "Csmit863"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
@@ -21,20 +25,12 @@
 		],
 		"client": [
 			"bunger.group.client.MutuallyAssuredDestructionClient"
-		],
-		"fabric-datagen": [
-			"bunger.group.client.MutuallyAssuredDestructionDataGenerator"
 		]
 	},
 	"mixins": [
 		"mutually-assured-destruction.mixins.json",
 		{
 			"config": "mutually-assured-destruction.client.mixins.json",
-			"environment": "client"
-		},
-		"moreslots.mixins.json",
-		{
-			"config": "moreslots.client.mixins.json",
 			"environment": "client"
 		}
 	],
@@ -43,5 +39,11 @@
 		"minecraft": "~26.1.2",
 		"java": ">=25",
 		"fabric-api": "*"
+	},
+	"custom": {
+		"fabric-resource-loader-v0:register_data_pack": true
+	},
+	"fabric-resource-loader-v0": {
+		"resourcePackActivationType": "always_enabled"
 	}
 }

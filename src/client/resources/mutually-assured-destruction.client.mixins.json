@@ -4,6 +4,14 @@
 	"compatibilityLevel": "JAVA_25",
 	"client": [
 		"ExampleClientMixin",
+		"AttackSwingMixin",
+		"HandRendererMixin",
+		"LivingEntitySwingMixin",
+		"AbstractContainerScreenAccessor",
+		"ImageButtonAccessor",
+		"FogRendererMixin",
+		"FogRendererAccessor",
+        "ArbalestAnimMixin",
 		"HallucinationClientMixin",
 		"accessor.GameRendererAccessor"
 	],

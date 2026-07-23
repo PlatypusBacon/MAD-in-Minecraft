@@ -1,0 +1,15 @@
+{
+  "hand_animation_on_swap": false,
+  "model": {
+    "type": "minecraft:condition",
+    "property": "mutually-assured-destruction:firing",
+    "on_true": {
+      "type": "minecraft:model",
+      "model": "mutually-assured-destruction:item/gold_scar_firing"
+    },
+    "on_false": {
+      "type": "minecraft:model",
+      "model": "mutually-assured-destruction:item/gold_scar"
+    }
+  }
+}
