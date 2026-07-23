@@ -1,0 +1,26 @@
+{
+  "textures": {
+    "cross": "mutually-assured-destruction:block/magic_mushroom_block",
+    "particle": "mutually-assured-destruction:block/magic_mushroom_block"
+  },
+  "elements": [
+    {
+      "from": [4, 0, 8],
+      "to": [12, 8, 8],
+      "shade": false,
+      "faces": {
+        "north": { "uv": [0, 0, 16, 16], "texture": "#cross" },
+        "south": { "uv": [0, 0, 16, 16], "texture": "#cross" }
+      }
+    },
+    {
+      "from": [8, 0, 4],
+      "to": [8, 8, 12],
+      "shade": false,
+      "faces": {
+        "west": { "uv": [0, 0, 16, 16], "texture": "#cross" },
+        "east": { "uv": [0, 0, 16, 16], "texture": "#cross" }
+      }
+    }
+  ]
+}

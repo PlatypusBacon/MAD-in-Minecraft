@@ -1,0 +1,11 @@
+{
+  "type": "mutually-assured-destruction:mad_realm",
+  "generator": {
+    "type": "minecraft:noise",
+    "settings": "mutually-assured-destruction:mad_noise",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "mutually-assured-destruction:mad_realm"
+    }
+  }
+}

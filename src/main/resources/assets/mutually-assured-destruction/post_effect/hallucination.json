@@ -1,0 +1,43 @@
+{
+  "targets": {
+    "blur_h": {},
+    "blur": {}
+  },
+  "passes": [
+    {
+      "vertex_shader": "minecraft:core/screenquad",
+      "fragment_shader": "minecraft:post/box_blur",
+      "inputs": [{"sampler_name": "In", "target": "minecraft:main", "bilinear": true}],
+      "output": "blur_h",
+      "uniforms": {
+        "BlurConfig": [
+          {"name": "BlurDir", "type": "vec2", "value": [1.0, 0.0]},
+          {"name": "Radius", "type": "float", "value": 5.0}
+        ]
+      }
+    },
+    {
+      "vertex_shader": "minecraft:core/screenquad",
+      "fragment_shader": "minecraft:post/box_blur",
+      "inputs": [{"sampler_name": "In", "target": "blur_h", "bilinear": true}],
+      "output": "blur_h",
+      "uniforms": {
+        "BlurConfig": [
+          {"name": "BlurDir", "type": "vec2", "value": [0.0, 1.0]},
+          {"name": "Radius", "type": "float", "value": 5.0}
+        ]
+      }
+    },
+    {
+      "vertex_shader": "minecraft:core/screenquad",
+      "fragment_shader": "minecraft:post/blit",
+      "inputs": [{"sampler_name": "In", "target": "blur_h"}],
+      "output": "minecraft:main",
+      "uniforms": {
+        "BlitConfig": [
+          {"name": "ColorModulate", "type": "vec4", "value": [0.8, 0.4, 1.0, 1.0]}
+        ]
+      }
+    }
+  ]
+}

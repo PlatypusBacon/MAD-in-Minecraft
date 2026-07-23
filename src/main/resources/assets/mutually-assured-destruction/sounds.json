@@ -169,6 +169,57 @@
             }
         ]
     },
+  "musictomyears": {
+    "subtitle": "sound.mutually-assured-destruction.musictomyearsno",
+    "sounds": ["mutually-assured-destruction:musictomyearsno"]
+  },
+  "shroomjak_angry1": {
+    "subtitle": "sound.mutually-assured-destruction.shroomjak_angry1",
+    "sounds": ["mutually-assured-destruction:shroomjak_angry1"]
+  },
+  "shroomjak_angry2": {
+    "subtitle": "sound.mutually-assured-destruction.shroomjak_angry2",
+    "sounds": ["mutually-assured-destruction:shroomjak_angry2"]
+  },
+  "shroomjak_breed1": {
+    "subtitle": "sound.mutually-assured-destruction.shroomjak_breed1",
+    "sounds": ["mutually-assured-destruction:shroomjak_breed1"]
+  },
+  "shroomjak_fart1": {
+    "subtitle": "sound.mutually-assured-destruction.shroomjak_fart1",
+    "sounds": ["mutually-assured-destruction:shroomjak_fart1"]
+  },
+  "shroomjak_normal1": {
+    "subtitle": "sound.mutually-assured-destruction.shroomjak_normal1",
+    "sounds": ["mutually-assured-destruction:shroomjak_normal1"]
+  },
+  "shroomjak_plant": {
+    "subtitle": "sound.mutually-assured-destruction.shroomjak_plant",
+    "sounds": ["mutually-assured-destruction:shroomjak_plant"]
+  },
+  "shroom_noise": {
+    "subtitle": "sound.mutually-assured-destruction.shroom_noise",
+    "sounds": ["mutually-assured-destruction:shroom_noise"]
+  },
+  "shroom_terror": {
+    "subtitle": "sound.mutually-assured-destruction.shroom_terror",
+    "sounds": ["mutually-assured-destruction:shroom_terror"]
+  },
+  "the_alien": {
+    "subtitle": "sound.mutually-assured-destruction.the_alien",
+    "sounds": [
+      {
+        "name": "mutually-assured-destruction:the_alien",
+        "stream": true
+      }
+    ]
+  },
+  "ambient.overseer_hello": {
+    "sounds": [
+      "mutually-assured-destruction:ambient/overseer_hello",
+      "mutually-assured-destruction:ambient/overseer_hello2"
+    ]
+  },
   "ambient.cave": {
     "replace": false,
     "sounds": [

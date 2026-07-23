@@ -10,7 +10,10 @@
 		"AbstractContainerScreenAccessor",
 		"ImageButtonAccessor",
 		"FogRendererMixin",
-		"FogRendererAccessor"
+		"FogRendererAccessor",
+        "ArbalestAnimMixin",
+		"HallucinationClientMixin",
+		"accessor.GameRendererAccessor"
 	],
 	"injectors": {
 		"defaultRequire": 1
