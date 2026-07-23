@@ -1,8 +1,8 @@
 package bunger.group.client.mixin;
 
 import bunger.group.MutuallyAssuredDestruction;
+import bunger.group.client.MutuallyAssuredDestructionClient;
 import bunger.group.client.mixin.accessor.GameRendererAccessor;
-import bunger.group.csmit863.biome.ModBiomes;
 import bunger.group.csmit863.item.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -42,26 +42,22 @@ public class HallucinationClientMixin {
         }
 
         int amplifier = effect.getAmplifier();
-        if (player.getRandom().nextFloat() < 0.004f * (amplifier + 1)) {
+
+        int madness = MutuallyAssuredDestructionClient.clientMadness;
+        int maxMadness = MutuallyAssuredDestructionClient.clientMaxMadness;
+        float madnessFactor = maxMadness > 0 ? (float) madness / maxMadness : 0f;
+
+        float chance = 0.004f * (amplifier + 1) * (0.3f + madnessFactor);
+
+        if (player.getRandom().nextFloat() < chance) {
             SoundEvent sound = switch (player.getRandom().nextInt(3)) {
-                case 0 -> SoundEvents.ENDERMAN_TELEPORT;
+                case 0 -> SoundEvents.SPIDER_AMBIENT;
                 case 1 -> SoundEvents.CREEPER_PRIMED;
-                default -> SoundEvents.CREAKING_AMBIENT;
+                default -> SoundEvents.FIRE_EXTINGUISH;
             };
             player.playSound(sound,
                     0.7f + player.getRandom().nextFloat() * 0.6f,
                     0.8f + player.getRandom().nextFloat() * 0.6f);
         }
-
-        if (player.level().dimension().equals(ModBiomes.MAD_REALM)) {
-            if (player.getRandom().nextFloat() < 0.0005f) {
-                player.playSound(
-                        bunger.group.csmit863.CustomSounds.OVERSEER_HELLO,
-                        0.8f,
-                        1.0f
-                );
-            }
-        }
     }
-
 }
