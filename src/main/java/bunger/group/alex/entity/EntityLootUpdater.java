@@ -21,7 +21,7 @@ public class EntityLootUpdater {
                         .setRolls(ConstantValue.exactly(1.0f))
                         .add(LootItem.lootTableItem(ModItems.ZOMBIE_LEGGINGS))
                         .when(LootItemRandomChanceWithEnchantedBonusCondition
-                                .randomChanceAndLootingBoost(registries, 0.002f, 0.001f))
+                                .randomChanceAndLootingBoost(registries, 0.005f, 0.002f))
                 );
             }
 
@@ -31,7 +31,7 @@ public class EntityLootUpdater {
                         .setRolls(ConstantValue.exactly(1.0f))
                         .add(LootItem.lootTableItem(ModItems.SKELETON_CHESTPLATE))
                         .when(LootItemRandomChanceWithEnchantedBonusCondition
-                                .randomChanceAndLootingBoost(registries, 0.002f, 0.001f))
+                                .randomChanceAndLootingBoost(registries, 0.005f, 0.002f))
                 );
             }
 
@@ -40,7 +40,7 @@ public class EntityLootUpdater {
                         .setRolls(ConstantValue.exactly(1.0f))
                         .add(LootItem.lootTableItem(ModItems.SPIDER_BOOTS))
                         .when(LootItemRandomChanceWithEnchantedBonusCondition
-                                .randomChanceAndLootingBoost(registries, 0.002f, 0.001f))
+                                .randomChanceAndLootingBoost(registries, 0.005f, 0.002f))
                 );
             }
         });
