@@ -283,20 +283,17 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		// ============ GIVE PLAYERS TAXES =============
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
 
-			long day = server.overworld().getGameTime() % (24000L * 5L);
+			long day = server.overworld().getGameTime() % (101L);
 
 			// stagger check and give by 100 ticks so no overlap
-			if (day == 100 && (server.overworld().getGameTime() > 24000L)) {
+			if (day == 100) {
 
 				for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-
+					
 					// Create tax slip
 					ItemStack taxSlip = new ItemStack(TaxItem.TAX_ITEM);
 					TaxLogic.applyTaxBook(taxSlip, player);
 
-					// give to player
-					player.getInventory().add(taxSlip);
-					player.getItemInHand(InteractionHand.OFF_HAND);
 					// Get current offhand item
 					ItemStack offhand = player.getOffhandItem();
 
