@@ -388,7 +388,7 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		RecipePageRegistry.register(bunger.group.tyler2.item.ModItems.HOT_PLATE, "copper_ingot");
 		RecipePageRegistry.register(Items.STICK, "tanning_rack");
 		RecipePageRegistry.register(bunger.group.tyler3.item.ModItems.MEDIUM_AMMO, "bullet");
-		RecipePageRegistry.register(MAILBOX_BLOCK.asItem(), "mailbox");
+		RecipePageRegistry.register(Items.COPPER_INGOT, "mailbox");
 
 
 
