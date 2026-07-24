@@ -23,6 +23,7 @@ import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import bunger.group.alex.Bunger1;
@@ -85,6 +86,7 @@ import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.InteractionHand;
 import bunger.group.ethan.ProphetEntity;
 import bunger.group.ethan.VoremothEntity;
 import bunger.group.ethan.ModEntityTypes;
@@ -281,22 +283,31 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		// ============ GIVE PLAYERS TAXES =============
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
 
-			long day = server.overworld().getGameTime() % (24000L * 5L);
+			long day = server.overworld().getGameTime() % (101L);
 
 			// stagger check and give by 100 ticks so no overlap
-			if (day == 100 && (server.overworld().getGameTime() > 24000L)) {
+			if (day == 100) {
 
 				for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-
-					// create tax slip
-					ItemStack taxSlip =
-						new ItemStack(TaxItem.TAX_ITEM);
-
-					// generate taxes/book text
+					
+					// Create tax slip
+					ItemStack taxSlip = new ItemStack(TaxItem.TAX_ITEM);
 					TaxLogic.applyTaxBook(taxSlip, player);
 
-					// give to player
-					player.getInventory().add(taxSlip);
+					// Get current offhand item
+					ItemStack offhand = player.getOffhandItem();
+
+					if (!offhand.isEmpty()) {
+						// Drop it on the ground
+						player.drop(offhand.copy(), true);
+
+						// Clear the offhand
+						player.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+					}
+
+					// Put the tax slip in the offhand
+					player.setItemInHand(InteractionHand.OFF_HAND, taxSlip);
+
 				}
 			}
 		});
@@ -386,6 +397,7 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		RecipePageRegistry.register(bunger.group.tyler2.item.ModItems.HOT_PLATE, "copper_ingot");
 		RecipePageRegistry.register(Items.STICK, "tanning_rack");
 		RecipePageRegistry.register(bunger.group.tyler3.item.ModItems.MEDIUM_AMMO, "bullet");
+		RecipePageRegistry.register(Items.COPPER_INGOT, "mailbox");
 
 
 

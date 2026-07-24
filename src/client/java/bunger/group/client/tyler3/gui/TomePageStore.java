@@ -151,12 +151,10 @@ public final class TomePageStore {
             }
         }
 
-        // Prepend recipe pages in registration order (only those that are unlocked)
+        // dont prepend claude what were you doing
         List<TomePage> recipePages = new ArrayList<>();
-        for (String id : bunger.group.tyler3.rego.RecipePageRegistry.allRecipeIds()) {
-            if (unlocked.contains(id)) {
-                recipePages.add(buildPage.apply(id));
-            }
+        for (String id : unlocked) {
+            recipePages.add(buildPage.apply(id));
         }
 
         List<TomePage> all = new ArrayList<>();

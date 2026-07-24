@@ -77,7 +77,7 @@ public class ModToolMaterials {
     );
     public static final ToolMaterial LONG_STONE = new ToolMaterial(
             BlockTags.INCORRECT_FOR_STONE_TOOL,
-            4,
+            10,
             4.0f,
             1.0f,
             5,
@@ -85,7 +85,7 @@ public class ModToolMaterials {
     );
     public static final ToolMaterial LONG_IRON = new ToolMaterial(
             BlockTags.INCORRECT_FOR_IRON_TOOL,
-            32,
+            52,
             6.0f,
             2.0f,
             14,
