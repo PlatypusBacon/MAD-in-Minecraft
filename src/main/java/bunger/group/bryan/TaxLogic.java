@@ -44,6 +44,7 @@ public class TaxLogic {
         1x random (1-16) (now nuggets)
         */
         
+  
         TagKey<Item> WOOD = MutuallyAssuredDestruction.WOOD_TAXES;
         TagKey<Item> STONE = MutuallyAssuredDestruction.STONE_TAXES;
         TagKey<Item> FOOD = MutuallyAssuredDestruction.FOOD_TAXES;
@@ -51,20 +52,37 @@ public class TaxLogic {
         TagKey<Item> RANDOM = ItemTags.METAL_NUGGETS;
 
 
-        // select ore item first so we can adjust quantity for rare items
+        // select ore item first to adjust quantity
         Item oreItem = getRandomFromTag(ORE, random);
         int numOre = random.nextInt(32) + 1;
+
+        // changed netherite to be re-rrolled if its picked, if it rolls again deal with it
         // if the chosen ore is netherite scrap or ingot, limit to 1
         String oreId = BuiltInRegistries.ITEM.getKey(oreItem).toString();
         if (oreId.equals("minecraft:netherite_scrap") || oreId.equals("minecraft:netherite_ingot")) {
-            numOre = 1;
+            oreItem = getRandomFromTag(ORE, random);
+            oreId = BuiltInRegistries.ITEM.getKey(oreItem).toString();
+            if (oreId.equals("minecraft:netherite_scrap") || oreId.equals("minecraft:netherite_ingot")) {
+                oreItem = getRandomFromTag(ORE, random);
+                numOre = 1;
+            }
         }
+
+        Item foodItem = getRandomFromTag(FOOD, random);
+        int numFood = random.nextInt(64) + 1;
+        
+        String foodId = BuiltInRegistries.ITEM.getKey(foodItem).toString();
+        if (foodId.equals("minecraft:enchanted_golden_apple")) {
+            numFood = 1;
+        }
+
 
         taxMap.put(getRandomFromTag(WOOD, random), random.nextInt(64) + 1);
         taxMap.put(getRandomFromTag(STONE, random), random.nextInt(64) + 1);
-        taxMap.put(getRandomFromTag(FOOD, random), random.nextInt(64) + 1);
+        taxMap.put(foodItem, numFood);
         taxMap.put(oreItem, numOre);
         taxMap.put(getRandomFromTag(RANDOM, random), random.nextInt(64) + 1);
+
 
         StringBuilder text = new StringBuilder();
 

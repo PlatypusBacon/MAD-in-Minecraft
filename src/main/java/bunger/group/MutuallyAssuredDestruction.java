@@ -86,6 +86,7 @@ import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.InteractionHand;
 import bunger.group.ethan.ProphetEntity;
 import bunger.group.ethan.VoremothEntity;
 import bunger.group.ethan.ModEntityTypes;
@@ -289,16 +290,27 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 
 				for (ServerPlayer player : server.getPlayerList().getPlayers()) {
 
-					// create tax slip
-					ItemStack taxSlip =
-						new ItemStack(TaxItem.TAX_ITEM);
-
-					// generate taxes/book text
+					// Create tax slip
+					ItemStack taxSlip = new ItemStack(TaxItem.TAX_ITEM);
 					TaxLogic.applyTaxBook(taxSlip, player);
 
 					// give to player
 					player.getInventory().add(taxSlip);
 					player.getItemInHand(InteractionHand.OFF_HAND);
+					// Get current offhand item
+					ItemStack offhand = player.getOffhandItem();
+
+					if (!offhand.isEmpty()) {
+						// Drop it on the ground
+						player.drop(offhand.copy(), true);
+
+						// Clear the offhand
+						player.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+					}
+
+					// Put the tax slip in the offhand
+					player.setItemInHand(InteractionHand.OFF_HAND, taxSlip);
+
 				}
 			}
 		});
