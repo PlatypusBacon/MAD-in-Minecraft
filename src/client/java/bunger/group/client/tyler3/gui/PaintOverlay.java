@@ -175,15 +175,10 @@ public class PaintOverlay {
 
         UNLOCKED.add(recipeId);
 
-        // Insert at correct position: after all existing recipe pages that
-        // appear before this one in registration order
-        List<String> order = bunger.group.tyler3.rego.RecipePageRegistry.allRecipeIds();
         int insertAt = 0;
         for (int i = 0; i < PAGES.size(); i++) {
-            if (PAGES.get(i) instanceof TomePage.Recipe r) {
-                int existingPos = order.indexOf(r.recipeId());
-                int newPos      = order.indexOf(recipeId);
-                if (existingPos < newPos) insertAt = i + 1;
+            if (PAGES.get(i) instanceof TomePage.Recipe) {
+                insertAt = i + 1;
             }
         }
         PAGES.add(insertAt, buildPage(recipeId));
@@ -196,7 +191,6 @@ public class PaintOverlay {
         RecipeUnlockedToast.show(mc.getToastManager(), recipeId);
         return true;
     }
-
     // ---------------------------------------------------------------
     // Constructor
     // ---------------------------------------------------------------

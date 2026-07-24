@@ -92,6 +92,6 @@ public class TheNotoriousBeej {
     }
 
     private static int newTarget() {
-        return RANDOM.nextInt(300000) + 20000;
+        return RANDOM.nextInt(600000) + 80000;
     }
 }

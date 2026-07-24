@@ -87,7 +87,7 @@ public class StructureManager {
         player.setRespawnPosition(
                 new ServerPlayer.RespawnConfig(
                         LevelData.RespawnData.of(level.dimension(), bed, 0f, 0f),
-                        true
+                        false
                 ),
                 false
         );
