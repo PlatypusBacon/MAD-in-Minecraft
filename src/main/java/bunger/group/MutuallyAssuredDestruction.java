@@ -23,6 +23,7 @@ import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import bunger.group.alex.Bunger1;
@@ -297,6 +298,7 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 
 					// give to player
 					player.getInventory().add(taxSlip);
+					player.getItemInHand(InteractionHand.OFF_HAND);
 				}
 			}
 		});
@@ -386,6 +388,7 @@ public class MutuallyAssuredDestruction implements ModInitializer {
 		RecipePageRegistry.register(bunger.group.tyler2.item.ModItems.HOT_PLATE, "copper_ingot");
 		RecipePageRegistry.register(Items.STICK, "tanning_rack");
 		RecipePageRegistry.register(bunger.group.tyler3.item.ModItems.MEDIUM_AMMO, "bullet");
+		RecipePageRegistry.register(MAILBOX_BLOCK.asItem(), "mailbox");
 
 
 
